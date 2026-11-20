@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { OutlierStrategy } from "@/types/dataCleanup";
+import { OutlierStrategySelect } from "./OutlierStrategySelect";
 
 interface OutliersSectionProps {
   numericColumns: string[];
@@ -38,18 +39,10 @@ export function OutliersSection(p: OutliersSectionProps) {
             ))}
           </SelectContent>
         </Select>
-        <Select
-          value={p.strategy}
-          onValueChange={(v) => p.onStrategyChange(v as OutlierStrategy)}
-        >
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="clip">Clip Bounds</SelectItem>
-            <SelectItem value="drop">Drop Rows</SelectItem>
-          </SelectContent>
-        </Select>
+        <OutlierStrategySelect
+          strategy={p.strategy}
+          onStrategyChange={p.onStrategyChange}
+        />
       </div>
       <Button
         size="sm"

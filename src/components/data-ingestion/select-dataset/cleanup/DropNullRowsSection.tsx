@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { DropNullStrategy } from "@/types/dataCleanup";
+import { DropNullColumnSelect } from "./DropNullColumnSelect";
 
 interface RowsSectionProps {
   columns: string[];
@@ -37,18 +38,11 @@ export function DropNullRowsSection(p: RowsSectionProps) {
           </SelectContent>
         </Select>
         {p.rowStrategy === "selected" && (
-          <Select value={p.selectedCol} onValueChange={p.onSelectedColChange}>
-            <SelectTrigger className="h-9">
-              <SelectValue placeholder="Column" />
-            </SelectTrigger>
-            <SelectContent>
-              {p.columns.map((c) => (
-                <SelectItem key={c} value={c}>
-                  {c}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <DropNullColumnSelect
+            columns={p.columns}
+            selectedCol={p.selectedCol}
+            onSelectedColChange={p.onSelectedColChange}
+          />
         )}
       </div>
       <Button

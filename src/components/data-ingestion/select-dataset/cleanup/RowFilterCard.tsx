@@ -1,5 +1,4 @@
-import { Filter, Check, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 import type { RowFilter } from "@/types/dataCleanup";
 import { useRowFilterForm } from "./useRowFilterForm";
 import { RowFilterInputs } from "./RowFilterInputs";
+import { RowFilterFooter } from "./RowFilterFooter";
 
 interface RowFilterCardProps {
   columns: string[];
@@ -45,33 +45,12 @@ export function RowFilterCard({
           value={form.value}
           onValueChange={form.setValue}
         />
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-          <span className="text-xs text-muted-foreground">
-            Matching rows:{" "}
-            <strong className="text-foreground">{form.matchCount}</strong> /{" "}
-            {values.length}
-          </span>
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="default"
-              onClick={form.handleKeep}
-              disabled={form.matchCount === 0}
-              className="h-8 gap-1.5 text-xs transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
-            >
-              <Check className="h-3.5 w-3.5" /> Keep Matching
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={form.handleDrop}
-              disabled={form.matchCount === 0}
-              className="h-8 gap-1.5 text-xs text-destructive hover:bg-destructive/10 transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
-            >
-              <X className="h-3.5 w-3.5" /> Drop Matching
-            </Button>
-          </div>
-        </div>
+        <RowFilterFooter
+          matchCount={form.matchCount}
+          totalCount={values.length}
+          onKeep={form.handleKeep}
+          onDrop={form.handleDrop}
+        />
       </CardContent>
     </Card>
   );

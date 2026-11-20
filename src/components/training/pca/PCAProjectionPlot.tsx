@@ -47,7 +47,9 @@ export function PCAProjectionPlot({ metrics }: { metrics: PCAMetrics }) {
                 cy={95 - ((pt.pc2 - minY) / rangeY) * 90}
                 r="1.6"
                 className="fill-primary/80 hover:fill-emerald-400 hover:scale-150 transition-all"
-              />
+              >
+                <title>{`#${pt.index}: PC1=${pt.pc1}, PC2=${pt.pc2}`}</title>
+              </circle>
             ))}
           </svg>
         </div>

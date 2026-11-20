@@ -1,12 +1,10 @@
 import { Trees } from "lucide-react";
 import { TrainingPageLayout } from "@/components/shared/TrainingPageLayout";
-import { ClassificationSummary } from "@/components/training/classification/ClassificationSummary";
-import { ClassificationDetailsTabs } from "@/components/training/classification/ClassificationDetailsTabs";
-import { MetricsSummary } from "@/components/training/linear-regression/MetricsSummary";
-import { LinearRegressionDetailsTabs } from "@/components/training/linear-regression/LinearRegressionDetailsTabs";
 import { RandomForestConfigCard } from "./RandomForestConfigCard";
 import { FeatureImportanceCard } from "./FeatureImportanceCard";
 import { useRandomForestPage } from "./useRandomForestPage";
+import { RandomForestSummary, RandomForestDetails } from "./RandomForestViews";
+import { RF_NEXT_STEP, getRFConfigOptions } from "./randomForestConstants";
 
 export function RandomForestPage() {
   const p = useRandomForestPage();
@@ -23,10 +21,7 @@ export function RandomForestPage() {
       icon={Trees}
       algorithmName="Random Forest"
       metrics={metrics}
-      configOptions={[
-        { label: "Trees", value: String(p.nEstimators) },
-        { label: "Max Depth", value: String(p.maxDepth) },
-      ]}
+      configOptions={getRFConfigOptions(p.nEstimators, p.maxDepth)}
       headerExtras={
         <RandomForestConfigCard
           nEstimators={p.nEstimators}
@@ -36,28 +31,21 @@ export function RandomForestPage() {
         />
       }
       summaryComponent={
-        isReg ? (
-          <MetricsSummary metrics={p.regressionMetrics!} />
-        ) : (
-          <ClassificationSummary
-            metrics={p.classificationMetrics!}
-            direction="vertical"
-          />
-        )
+        <RandomForestSummary
+          isReg={isReg}
+          regressionMetrics={p.regressionMetrics}
+          classificationMetrics={p.classificationMetrics}
+        />
       }
       detailsComponent={
-        isReg ? (
-          <LinearRegressionDetailsTabs metrics={p.regressionMetrics!} />
-        ) : (
-          <ClassificationDetailsTabs metrics={p.classificationMetrics!} />
-        )
+        <RandomForestDetails
+          isReg={isReg}
+          regressionMetrics={p.regressionMetrics}
+          classificationMetrics={p.classificationMetrics}
+        />
       }
       footerExtras={<FeatureImportanceCard importances={p.importances} />}
-      nextStepProps={{
-        message: "Training complete.",
-        linkTo: "/models",
-        linkText: "Saved Models",
-      }}
+      nextStepProps={RF_NEXT_STEP}
       onRun={p.runTraining}
       onReset={p.reset}
     />

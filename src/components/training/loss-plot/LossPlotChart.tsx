@@ -3,10 +3,8 @@ import type { LossTelemetry } from "@/types/loss";
 import { COLOR_PALETTES } from "./lossPlotColors";
 import { buildLossPaths } from "./lossPlotPathBuilder";
 import { useLossPlotHover } from "./useLossPlotHover";
-import { LossPlotGrid } from "./LossPlotGrid";
-import { LossPlotTraces } from "./LossPlotTraces";
 import { LossPlotLegend } from "./LossPlotLegend";
-import { LossPlotTooltip } from "./LossPlotTooltip";
+import { LossPlotSvg } from "./LossPlotSvg";
 import { DEFAULT_DIM } from "./lossPlotScales";
 
 export function LossPlotChart({ telemetry }: { telemetry: LossTelemetry }) {
@@ -22,36 +20,13 @@ export function LossPlotChart({ telemetry }: { telemetry: LossTelemetry }) {
 
   return (
     <div className="w-full space-y-2">
-      <svg
-        viewBox={`0 0 ${DEFAULT_DIM.width} ${DEFAULT_DIM.height}`}
-        className="w-full h-auto overflow-visible cursor-crosshair"
-        onMouseMove={hover.handleMouseMove}
-        onMouseLeave={hover.handleMouseLeave}
-      >
-        <LossPlotTraces
-          gradId={gradId}
-          palette={palette}
-          areaPath={paths.areaPath}
-          linePath={paths.linePath}
-          valLinePath={paths.valLinePath}
-          lastPoint={paths.points[paths.points.length - 1]}
-        />
-        <LossPlotGrid
-          dim={DEFAULT_DIM}
-          minLoss={paths.minLoss}
-          maxLoss={paths.maxLoss}
-          maxStep={paths.maxStep}
-          shortMetric={telemetry.shortMetric}
-        />
-        {hover.hovered && (
-          <LossPlotTooltip
-            point={hover.hovered}
-            palette={palette}
-            dimHeight={DEFAULT_DIM.height}
-            shortMetric={telemetry.shortMetric}
-          />
-        )}
-      </svg>
+      <LossPlotSvg
+        gradId={gradId}
+        palette={palette}
+        paths={paths}
+        hover={hover}
+        shortMetric={telemetry.shortMetric}
+      />
       <LossPlotLegend
         palette={palette}
         shortMetric={telemetry.shortMetric}

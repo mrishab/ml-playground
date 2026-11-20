@@ -82,7 +82,7 @@ export function trainPCA({
 
   // Project data points onto PC1 and PC2 (or PC1 if p === 1)
   const v1 = sortedEigenvectors[0] ?? new Array(p).fill(0);
-  const v2 = sortedEigenvectors[1] ?? v1;
+  const v2 = sortedEigenvectors[1] ?? new Array(p).fill(0);
 
   const coordinates2D: PCAPoint2D[] = [];
   for (let i = 0; i < n; i++) {

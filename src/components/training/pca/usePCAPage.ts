@@ -11,8 +11,8 @@ export function usePCAPage() {
     store;
 
   const runTraining = useCallback(async () => {
-    if (!data.xTrain || !data.featureNames || data.featureNames.length < 2) {
-      setError("PCA requires at least 2 features. Please configure features.");
+    if (!data.xTrain || !data.featureNames || data.featureNames.length < 1) {
+      setError("PCA requires at least 1 feature. Please configure features.");
       return;
     }
     setTrainingState("training");

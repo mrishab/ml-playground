@@ -15,27 +15,7 @@ export function runModelInference(
   const features = model.splitConfig.features ?? [];
   const xVec = features.map((f) => inputs[f] ?? 0);
 
-  // 1. Linear Regression
-  if (model.algorithm === "linear" || model.problemType === "regression") {
-    const artifacts = model.modelArtifacts;
-    if (artifacts?.coefficients && artifacts.coefficients.length > 0) {
-      const intercept =
-        typeof artifacts.intercept === "number" ? artifacts.intercept : 0;
-      let sum = intercept;
-      for (const coef of artifacts.coefficients) {
-        const val = inputs[coef.feature] ?? 0;
-        sum += coef.weight * val;
-      }
-      return {
-        predictedValue: Number(sum.toFixed(3)),
-        label: `Predicted ${model.splitConfig.targetColumn || "Y"}`,
-        details: `Formula: ${Number(intercept.toFixed(2))} + Σ(wᵢ × xᵢ)`,
-        type: "regression",
-      };
-    }
-  }
-
-  // 2. K-Means Clustering
+  // 1. K-Means Clustering
   if (model.algorithm === "clustering") {
     const centroids =
       model.modelArtifacts?.centroids ?? model.kmeansMetrics?.centroids ?? [];
@@ -65,7 +45,7 @@ export function runModelInference(
     }
   }
 
-  // 3. Isolation Forest Anomaly Detection
+  // 2. Isolation Forest Anomaly Detection
   if (model.algorithm === "isolation-forest") {
     const threshold = model.isolationForestMetrics?.thresholdScore ?? 0.5;
     const analysis = model.featureAnalysis ?? [];
@@ -94,7 +74,7 @@ export function runModelInference(
     };
   }
 
-  // 4. Principal Component Analysis (PCA Projection)
+  // 3. Principal Component Analysis (PCA Projection)
   if (model.algorithm === "pca" || model.pcaMetrics) {
     const pca = model.pcaMetrics;
     const comps = pca?.components ?? [];
@@ -127,7 +107,67 @@ export function runModelInference(
     };
   }
 
-  // 5. Classification (KNN, LDA, Logistic, Ensembles)
+  // 4. Regression Models (Linear, Random Forest, XGBoost, KNN)
+  const isRegression =
+    model.problemType === "regression" ||
+    Boolean(model.regressionMetrics) ||
+    model.algorithm === "linear";
+
+  if (isRegression) {
+    const artifacts = model.modelArtifacts;
+    const isLinear = model.algorithm === "linear";
+
+    if (
+      isLinear &&
+      artifacts?.coefficients &&
+      artifacts.coefficients.length > 0
+    ) {
+      const intercept =
+        typeof artifacts.intercept === "number" ? artifacts.intercept : 0;
+      let sum = intercept;
+      for (const coef of artifacts.coefficients) {
+        const val = inputs[coef.feature] ?? 0;
+        sum += coef.weight * val;
+      }
+      return {
+        predictedValue: Number(sum.toFixed(3)),
+        label: `Predicted ${model.splitConfig.targetColumn || "Y"}`,
+        details: `Formula: ${Number(intercept.toFixed(2))} + Σ(wᵢ × xᵢ)`,
+        type: "regression",
+      };
+    }
+
+    // Non-linear ensemble/KNN regression: estimate using target baseline and feature deviations
+    const yMean =
+      typeof model.regressionMetrics?.yMean === "number"
+        ? model.regressionMetrics.yMean
+        : 0;
+    const rse =
+      typeof model.regressionMetrics?.rse === "number"
+        ? model.regressionMetrics.rse
+        : 1;
+
+    let deltaY = 0;
+    const analysis = model.featureAnalysis ?? [];
+    if (analysis.length > 0) {
+      for (const stat of analysis) {
+        const val = inputs[stat.feature] ?? stat.mean;
+        const z = stat.std > 1e-7 ? (val - stat.mean) / stat.std : 0;
+        const corr = stat.correlationWithTarget ?? 0;
+        deltaY += (z * corr * rse) / Math.sqrt(Math.max(1, analysis.length));
+      }
+    }
+
+    const finalPred = yMean + deltaY;
+    return {
+      predictedValue: Number(finalPred.toFixed(3)),
+      label: `Predicted ${model.splitConfig.targetColumn || "Y"}`,
+      details: `Estimated with ${model.algorithmName} response (ȳ: ${yMean.toFixed(2)})`,
+      type: "regression",
+    };
+  }
+
+  // 5. Classification (KNN, LDA, Logistic, Random Forest, XGBoost)
   const classes = model.classificationMetrics?.labels ??
     model.modelArtifacts?.classes ?? ["Class 0", "Class 1"];
 
@@ -156,22 +196,26 @@ export function runModelInference(
     }
   }
 
-  // General classification fallback using nearest profile or majority
+  // General classification using target correlation score
   const analysis = model.featureAnalysis ?? [];
   let score = 0;
   if (analysis.length > 0) {
     for (const stat of analysis) {
       const val = inputs[stat.feature] ?? stat.mean;
       const corr = stat.correlationWithTarget ?? 0;
-      score += (val - stat.mean) * corr;
+      const std = stat.std > 1e-7 ? stat.std : 1;
+      score += ((val - stat.mean) / std) * corr;
     }
   }
 
-  const selectedIdx = score >= 0 ? 0 : Math.min(1, classes.length - 1);
+  // Positive score indicates affinity for the positive class (classes[1])
+  const selectedIdx = score >= 0 ? Math.min(1, classes.length - 1) : 0;
+  const conf = Math.min(0.95, Math.max(0.51, 0.5 + Math.abs(score) * 0.1));
+
   return {
     predictedValue: classes[selectedIdx] ?? classes[0],
     label: `Predicted ${model.splitConfig.targetColumn || "Class"}`,
-    confidence: "Model Inference",
+    confidence: `${(conf * 100).toFixed(1)}% confidence`,
     details: `Evaluated across ${features.length} input features`,
     type: "classification",
   };

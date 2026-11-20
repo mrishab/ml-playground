@@ -3,9 +3,8 @@ import { useDatasetStore } from "@/stores/dataset";
 import { useCleanupState } from "./useCleanupState";
 import { useCleanupDataExtract } from "./useCleanupDataExtract";
 import { useApplyTransformation } from "./useApplyTransformation";
-import { useNullActions } from "./useNullActions";
-import { useRowActions } from "./useRowActions";
-import { useColumnActions } from "./useColumnActions";
+import { useCleanupActionHandlers } from "./useCleanupActionHandlers";
+import { useCleanupHistoryActions } from "./useCleanupHistoryActions";
 
 export function useDataCleanup() {
   const df = useDatasetStore((s) => s.df);
@@ -28,42 +27,23 @@ export function useDataCleanup() {
     [applyTransformation, undoStack, setUndoStack, setHistory],
   );
 
-  const nullActions = useNullActions({
-    columns: dataExtract.columns,
-    values: dataExtract.values,
-    onApply,
-  });
-  const rowActions = useRowActions({
-    columns: dataExtract.columns,
-    values: dataExtract.values,
-    onApply,
-  });
-  const colActions = useColumnActions({
+  const actions = useCleanupActionHandlers({
     columns: dataExtract.columns,
     values: dataExtract.values,
     onApply,
   });
 
-  const handleUndo = useCallback(() => {
-    if (undoStack.length === 0) return;
-    const prev = undoStack[undoStack.length - 1];
-    setUndoStack((s) => s.slice(0, -1));
-    setHistory((h) => h.slice(1));
-    setDf(prev);
-  }, [undoStack, setUndoStack, setHistory, setDf]);
-
-  const handleReset = useCallback(() => {
-    if (!originalDf) return;
-    setUndoStack([]);
-    setHistory([]);
-    setDf(originalDf);
-  }, [originalDf, setUndoStack, setHistory, setDf]);
+  const { handleUndo, handleReset } = useCleanupHistoryActions({
+    originalDf,
+    undoStack,
+    setUndoStack,
+    setHistory,
+    setDf,
+  });
 
   return {
     ...dataExtract,
-    ...nullActions,
-    ...rowActions,
-    ...colActions,
+    ...actions,
     history,
     canUndo: undoStack.length > 0,
     handleUndo,

@@ -1,13 +1,12 @@
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import type { SavedModel } from "@/types/savedModel";
+import { ModelAnalysisTableRow } from "./ModelAnalysisTableRow";
 
 export function ModelAnalysisTab({ model }: { model: SavedModel }) {
   const analysis = model.featureAnalysis ?? [];
@@ -34,26 +33,7 @@ export function ModelAnalysisTab({ model }: { model: SavedModel }) {
         </TableHeader>
         <TableBody>
           {analysis.map((item) => (
-            <TableRow key={item.feature} className="hover:bg-muted/20">
-              <TableCell className="font-medium py-1.5">
-                {item.feature}
-              </TableCell>
-              <TableCell className="font-mono py-1.5">{item.mean}</TableCell>
-              <TableCell className="font-mono py-1.5">{item.std}</TableCell>
-              <TableCell className="font-mono py-1.5">
-                {item.min} / {item.max}
-              </TableCell>
-              <TableCell className="py-1.5">
-                {item.correlationWithTarget !== undefined ? (
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    r = {item.correlationWithTarget} ({item.correlationStrength}
-                    )
-                  </Badge>
-                ) : (
-                  "—"
-                )}
-              </TableCell>
-            </TableRow>
+            <ModelAnalysisTableRow key={item.feature} item={item} />
           ))}
         </TableBody>
       </Table>

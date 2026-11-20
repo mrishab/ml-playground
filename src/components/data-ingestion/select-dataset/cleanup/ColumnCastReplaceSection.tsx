@@ -1,14 +1,7 @@
-import { Sparkles, RefreshCw } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { CastTargetTypeSelect } from "./CastTargetTypeSelect";
+import { ColumnCastSelectRow } from "./ColumnCastSelectRow";
+import { ColumnFindReplaceSection } from "./ColumnFindReplaceSection";
 import type { CastReplaceProps } from "./columnOpsTypes";
 
 export function ColumnCastReplaceSection({
@@ -35,55 +28,28 @@ export function ColumnCastReplaceSection({
       <h4 className="text-xs font-semibold text-foreground">
         Type Cast &amp; Find / Replace
       </h4>
-      <div className="grid grid-cols-2 gap-2">
-        <Select value={selectedCol} onValueChange={onSelectCol}>
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue placeholder="Column" />
-          </SelectTrigger>
-          <SelectContent>
-            {columns.map((c) => (
-              <SelectItem key={c} value={c}>
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <CastTargetTypeSelect
-          value={targetType}
-          onChange={onTargetTypeChange}
-        />
-      </div>
+      <ColumnCastSelectRow
+        columns={columns}
+        selectedCol={selectedCol}
+        onSelectCol={onSelectCol}
+        targetType={targetType}
+        onTargetTypeChange={onTargetTypeChange}
+      />
       <Button
         size="sm"
         variant="secondary"
         onClick={onCast}
-        className="w-full h-7 text-xs transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
+        className="w-full h-7 text-xs active:scale-[0.98]"
       >
         <Sparkles className="h-3 w-3 mr-1" /> {getButtonLabel()}
       </Button>
-      <div className="grid grid-cols-2 gap-2 pt-1 border-t border-border">
-        <Input
-          className="h-8 text-xs"
-          placeholder="Find..."
-          value={findVal}
-          onChange={(e) => onFindChange(e.target.value)}
-        />
-        <Input
-          className="h-8 text-xs"
-          placeholder="Replace with..."
-          value={replaceVal}
-          onChange={(e) => onReplaceChange(e.target.value)}
-        />
-      </div>
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={onReplace}
-        disabled={!findVal}
-        className="w-full h-7 text-xs transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
-      >
-        <RefreshCw className="h-3 w-3 mr-1" /> Replace Values
-      </Button>
+      <ColumnFindReplaceSection
+        findVal={findVal}
+        onFindChange={onFindChange}
+        replaceVal={replaceVal}
+        onReplaceChange={onReplaceChange}
+        onReplace={onReplace}
+      />
     </div>
   );
 }

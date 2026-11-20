@@ -1,13 +1,6 @@
 import { Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ColumnRenameInputs } from "./ColumnRenameInputs";
 
 interface RenameDropProps {
   columns: string[];
@@ -33,26 +26,13 @@ export function ColumnRenameDropSection({
       <h4 className="text-xs font-semibold text-foreground">
         Rename or Drop Column
       </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <Select value={selectedCol} onValueChange={onSelectCol}>
-          <SelectTrigger className="h-8 text-xs">
-            <SelectValue placeholder="Column" />
-          </SelectTrigger>
-          <SelectContent>
-            {columns.map((c) => (
-              <SelectItem key={c} value={c}>
-                {c}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Input
-          className="h-8 text-xs"
-          placeholder="New column name..."
-          value={newName}
-          onChange={(e) => onNewNameChange(e.target.value)}
-        />
-      </div>
+      <ColumnRenameInputs
+        columns={columns}
+        selectedCol={selectedCol}
+        onSelectCol={onSelectCol}
+        newName={newName}
+        onNewNameChange={onNewNameChange}
+      />
       <div className="flex gap-2">
         <Button
           size="sm"

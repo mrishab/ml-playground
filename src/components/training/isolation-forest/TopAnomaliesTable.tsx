@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { AnomalySamplePoint } from "@/types/isolationForest";
+import { AnomalyTableRow } from "./AnomalyTableRow";
 
 type Props = {
   anomalies: AnomalySamplePoint[];
@@ -32,28 +32,11 @@ export function TopAnomaliesTable({ anomalies }: Props) {
             </thead>
             <tbody>
               {anomalies.slice(0, 10).map((pt) => (
-                <tr
+                <AnomalyTableRow
                   key={pt.index}
-                  className="border-b border-border/40 hover:bg-muted/30"
-                >
-                  <td className="py-1.5 px-2 font-mono">#{pt.index}</td>
-                  <td className="py-1.5 px-2">
-                    <Badge
-                      variant="destructive"
-                      className="font-mono text-[10px] h-4"
-                    >
-                      {pt.score.toFixed(3)}
-                    </Badge>
-                  </td>
-                  {featureKeys.map((k) => (
-                    <td
-                      key={k}
-                      className="py-1.5 px-2 font-mono text-muted-foreground"
-                    >
-                      {pt.features[k]}
-                    </td>
-                  ))}
-                </tr>
+                  pt={pt}
+                  featureKeys={featureKeys}
+                />
               ))}
             </tbody>
           </table>

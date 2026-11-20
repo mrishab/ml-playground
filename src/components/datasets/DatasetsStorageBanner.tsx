@@ -1,7 +1,7 @@
-import { HardDrive, Database, Sparkles, UploadCloud } from "lucide-react";
+import { HardDrive } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { SavedDataset } from "@/types/savedDataset";
+import { DatasetsStorageBadges } from "./DatasetsStorageBadges";
 
 interface StorageBannerProps {
   formattedSize: string;
@@ -12,8 +12,6 @@ export function DatasetsStorageBanner({
   formattedSize,
   datasets,
 }: StorageBannerProps) {
-  const cleanedCount = datasets.filter((d) => d.source === "cleaned").length;
-  const uploadedCount = datasets.filter((d) => d.source === "uploaded").length;
   const totalRows = datasets.reduce((sum, d) => sum + d.rowCount, 0);
 
   return (
@@ -38,28 +36,7 @@ export function DatasetsStorageBanner({
             </p>
           </div>
         </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge
-            variant="secondary"
-            className="flex items-center gap-1.5 font-normal"
-          >
-            <Database className="h-3 w-3" />
-            {datasets.length} {datasets.length === 1 ? "Dataset" : "Datasets"}
-          </Badge>
-          {cleanedCount > 0 && (
-            <Badge variant="outline" className="flex items-center gap-1">
-              <Sparkles className="h-3 w-3 text-primary" />
-              {cleanedCount} Cleaned
-            </Badge>
-          )}
-          {uploadedCount > 0 && (
-            <Badge variant="outline" className="flex items-center gap-1">
-              <UploadCloud className="h-3 w-3 text-emerald-500" />
-              {uploadedCount} Uploaded
-            </Badge>
-          )}
-        </div>
+        <DatasetsStorageBadges datasets={datasets} />
       </CardContent>
     </Card>
   );

@@ -2,8 +2,7 @@ import type { useModelsPage } from "./useModelsPage";
 import { ModelsPageHeader } from "./ModelsPageHeader";
 import { ModelsStorageBanner } from "./ModelsStorageBanner";
 import { ModelsFilterBar } from "./ModelsFilterBar";
-import { ModelsEmptyState } from "./ModelsEmptyState";
-import { ModelsListGrid } from "./ModelsListGrid";
+import { ModelsMainView } from "./ModelsMainView";
 import { ModelsDialogs } from "./ModelsDialogs";
 
 export function ModelsPageContent({
@@ -11,11 +10,6 @@ export function ModelsPageContent({
 }: {
   p: ReturnType<typeof useModelsPage>;
 }) {
-  const resetFilters = () => {
-    p.setSearchQuery("");
-    p.setFilterType("all");
-  };
-
   return (
     <div className="flex flex-1 flex-col gap-5 p-3.5 sm:p-5 md:p-6 pb-8 max-w-7xl mx-auto w-full">
       <ModelsPageHeader
@@ -33,20 +27,7 @@ export function ModelsPageContent({
         sortBy={p.sortBy}
         onSortChange={p.setSortBy}
       />
-      {p.filteredModels.length === 0 ? (
-        <ModelsEmptyState
-          isFiltered={p.models.length > 0}
-          onResetFilters={resetFilters}
-        />
-      ) : (
-        <ModelsListGrid
-          models={p.filteredModels}
-          onInspect={(m) => p.dialogs.setSelectedModel(m)}
-          onDownload={p.handleDownload}
-          onRename={(m) => p.dialogs.setRenameTarget(m)}
-          onDelete={(m) => p.dialogs.setDeleteTarget(m)}
-        />
-      )}
+      <ModelsMainView p={p} />
       <ModelsDialogs
         dialogs={p.dialogs}
         onDownload={p.handleDownload}

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { useTrainingData } from "@/components/training/shared/useTrainingData";
-import { saveKNNResult } from "./saveKNNResult";
+import { saveKNNResult, applyKNNStoreResult } from "./saveKNNResult";
 import { trainKNN } from "./trainKNN";
 import type { useKNNStore } from "./useKNNStore";
 
@@ -10,7 +10,7 @@ export function useKNNTrainingRunner(
   k: number,
   isReg: boolean,
 ) {
-  const { setTrainingState, setError, setMetrics, setTelemetry } = store;
+  const { setTrainingState, setError, setTelemetry } = store;
 
   return useCallback(async () => {
     const { canTrain, xTrain, xTest, yTrain, yTest, targetColumn } = data;
@@ -20,7 +20,7 @@ export function useKNNTrainingRunner(
     }
     setTrainingState("training");
     setError(null);
-    setMetrics(null);
+    store.setMetrics(null);
     store.setRegressionMetrics(null);
     setTelemetry(null);
 
@@ -35,27 +35,12 @@ export function useKNNTrainingRunner(
         k,
         task,
       );
-      if (results.kind === "regression") {
-        store.setMetrics(null);
-        store.setRegressionMetrics(results.metrics);
-      } else {
-        store.setRegressionMetrics(null);
-        store.setMetrics(results.metrics);
-      }
+      applyKNNStoreResult(store, results);
       setTrainingState("complete");
       saveKNNResult(results, k);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Training failed");
       setTrainingState("error");
     }
-  }, [
-    data,
-    isReg,
-    k,
-    setTrainingState,
-    setError,
-    setMetrics,
-    setTelemetry,
-    store,
-  ]);
+  }, [data, isReg, k, setTrainingState, setError, setTelemetry, store]);
 }

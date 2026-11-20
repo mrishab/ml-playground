@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import type { ImputationStrategy, DropNullStrategy } from "@/types/dataCleanup";
-import { imputeColumn } from "@/lib/data-cleanup/imputeOps";
+import type { DropNullStrategy } from "@/types/dataCleanup";
 import {
   dropNullRows,
   dropColumnsWithHighNulls,
 } from "@/lib/data-cleanup/dropNullOps";
+import { useImputeAction } from "./useImputeAction";
 
 interface NullActionParams {
   columns: string[];
@@ -13,19 +13,7 @@ interface NullActionParams {
 }
 
 export function useNullActions({ columns, values, onApply }: NullActionParams) {
-  const handleImpute = useCallback(
-    (col: string, strategy: ImputationStrategy, constVal?: unknown) => {
-      const idx = columns.indexOf(col);
-      if (idx === -1) return;
-      const nextVals = imputeColumn(values, idx, strategy, constVal);
-      onApply(
-        nextVals,
-        columns,
-        `Imputed missing values in "${col}" using ${strategy}`,
-      );
-    },
-    [columns, values, onApply],
-  );
+  const handleImpute = useImputeAction(columns, values, onApply);
 
   const handleDropNullRows = useCallback(
     (strategy: DropNullStrategy, targetCol?: string) => {

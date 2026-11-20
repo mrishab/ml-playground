@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import type { SavedModel } from "@/types/savedModel";
 import { ArtifactCoefficientsList } from "./ArtifactCoefficientsList";
+import { getCoefficientsTitle } from "./coefficientTitle";
 
 export function ModelArtifactsTab({ model }: { model: SavedModel }) {
   const artifacts = model.modelArtifacts;
@@ -26,7 +27,10 @@ export function ModelArtifactsTab({ model }: { model: SavedModel }) {
       )}
 
       {artifacts.coefficients && artifacts.coefficients.length > 0 && (
-        <ArtifactCoefficientsList coefficients={artifacts.coefficients} />
+        <ArtifactCoefficientsList
+          coefficients={artifacts.coefficients}
+          title={getCoefficientsTitle(model.algorithm)}
+        />
       )}
 
       {artifacts.classes && (

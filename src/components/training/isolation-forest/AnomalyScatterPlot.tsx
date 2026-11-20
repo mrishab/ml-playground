@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { IsolationForestMetrics } from "@/types/isolationForest";
+import { computeAnomalyBounds } from "./anomalyBounds";
 
 type Props = {
   metrics: IsolationForestMetrics;
@@ -9,13 +10,7 @@ export function AnomalyScatterPlot({ metrics }: Props) {
   const coords = metrics.coordinates2D ?? [];
   if (coords.length === 0) return null;
 
-  const minX = Math.min(...coords.map((c) => c.x));
-  const maxX = Math.max(...coords.map((c) => c.x));
-  const minY = Math.min(...coords.map((c) => c.y));
-  const maxY = Math.max(...coords.map((c) => c.y));
-
-  const rangeX = Math.max(0.001, maxX - minX);
-  const rangeY = Math.max(0.001, maxY - minY);
+  const { minX, minY, rangeX, rangeY } = computeAnomalyBounds(coords);
 
   return (
     <Card>
@@ -39,23 +34,19 @@ export function AnomalyScatterPlot({ metrics }: Props) {
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
           >
-            {coords.map((pt, i) => {
-              const cx = 5 + ((pt.x - minX) / rangeX) * 90;
-              const cy = 95 - ((pt.y - minY) / rangeY) * 90;
-              return (
-                <circle
-                  key={i}
-                  cx={cx}
-                  cy={cy}
-                  r={pt.isAnomaly ? 2.5 : 1.5}
-                  className={
-                    pt.isAnomaly
-                      ? "fill-destructive opacity-90"
-                      : "fill-chart-2 opacity-40"
-                  }
-                />
-              );
-            })}
+            {coords.map((pt, i) => (
+              <circle
+                key={i}
+                cx={5 + ((pt.x - minX) / rangeX) * 90}
+                cy={95 - ((pt.y - minY) / rangeY) * 90}
+                r={pt.isAnomaly ? 2.5 : 1.5}
+                className={
+                  pt.isAnomaly
+                    ? "fill-destructive opacity-90"
+                    : "fill-chart-2 opacity-40"
+                }
+              />
+            ))}
           </svg>
         </div>
       </CardContent>

@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import { useDatasetStore } from "@/stores/dataset";
 import { useMLConfigStore } from "@/stores/mlConfig";
 import { useTrainingResultsStore } from "@/stores/trainingResults";
-import { loadStandardDataset } from "./loadStandardDataset";
-import { loadCustomDataset } from "./loadCustomDataset";
-import { loadSavedDataset } from "./loadSavedDataset";
-import { getSavedDatasets } from "@/lib/datasets/storage";
+import { dispatchDatasetLoad } from "./dispatchDatasetLoad";
 
 export function useDatasetLoader() {
   const selectedDataset = useDatasetStore((s) => s.selectedDataset);
@@ -13,7 +10,7 @@ export function useDatasetLoader() {
 
   useEffect(() => {
     const { setDf, setLoading, setError } = useDatasetStore.getState();
-    const resetAll = () => {
+    const onReset = () => {
       useMLConfigStore.getState().reset();
       useTrainingResultsStore.getState().resetAll();
     };
@@ -21,41 +18,18 @@ export function useDatasetLoader() {
     if (!selectedDataset) {
       if (useDatasetStore.getState().df !== null) {
         setDf(null);
-        resetAll();
+        onReset();
       }
       return;
     }
 
-    const custom = customDatasets.find((d) => d.name === selectedDataset);
-    if (custom) {
-      loadCustomDataset({
-        custom,
-        setDf,
-        setLoading,
-        setError,
-        onReset: resetAll,
-      });
-      return;
-    }
-
-    const saved = getSavedDatasets().find((d) => d.name === selectedDataset);
-    if (saved) {
-      loadSavedDataset({
-        saved,
-        setDf,
-        setLoading,
-        setError,
-        onReset: resetAll,
-      });
-      return;
-    }
-
-    loadStandardDataset({
-      datasetName: selectedDataset,
+    dispatchDatasetLoad({
+      selectedDataset,
+      customDatasets,
+      setDf,
       setLoading,
       setError,
-      setDf,
-      onReset: resetAll,
+      onReset,
     });
   }, [selectedDataset, customDatasets]);
 }

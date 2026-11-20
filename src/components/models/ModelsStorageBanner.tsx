@@ -1,7 +1,7 @@
-import { HardDrive, Database } from "lucide-react";
+import { HardDrive } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { SavedModel } from "@/types/savedModel";
+import { ModelsStorageBadges } from "./ModelsStorageBadges";
 
 interface StorageBannerProps {
   formattedSize: string;
@@ -12,14 +12,6 @@ export function ModelsStorageBanner({
   formattedSize,
   models,
 }: StorageBannerProps) {
-  const regCount = models.filter((m) => m.problemType === "regression").length;
-  const clsCount = models.filter(
-    (m) => m.problemType === "classification",
-  ).length;
-  const clusterCount = models.filter(
-    (m) => m.problemType === "clustering",
-  ).length;
-
   return (
     <Card className="border-border/80 bg-muted/20">
       <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
@@ -41,25 +33,7 @@ export function ModelsStorageBanner({
             </p>
           </div>
         </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge
-            variant="secondary"
-            className="flex items-center gap-1.5 font-normal"
-          >
-            <Database className="h-3 w-3" />
-            {models.length} {models.length === 1 ? "Model" : "Models"}
-          </Badge>
-          {regCount > 0 && (
-            <Badge variant="outline">{regCount} Regression</Badge>
-          )}
-          {clsCount > 0 && (
-            <Badge variant="outline">{clsCount} Classification</Badge>
-          )}
-          {clusterCount > 0 && (
-            <Badge variant="outline">{clusterCount} Clustering</Badge>
-          )}
-        </div>
+        <ModelsStorageBadges models={models} />
       </CardContent>
     </Card>
   );

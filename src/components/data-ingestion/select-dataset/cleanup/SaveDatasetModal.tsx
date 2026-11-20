@@ -1,15 +1,14 @@
-import { Check, Database } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Database } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useSaveDatasetModal } from "./useSaveDatasetModal";
+import { SaveDatasetFormFields } from "./SaveDatasetFormFields";
+import { SaveDatasetFooter } from "./SaveDatasetFooter";
 
 interface SaveDatasetModalProps {
   open: boolean;
@@ -35,55 +34,18 @@ export function SaveDatasetModal({
             Store this cleaned dataset for future pipeline experiments
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 py-2">
-          <div className="space-y-1.5">
-            <label
-              htmlFor="save-dataset-name"
-              className="text-xs font-medium text-foreground"
-            >
-              Dataset Name
-            </label>
-            <Input
-              id="save-dataset-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. iris_cleaned"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <label
-              htmlFor="save-dataset-desc"
-              className="text-xs font-medium text-foreground"
-            >
-              Notes / Description (Optional)
-            </label>
-            <Input
-              id="save-dataset-desc"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="e.g. Imputed null ages, dropped outliers"
-            />
-          </div>
-        </div>
-        <DialogFooter className="flex sm:justify-between items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button
-            size="sm"
-            onClick={handleSave}
-            disabled={!name.trim() || isSaved}
-            className="gap-2 transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
-          >
-            {isSaved ? (
-              <>
-                <Check className="h-4 w-4 text-emerald-500" /> Saved!
-              </>
-            ) : (
-              "Save Dataset"
-            )}
-          </Button>
-        </DialogFooter>
+        <SaveDatasetFormFields
+          name={name}
+          setName={setName}
+          description={description}
+          setDescription={setDescription}
+        />
+        <SaveDatasetFooter
+          onClose={() => onOpenChange(false)}
+          handleSave={handleSave}
+          disabled={!name.trim() || isSaved}
+          isSaved={isSaved}
+        />
       </DialogContent>
     </Dialog>
   );

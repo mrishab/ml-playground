@@ -1,5 +1,4 @@
 import { Wand2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,15 +9,12 @@ import {
 import type { ImputationStrategy, MissingSummary } from "@/types/dataCleanup";
 import { useImputeForm } from "./useImputeForm";
 import { ImputeFormFields } from "./ImputeFormFields";
+import { ImputeSubmitButton } from "./ImputeSubmitButton";
 
 interface ImputeCardProps {
   columns: string[];
   missingSummary: MissingSummary;
-  onImpute: (
-    col: string,
-    strat: ImputationStrategy,
-    constVal?: unknown,
-  ) => void;
+  onImpute: (col: string, strat: ImputationStrategy, val?: unknown) => void;
 }
 
 export function ImputeCard({
@@ -50,15 +46,11 @@ export function ImputeCard({
           constantVal={form.constantVal}
           onConstantChange={form.setConstantVal}
         />
-        <Button
-          onClick={form.handleSubmit}
+        <ImputeSubmitButton
           disabled={!form.selectedCol || form.currentMissing === 0}
-          className="w-full sm:w-auto h-9 gap-2 transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
-        >
-          <Wand2 className="h-4 w-4" />
-          Impute{" "}
-          {form.currentMissing > 0 ? `(${form.currentMissing} nulls)` : ""}
-        </Button>
+          missingCount={form.currentMissing}
+          onSubmit={form.handleSubmit}
+        />
       </CardContent>
     </Card>
   );

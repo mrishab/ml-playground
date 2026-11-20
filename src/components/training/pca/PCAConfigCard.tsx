@@ -12,7 +12,7 @@ export function PCAConfigCard({
   maxComponents,
   disabled,
 }: PCAConfigCardProps) {
-  const maxK = Math.max(2, Math.min(10, maxComponents || 5));
+  const maxK = Math.max(1, Math.min(10, maxComponents || 5));
 
   return (
     <Card>

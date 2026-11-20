@@ -1,13 +1,18 @@
 import type { PCAPoint2D } from "@/types/pca";
 
 export function computeProjectionBounds(coords: PCAPoint2D[]) {
-  const xVals = coords.map((c) => c.pc1);
-  const yVals = coords.map((c) => c.pc2);
+  let minX = -1;
+  let maxX = 1;
+  let minY = -1;
+  let maxY = 1;
 
-  const minX = Math.min(...xVals, -1);
-  const maxX = Math.max(...xVals, 1);
-  const minY = Math.min(...yVals, -1);
-  const maxY = Math.max(...yVals, 1);
+  for (let i = 0; i < coords.length; i++) {
+    const { pc1, pc2 } = coords[i];
+    if (pc1 < minX) minX = pc1;
+    if (pc1 > maxX) maxX = pc1;
+    if (pc2 < minY) minY = pc2;
+    if (pc2 > maxY) maxY = pc2;
+  }
 
   return {
     minX,

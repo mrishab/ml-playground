@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import type { FilterOperator } from "@/types/dataCleanup";
+import { RowFilterOperatorSelect } from "./RowFilterOperatorSelect";
 
 interface FilterInputsProps {
   columns: string[];
@@ -35,23 +36,10 @@ export function RowFilterInputs(p: FilterInputsProps) {
           ))}
         </SelectContent>
       </Select>
-      <Select
-        value={p.operator}
-        onValueChange={(v) => p.onOperatorChange(v as FilterOperator)}
-      >
-        <SelectTrigger className="h-9">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="contains">Contains</SelectItem>
-          <SelectItem value="equals">Equals</SelectItem>
-          <SelectItem value="not_equals">Does Not Equal</SelectItem>
-          <SelectItem value="greater_than">Greater Than (&gt;)</SelectItem>
-          <SelectItem value="less_than">Less Than (&lt;)</SelectItem>
-          <SelectItem value="is_null">Is Missing / Null</SelectItem>
-          <SelectItem value="is_not_null">Is Not Null</SelectItem>
-        </SelectContent>
-      </Select>
+      <RowFilterOperatorSelect
+        operator={p.operator}
+        onOperatorChange={p.onOperatorChange}
+      />
       {needsValue ? (
         <Input
           className="h-9"

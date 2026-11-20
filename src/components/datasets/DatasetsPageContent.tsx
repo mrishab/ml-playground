@@ -2,25 +2,15 @@ import type { useDatasetsPage } from "./useDatasetsPage";
 import { DatasetsPageHeader } from "./DatasetsPageHeader";
 import { DatasetsStorageBanner } from "./DatasetsStorageBanner";
 import { DatasetsFilterBar } from "./DatasetsFilterBar";
-import { DatasetsEmptyState } from "./DatasetsEmptyState";
-import { DatasetsListGrid } from "./DatasetsListGrid";
+import { DatasetsMainView } from "./DatasetsMainView";
 import { DatasetsDialogs } from "./DatasetsDialogs";
-import {
-  downloadDataAsCSV,
-  downloadDatasetAsJSON,
-  downloadAllDatasetsAsJSON,
-} from "@/lib/datasets/exportImport";
+import { downloadAllDatasetsAsJSON } from "@/lib/datasets/exportImport";
 
 export function DatasetsPageContent({
   p,
 }: {
   p: ReturnType<typeof useDatasetsPage>;
 }) {
-  const resetFilters = () => {
-    p.setSearchQuery("");
-    p.setFilterSource("all");
-  };
-
   return (
     <div className="flex flex-1 flex-col gap-5 p-3.5 sm:p-5 md:p-6 pb-8 max-w-7xl mx-auto w-full">
       <DatasetsPageHeader
@@ -41,22 +31,7 @@ export function DatasetsPageContent({
         sortBy={p.sortBy}
         onSortChange={p.setSortBy}
       />
-      {p.filteredDatasets.length === 0 ? (
-        <DatasetsEmptyState
-          isFiltered={p.datasets.length > 0}
-          onResetFilters={resetFilters}
-        />
-      ) : (
-        <DatasetsListGrid
-          datasets={p.filteredDatasets}
-          onLoadInPipeline={p.handleLoadInPipeline}
-          onInspect={(d) => p.dialogs.setInspectDataset(d)}
-          onDownloadCSV={(d) => downloadDataAsCSV(d.name, d.columns, d.data)}
-          onDownloadJSON={downloadDatasetAsJSON}
-          onRename={(d) => p.dialogs.setRenameDataset(d)}
-          onDelete={(d) => p.dialogs.setDeleteDataset(d)}
-        />
-      )}
+      <DatasetsMainView p={p} />
       <DatasetsDialogs page={p} />
     </div>
   );

@@ -1,5 +1,6 @@
 import type { Palette } from "./lossPlotColors";
 import type { ScaledPoint } from "./lossPlotScales";
+import { LossPlotLastPoint } from "./LossPlotLastPoint";
 
 interface TracesProps {
   gradId: string;
@@ -46,23 +47,7 @@ export function LossPlotTraces({
           strokeDasharray="4 4"
         />
       )}
-      {lastPoint && (
-        <g>
-          <circle
-            cx={lastPoint.x}
-            cy={lastPoint.y}
-            r={6}
-            fill={palette.primary}
-            fillOpacity={0.25}
-          />
-          <circle
-            cx={lastPoint.x}
-            cy={lastPoint.y}
-            r={3.5}
-            fill={palette.primary}
-          />
-        </g>
-      )}
+      <LossPlotLastPoint point={lastPoint} color={palette.primary} />
     </>
   );
 }

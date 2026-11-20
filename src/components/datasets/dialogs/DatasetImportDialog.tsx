@@ -1,5 +1,3 @@
-import { useState, useRef } from "react";
-import { Upload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +7,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useDatasetImportReader } from "./useDatasetImportReader";
+import { DatasetImportDropzone } from "./DatasetImportDropzone";
 
 interface ImportDialogProps {
   open: boolean;
@@ -21,26 +21,10 @@ export function DatasetImportDialog({
   onClose,
   onImport,
 }: ImportDialogProps) {
-  const [error, setError] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setError(null);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const text = event.target?.result as string;
-        const count = onImport(text);
-        if (count > 0) onClose();
-        else setError("No valid dataset definitions found in file.");
-      } catch {
-        setError("Invalid JSON file format.");
-      }
-    };
-    reader.readAsText(file);
-  };
+  const { error, fileRef, handleFileChange } = useDatasetImportReader(
+    onImport,
+    onClose,
+  );
 
   return (
     <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
@@ -48,27 +32,10 @@ export function DatasetImportDialog({
         <DialogHeader>
           <DialogTitle>Import Dataset</DialogTitle>
           <DialogDescription>
-            Select a previously exported dataset JSON bundle to restore it to
-            local storage.
+            Select a previously exported dataset JSON bundle to restore it.
           </DialogDescription>
         </DialogHeader>
-        <button
-          type="button"
-          className="flex flex-col items-center justify-center border-2 border-dashed border-border/80 rounded-lg p-6 hover:bg-muted/10 cursor-pointer w-full transition-[background-color] duration-150 ease-out"
-          onClick={() => fileRef.current?.click()}
-        >
-          <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-          <p className="text-xs font-medium text-foreground">
-            Click to upload JSON file
-          </p>
-          <input
-            ref={fileRef}
-            type="file"
-            accept=".json"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-        </button>
+        <DatasetImportDropzone fileRef={fileRef} onChange={handleFileChange} />
         {error && <p className="text-xs text-destructive">{error}</p>}
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>

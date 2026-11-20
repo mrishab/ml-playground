@@ -1,12 +1,14 @@
 export function ArtifactCoefficientsList({
   coefficients,
+  title = "Feature Weights / Coefficients",
 }: {
   coefficients: { feature: string; weight: number }[];
+  title?: string;
 }) {
   return (
     <div className="rounded-lg border border-border/70 p-2.5 bg-muted/10">
       <span className="text-muted-foreground block text-[11px] mb-2 font-semibold">
-        Feature Weights / Coefficients
+        {title}
       </span>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
         {coefficients.map((c) => (

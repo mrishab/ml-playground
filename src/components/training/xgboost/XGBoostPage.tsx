@@ -1,12 +1,10 @@
 import { Zap } from "lucide-react";
 import { TrainingPageLayout } from "@/components/shared/TrainingPageLayout";
-import { ClassificationSummary } from "@/components/training/classification/ClassificationSummary";
-import { ClassificationDetailsTabs } from "@/components/training/classification/ClassificationDetailsTabs";
-import { MetricsSummary } from "@/components/training/linear-regression/MetricsSummary";
-import { LinearRegressionDetailsTabs } from "@/components/training/linear-regression/LinearRegressionDetailsTabs";
 import { XGBoostConfigCard } from "./XGBoostConfigCard";
+import { XGBoostSummary, XGBoostDetails } from "./XGBoostViews";
 import { FeatureImportanceCard } from "../random-forest/FeatureImportanceCard";
 import { useXGBoostPage } from "./useXGBoostPage";
+import { XGBOOST_NEXT_STEP, getXGBoostConfigOptions } from "./xgboostConstants";
 
 export function XGBoostPage() {
   const p = useXGBoostPage();
@@ -25,11 +23,7 @@ export function XGBoostPage() {
       icon={Zap}
       algorithmName="XGBoost"
       metrics={metrics}
-      configOptions={[
-        { label: "Rounds", value: String(p.nEstimators) },
-        { label: "Max Depth", value: String(p.maxDepth) },
-        { label: "Learning Rate", value: "0.1" },
-      ]}
+      configOptions={getXGBoostConfigOptions(p.nEstimators, p.maxDepth)}
       headerExtras={
         <XGBoostConfigCard
           nEstimators={p.nEstimators}
@@ -39,28 +33,21 @@ export function XGBoostPage() {
         />
       }
       summaryComponent={
-        isReg ? (
-          <MetricsSummary metrics={p.regressionMetrics!} />
-        ) : (
-          <ClassificationSummary
-            metrics={p.classificationMetrics!}
-            direction="vertical"
-          />
-        )
+        <XGBoostSummary
+          isReg={isReg}
+          regressionMetrics={p.regressionMetrics}
+          classificationMetrics={p.classificationMetrics}
+        />
       }
       detailsComponent={
-        isReg ? (
-          <LinearRegressionDetailsTabs metrics={p.regressionMetrics!} />
-        ) : (
-          <ClassificationDetailsTabs metrics={p.classificationMetrics!} />
-        )
+        <XGBoostDetails
+          isReg={isReg}
+          regressionMetrics={p.regressionMetrics}
+          classificationMetrics={p.classificationMetrics}
+        />
       }
       footerExtras={<FeatureImportanceCard importances={p.importances} />}
-      nextStepProps={{
-        message: "Training complete.",
-        linkTo: "/models",
-        linkText: "Saved Models",
-      }}
+      nextStepProps={XGBOOST_NEXT_STEP}
       onRun={p.runTraining}
       onReset={p.reset}
     />

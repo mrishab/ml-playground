@@ -1,5 +1,4 @@
 import { Layers } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
 import type { OutlierStrategy } from "@/types/dataCleanup";
 import { useDuplicatesOutliersForm } from "./useDuplicatesOutliersForm";
 import { OutliersSection } from "./OutliersSection";
+import { DuplicatesSection } from "./DuplicatesSection";
 
 interface DuplicatesOutliersCardProps {
   duplicateCount: number;
@@ -42,23 +42,10 @@ export function DuplicatesOutliersCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-3 p-3 rounded-lg border border-border bg-card/40">
-          <h4 className="text-xs font-semibold text-foreground">
-            Duplicate Rows
-          </h4>
-          <p className="text-xs text-muted-foreground">
-            Found {duplicateCount} identical record(s) across all columns.
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={form.onRemoveDuplicates}
-            disabled={duplicateCount === 0}
-            className="w-full h-8 text-xs transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
-          >
-            Remove {duplicateCount} Duplicate Rows
-          </Button>
-        </div>
+        <DuplicatesSection
+          duplicateCount={duplicateCount}
+          onRemoveDuplicates={form.onRemoveDuplicates}
+        />
         <OutliersSection
           numericColumns={numericColumns}
           selectedCol={form.selectedCol}
