@@ -21,7 +21,7 @@ export function BugReportBubble() {
       aria-label="Report bug on GitHub with diagnostic logs"
       title="Report bug (copies state & logs to GitHub issue)"
       className={cn(
-        "group fixed bottom-14 sm:bottom-16 right-4 sm:right-6 z-40 flex items-center gap-1.5 rounded-full border border-border/80 bg-background/90 px-2.5 py-2 sm:px-3 sm:py-2 text-xs font-medium shadow-md backdrop-blur-sm",
+        "group fixed bottom-14 sm:bottom-16 left-4 sm:left-6 z-40 flex items-center gap-1.5 rounded-full border border-border/80 bg-background/90 px-2.5 py-2 sm:px-3 sm:py-2 text-xs font-medium shadow-md backdrop-blur-sm",
         "transition-[color,background-color,border-color,box-shadow,transform] duration-150 ease-out active:scale-95 hover:border-primary/50 hover:bg-background hover:shadow-lg",
         isCopied &&
           "border-emerald-500/50 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",

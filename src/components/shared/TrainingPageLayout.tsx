@@ -15,13 +15,14 @@ export type { TrainingPageLayoutProps };
 export function TrainingPageLayout(props: TrainingPageLayoutProps) {
   const { steps, isDownstreamStale } = usePipelineSteps();
   if (!props.isSplit) {
+    const trainingStep = steps.find((s) => s.id === 4) ?? steps[3];
     return (
       <PageLayout
         icon={props.icon}
         title={props.title}
         subtitle={props.subtitle}
       >
-        <PrerequisiteGate step={steps[2]} />
+        <PrerequisiteGate step={trainingStep} />
       </PageLayout>
     );
   }

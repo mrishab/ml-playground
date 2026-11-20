@@ -33,10 +33,17 @@ export function AppRoutes() {
         <Route path="train/clustering" element={<KMeansPage />} />
         <Route path="train/random-forest" element={<RandomForestPage />} />
         <Route path="train/xgboost" element={<XGBoostPage />} />
-        <Route path="train/isolation-forest" element={<IsolationForestPage />} />
+        <Route
+          path="train/isolation-forest"
+          element={<IsolationForestPage />}
+        />
         <Route path="models" element={<ModelsPage />} />
         {REDIRECTS.map(({ path, to }) => (
-          <Route key={path} path={path} element={<Navigate to={to} replace />} />
+          <Route
+            key={path}
+            path={path}
+            element={<Navigate to={to} replace />}
+          />
         ))}
       </Route>
     </Routes>

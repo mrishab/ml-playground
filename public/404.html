@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ML Playground</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // MIT License
+      // https://github.com/rafgraph/spa-github-pages
+      // This script takes the current url and converts the path and query
+      // string into just a query string, and then redirects the browser
+      // to the new url with only a query string and hash fragment,
+      // e.g. https://mrishab.github.io/ml-playground/pretrain/explore ->
+      //      https://mrishab.github.io/ml-playground/?/pretrain/explore
+
+      var l = window.location;
+      var pathname = l.pathname;
+
+      // Handle /ml-playground (without trailing slash)
+      if (pathname === "/ml-playground" || pathname === "/ml-playground/") {
+        l.replace(
+          l.protocol +
+            "//" +
+            l.hostname +
+            (l.port ? ":" + l.port : "") +
+            "/ml-playground/" +
+            l.search +
+            l.hash,
+        );
+      } else {
+        var segmentCount = pathname.indexOf("/ml-playground") === 0 ? 1 : 0;
+        var prefix = segmentCount === 1 ? "/ml-playground" : "";
+        var parts = pathname.slice(1).split("/");
+        var subpath = parts.slice(segmentCount).join("/");
+
+        var query = "?/" + subpath.replace(/&/g, "~and~");
+        if (l.search) {
+          query += "&" + l.search.slice(1).replace(/&/g, "~and~");
+        }
+
+        l.replace(
+          l.protocol +
+            "//" +
+            l.hostname +
+            (l.port ? ":" + l.port : "") +
+            prefix +
+            "/" +
+            query +
+            l.hash,
+        );
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

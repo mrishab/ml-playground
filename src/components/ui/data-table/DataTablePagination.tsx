@@ -9,7 +9,7 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 py-3 sm:py-4">
+    <div className="flex flex-wrap items-center justify-between gap-2 py-3 sm:py-4 pr-6 sm:pr-8">
       <div className="text-xs text-muted-foreground sm:text-sm">
         {table.getFilteredRowModel().rows.length} row(s) total
       </div>

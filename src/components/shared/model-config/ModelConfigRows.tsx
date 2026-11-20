@@ -13,6 +13,12 @@ export function ModelConfigRows({
   featureCount,
   targetColumn,
 }: ModelConfigRowsProps) {
+  const isUnsupervised =
+    algorithm.toLowerCase().includes("k-means") ||
+    algorithm.toLowerCase().includes("lloyd") ||
+    algorithm.toLowerCase().includes("isolation") ||
+    algorithm.toLowerCase().includes("clustering");
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -34,9 +40,9 @@ export function ModelConfigRows({
         <Badge
           variant="outline"
           className="max-w-[180px] sm:max-w-[240px] truncate"
-          title={targetColumn}
+          title={isUnsupervised ? "None (Unsupervised)" : targetColumn}
         >
-          {targetColumn || "—"}
+          {isUnsupervised ? "None (Unsupervised)" : targetColumn || "—"}
         </Badge>
       </div>
     </>
