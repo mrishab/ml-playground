@@ -30,6 +30,7 @@ export function useExploreSubhooks({
   const split = useExploreSplit({
     df,
     shuffle: ml.shuffle,
+    stratified: ml.stratified,
     testSplitPercent: ml.testSplitPercent,
     selectedFeatures: ml.selectedFeatures,
     targetColumn: ml.targetColumn,

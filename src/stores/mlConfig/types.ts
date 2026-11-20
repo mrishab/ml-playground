@@ -10,6 +10,7 @@ import type {
 export type MLConfigState = {
   problemType: ProblemType;
   shuffle: boolean;
+  stratified: boolean;
   testSplitPercent: number;
   targetColumn: string;
   selectedFeatures: SelectedFeature[];
@@ -30,6 +31,7 @@ export type SplitData = {
 export type MLConfigActions = {
   setProblemType: (problemType: ProblemType) => void;
   setShuffle: (shuffle: boolean) => void;
+  setStratified: (stratified: boolean) => void;
   setTestSplitPercent: (percent: number) => void;
   setTargetColumn: (column: string) => void;
   addFeature: (column: string) => void;

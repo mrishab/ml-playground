@@ -3,6 +3,8 @@ export type NumericColumnData = {
   values: number[];
 };
 
+export type OutlierScalingMode = "standardized" | "normalized" | "raw";
+
 export type OutlierVisualizerProps = {
   numericColumnData: NumericColumnData[];
   totalOutlierValues: number;
@@ -10,4 +12,6 @@ export type OutlierVisualizerProps = {
   iqrMultiplier: number;
   setIqrMultiplier: (value: number) => void;
   dropOutliers: () => void;
+  canUndoOutliers?: boolean;
+  undoDropOutliers?: () => void;
 };

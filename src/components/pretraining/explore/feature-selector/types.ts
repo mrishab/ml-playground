@@ -1,6 +1,7 @@
 import type { TransformationType, SelectedFeature } from "@/stores/mlConfig";
 
 export type UseFeatureSelectorProps = {
+  columns?: string[];
   numericColumns: string[];
   selectedFeatures: SelectedFeature[];
   availableInteractionColumns: string[];

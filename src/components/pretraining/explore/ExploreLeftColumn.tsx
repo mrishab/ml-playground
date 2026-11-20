@@ -29,6 +29,8 @@ export function ExploreLeftColumn({ explore }: ExploreLeftColumnProps) {
         setProblemType={explore.setProblemType}
         shuffle={explore.shuffle}
         setShuffle={explore.setShuffle}
+        stratified={explore.stratified}
+        setStratified={explore.setStratified}
         testSplitPercent={explore.testSplitPercent}
         setTestSplitPercent={explore.setTestSplitPercent}
         isSplit={explore.isSplit}

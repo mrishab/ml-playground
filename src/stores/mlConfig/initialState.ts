@@ -3,6 +3,7 @@ import type { MLConfigState } from "./types";
 export const initialMLConfigState: MLConfigState = {
   problemType: "regression",
   shuffle: true,
+  stratified: true,
   testSplitPercent: 20,
   targetColumn: "",
   selectedFeatures: [],

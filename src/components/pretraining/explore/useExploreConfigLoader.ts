@@ -9,6 +9,7 @@ export function useExploreConfigLoader(
   setProblemType: (p: ProblemType) => void,
   setTargetColumn: (c: string) => void,
   setFeatures: (f: SelectedFeature[]) => void,
+  availableColumns?: string[],
 ) {
   const [isLoadingConfig, setIsLoadingConfig] = useState(false);
 
@@ -26,13 +27,34 @@ export function useExploreConfigLoader(
       const config = await loadDatasetConfig(dataset.file);
       if (config) {
         setProblemType(config.problemType);
-        setTargetColumn(config.targetColumn);
-        setFeatures(config.features);
+        if (!availableColumns || availableColumns.length === 0) {
+          setTargetColumn(config.targetColumn);
+          setFeatures(config.features);
+        } else {
+          if (availableColumns.includes(config.targetColumn)) {
+            setTargetColumn(config.targetColumn);
+          }
+          const validFeatures = config.features.filter((f) => {
+            const hasBaseCol = availableColumns.includes(f.column);
+            if (!hasBaseCol) return false;
+            if (f.transformation === "interaction" && f.interactionWith) {
+              return availableColumns.includes(f.interactionWith);
+            }
+            return true;
+          });
+          setFeatures(validFeatures);
+        }
       }
     } finally {
       setIsLoadingConfig(false);
     }
-  }, [selectedDataset, setProblemType, setTargetColumn, setFeatures]);
+  }, [
+    selectedDataset,
+    setProblemType,
+    setTargetColumn,
+    setFeatures,
+    availableColumns,
+  ]);
 
   return { isLoadingConfig, loadDefaultConfig, hasDefaultConfig };
 }

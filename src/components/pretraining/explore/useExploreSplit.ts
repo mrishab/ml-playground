@@ -19,9 +19,11 @@ export function useExploreSplit(p: ExploreSplitHookParams) {
     const splitResult = executeDataSplit({
       df: p.df,
       shuffle: p.shuffle,
+      stratified: p.stratified,
       testSplitPercent: p.testSplitPercent,
       selectedFeatures: p.selectedFeatures,
       targetColumn: p.targetColumn,
+      problemType: p.problemType,
     });
     p.setSplitData(splitResult);
     usePipelineStore.getState().recordSplit({

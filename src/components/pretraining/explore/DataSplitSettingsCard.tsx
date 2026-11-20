@@ -1,8 +1,6 @@
-import { Shuffle as ShuffleIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { ProblemTypeSelect } from "./ProblemTypeSelect";
+import { SplitToggles } from "./SplitToggles";
 import { TestSplitSlider } from "./TestSplitSlider";
 import { ExploreSplitButton } from "./ExploreSplitButton";
 import { ExploreLoadDefaultButton } from "./ExploreLoadDefaultButton";
@@ -25,17 +23,13 @@ export function DataSplitSettingsCard(props: DataSplitSettingsCardProps) {
           value={props.problemType}
           onChange={props.setProblemType}
         />
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ShuffleIcon className="h-4 w-4 text-muted-foreground" />
-            <Label htmlFor="shuffle">Shuffle data</Label>
-          </div>
-          <Switch
-            id="shuffle"
-            checked={props.shuffle}
-            onCheckedChange={props.setShuffle}
-          />
-        </div>
+        <SplitToggles
+          shuffle={props.shuffle}
+          setShuffle={props.setShuffle}
+          problemType={props.problemType}
+          stratified={props.stratified}
+          setStratified={props.setStratified}
+        />
         <TestSplitSlider
           value={props.testSplitPercent}
           onChange={props.setTestSplitPercent}

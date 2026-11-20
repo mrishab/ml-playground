@@ -19,22 +19,72 @@ export const useMLConfigStore = create<MLConfigStore>()((set) => ({
   ...initialMLConfigState,
   setProblemType: (problemType) => set({ problemType }),
   setShuffle: (shuffle) => set({ shuffle }),
+  setStratified: (stratified) => set({ stratified }),
   setTestSplitPercent: (percent) => set({ testSplitPercent: percent }),
-  setTargetColumn: (targetColumn) => set({ targetColumn }),
-  addFeature: (col) =>
+  setTargetColumn: (targetColumn) =>
     set((s) => ({
-      selectedFeatures: [...s.selectedFeatures, createFeature(col)],
+      targetColumn,
+      selectedFeatures: s.selectedFeatures
+        .filter((f) => f.column !== targetColumn)
+        .map((f) => {
+          if (
+            f.transformation === "interaction" &&
+            f.interactionWith === targetColumn
+          ) {
+            return {
+              ...f,
+              transformation: "none" as const,
+              interactionWith: undefined,
+            };
+          }
+          return f;
+        }),
     })),
+  addFeature: (col) =>
+    set((s) => {
+      if (s.targetColumn && col === s.targetColumn) return s;
+      return {
+        selectedFeatures: [...s.selectedFeatures, createFeature(col)],
+      };
+    }),
   removeFeature: (id) =>
     set((s) => ({
       selectedFeatures: s.selectedFeatures.filter((f) => f.id !== id),
     })),
   updateFeatureTransformation: (id, trans, opts) =>
-    set((s) => ({
-      selectedFeatures: updateFeature(s.selectedFeatures, id, trans, opts),
-    })),
+    set((s) => {
+      const sanitizedOpts =
+        opts?.interactionWith === s.targetColumn
+          ? { ...opts, interactionWith: undefined }
+          : opts;
+      return {
+        selectedFeatures: updateFeature(
+          s.selectedFeatures,
+          id,
+          trans,
+          sanitizedOpts,
+        ),
+      };
+    }),
   clearFeatures: () => set({ selectedFeatures: [] }),
-  setFeatures: (features) => set({ selectedFeatures: features }),
+  setFeatures: (features) =>
+    set((s) => ({
+      selectedFeatures: features
+        .filter((f) => !s.targetColumn || f.column !== s.targetColumn)
+        .map((f) => {
+          if (
+            f.transformation === "interaction" &&
+            f.interactionWith === s.targetColumn
+          ) {
+            return {
+              ...f,
+              transformation: "none" as const,
+              interactionWith: undefined,
+            };
+          }
+          return f;
+        }),
+    })),
   setSplitData: (d) => set({ ...d, isSplit: true }),
   clearSplitData: () =>
     set({

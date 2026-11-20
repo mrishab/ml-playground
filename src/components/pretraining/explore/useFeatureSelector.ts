@@ -37,6 +37,7 @@ export function useFeatureSelector(props: UseFeatureSelectorProps) {
   };
 
   return {
+    columns: props.columns ?? numericColumns,
     numericColumns,
     selectedFeatures,
     availableInteractionColumns,

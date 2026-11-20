@@ -1,14 +1,7 @@
-import { useCallback, useMemo, useState } from "react";
-import {
-  computeColumnOutliers,
-  partitionOutlierRows,
-  filterOutlierDf,
-} from "./outlierDetection";
-import {
-  type OutlierParams,
-  buildOutlierBounds,
-  sumOutliers,
-} from "./outlierBounds";
+import { useCallback, useState } from "react";
+import { filterOutlierDf } from "./outlierDetection";
+import type { OutlierParams } from "./outlierBounds";
+import { useOutlierCalculations } from "./useOutlierCalculations";
 
 export function useExploreOutliers({
   df,
@@ -18,33 +11,26 @@ export function useExploreOutliers({
   resetTrainingResults,
 }: OutlierParams) {
   const [iqrMultiplier, setIqrMultiplier] = useState(1.5);
+  const { numericColumnData, totalOutlierValues, outlierRows } =
+    useOutlierCalculations(df, numericColumns, iqrMultiplier);
 
-  const numericColumnData = useMemo(
-    () => (df ? computeColumnOutliers(df, numericColumns, iqrMultiplier) : []),
-    [df, numericColumns, iqrMultiplier],
-  );
-
-  const totalOutlierValues = useMemo(
-    () => sumOutliers(numericColumnData),
-    [numericColumnData],
-  );
-
-  const outlierBounds = useMemo(
-    () => buildOutlierBounds(numericColumnData),
-    [numericColumnData],
-  );
-
-  const outlierRows = useMemo(() => {
-    if (!df || numericColumns.length === 0) return { outlier: [], inlier: [] };
-    return partitionOutlierRows(df, numericColumns, outlierBounds);
-  }, [df, numericColumns, outlierBounds]);
+  const [previousDf, setPreviousDf] = useState<typeof df | null>(null);
 
   const dropOutliers = useCallback(() => {
     if (!df || outlierRows.outlier.length === 0) return;
+    setPreviousDf(df);
     setDf(filterOutlierDf(df, outlierRows.inlier));
     clearSplitData();
     resetTrainingResults();
   }, [clearSplitData, df, outlierRows, resetTrainingResults, setDf]);
+
+  const undoDropOutliers = useCallback(() => {
+    if (!previousDf) return;
+    setDf(previousDf);
+    setPreviousDf(null);
+    clearSplitData();
+    resetTrainingResults();
+  }, [clearSplitData, previousDf, resetTrainingResults, setDf]);
 
   return {
     iqrMultiplier,
@@ -53,5 +39,7 @@ export function useExploreOutliers({
     totalOutlierValues,
     removedRowsAfterOutlierDrop: outlierRows.outlier.length,
     dropOutliers,
+    canUndoOutliers: Boolean(previousDf),
+    undoDropOutliers,
   };
 }

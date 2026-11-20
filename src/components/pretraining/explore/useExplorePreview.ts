@@ -12,7 +12,7 @@ export function useExplorePreview(
   const previewData = useMemo(() => {
     if (!df || selectedFeatures.length === 0) return [];
     const featureData = buildFeatureColumns(df, selectedFeatures);
-    if (targetColumn) {
+    if (targetColumn && df.columns.includes(targetColumn)) {
       featureData[`[Y] ${targetColumn}`] = df.column(targetColumn)
         .values as number[];
     }

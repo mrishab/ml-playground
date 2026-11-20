@@ -1,15 +1,25 @@
 import { calculatePearsonCorrelation } from "./pearson";
 
 function getRanks(values: number[]): number[] {
-  const indexed = values.map((val, idx) => ({ val, idx }));
+  const cleanValues = values.map((v) =>
+    typeof v === "number" && !isNaN(v) ? v : 0,
+  );
+  const indexed = cleanValues.map((val, idx) => ({ val, idx }));
   indexed.sort((a, b) => a.val - b.val);
 
-  const ranks = new Array<number>(values.length);
+  const ranks = new Array<number>(cleanValues.length);
   let i = 0;
   while (i < indexed.length) {
     let j = i;
-    while (j < indexed.length && indexed[j].val === indexed[i].val) {
+    while (
+      j < indexed.length &&
+      (indexed[j].val === indexed[i].val ||
+        (isNaN(indexed[j].val) && isNaN(indexed[i].val)))
+    ) {
       j++;
+    }
+    if (j === i) {
+      j = i + 1;
     }
     const avgRank = (i + 1 + j) / 2;
     for (let k = i; k < j; k++) {
@@ -25,5 +35,6 @@ export function calculateSpearmanCorrelation(x: number[], y: number[]): number {
   if (n < 2) return 0;
   const ranksX = getRanks(x.slice(0, n));
   const ranksY = getRanks(y.slice(0, n));
-  return calculatePearsonCorrelation(ranksX, ranksY);
+  const rho = calculatePearsonCorrelation(ranksX, ranksY);
+  return isNaN(rho) ? 0 : rho;
 }

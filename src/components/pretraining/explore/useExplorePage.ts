@@ -31,6 +31,7 @@ export function useExplorePage() {
     ml.setProblemType,
     ml.setTargetColumn,
     ml.setFeatures,
+    cols.columns,
   );
 
   return {

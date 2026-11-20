@@ -5,8 +5,10 @@ export function calculatePearsonCorrelation(x: number[], y: number[]): number {
   let sumX = 0;
   let sumY = 0;
   for (let i = 0; i < n; i++) {
-    sumX += x[i];
-    sumY += y[i];
+    const xi = typeof x[i] === "number" && !isNaN(x[i]) ? x[i] : 0;
+    const yi = typeof y[i] === "number" && !isNaN(y[i]) ? y[i] : 0;
+    sumX += xi;
+    sumY += yi;
   }
   const meanX = sumX / n;
   const meanY = sumY / n;
@@ -16,17 +18,20 @@ export function calculatePearsonCorrelation(x: number[], y: number[]): number {
   let denomY = 0;
 
   for (let i = 0; i < n; i++) {
-    const dx = x[i] - meanX;
-    const dy = y[i] - meanY;
+    const xi = typeof x[i] === "number" && !isNaN(x[i]) ? x[i] : 0;
+    const yi = typeof y[i] === "number" && !isNaN(y[i]) ? y[i] : 0;
+    const dx = xi - meanX;
+    const dy = yi - meanY;
     numerator += dx * dy;
     denomX += dx * dx;
     denomY += dy * dy;
   }
 
   const denominator = Math.sqrt(denomX * denomY);
-  if (denominator === 0) return 0;
+  if (denominator === 0 || isNaN(denominator) || !isFinite(denominator))
+    return 0;
   const r = numerator / denominator;
-  return Math.max(-1, Math.min(1, r));
+  return isNaN(r) || !isFinite(r) ? 0 : Math.max(-1, Math.min(1, r));
 }
 
 export function calculateCovariance(x: number[], y: number[]): number {
@@ -35,14 +40,19 @@ export function calculateCovariance(x: number[], y: number[]): number {
   let sumX = 0;
   let sumY = 0;
   for (let i = 0; i < n; i++) {
-    sumX += x[i];
-    sumY += y[i];
+    const xi = typeof x[i] === "number" && !isNaN(x[i]) ? x[i] : 0;
+    const yi = typeof y[i] === "number" && !isNaN(y[i]) ? y[i] : 0;
+    sumX += xi;
+    sumY += yi;
   }
   const meanX = sumX / n;
   const meanY = sumY / n;
   let cov = 0;
   for (let i = 0; i < n; i++) {
-    cov += (x[i] - meanX) * (y[i] - meanY);
+    const xi = typeof x[i] === "number" && !isNaN(x[i]) ? x[i] : 0;
+    const yi = typeof y[i] === "number" && !isNaN(y[i]) ? y[i] : 0;
+    cov += (xi - meanX) * (yi - meanY);
   }
-  return cov / (n - 1);
+  const result = cov / (n - 1);
+  return isNaN(result) || !isFinite(result) ? 0 : result;
 }

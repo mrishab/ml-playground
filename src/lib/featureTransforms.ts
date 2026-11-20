@@ -1,12 +1,21 @@
 import type { DataFrame } from "danfojs";
 import type { SelectedFeature } from "@/stores/mlConfig";
 import type { FeatureSeriesData } from "@/types/dataset";
+import { encodeCategoricalSeries } from "./categoricalEncoding";
 
 export function applyTransformation(
   df: DataFrame,
   feature: SelectedFeature,
 ): { column: number[]; name: string } {
-  const values = df.column(feature.column).values as number[];
+  if (!df.columns.includes(feature.column)) {
+    return {
+      column: new Array(df.shape[0] ?? 0).fill(0),
+      name: feature.column,
+    };
+  }
+
+  const rawValues = df.column(feature.column).values;
+  const values = encodeCategoricalSeries(rawValues).encoded;
   const baseName = feature.column;
 
   if (feature.transformation === "polynomial") {
@@ -17,10 +26,15 @@ export function applyTransformation(
     };
   }
 
-  if (feature.transformation === "interaction" && feature.interactionWith) {
-    const otherValues = df.column(feature.interactionWith).values as number[];
+  if (
+    feature.transformation === "interaction" &&
+    feature.interactionWith &&
+    df.columns.includes(feature.interactionWith)
+  ) {
+    const otherRawValues = df.column(feature.interactionWith).values;
+    const otherValues = encodeCategoricalSeries(otherRawValues).encoded;
     return {
-      column: values.map((v, i) => v * otherValues[i]),
+      column: values.map((v, i) => v * (otherValues[i] ?? 0)),
       name: `${baseName}*${feature.interactionWith}`,
     };
   }
@@ -34,6 +48,7 @@ export function buildFeatureColumns(
 ): FeatureSeriesData {
   const data: FeatureSeriesData = {};
   for (const feature of features) {
+    if (!df.columns.includes(feature.column)) continue;
     const { column, name } = applyTransformation(df, feature);
     let finalName = name;
     let counter = 1;

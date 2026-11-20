@@ -5,6 +5,8 @@ export interface DataSplitSettingsCardProps {
   setProblemType: (p: ProblemType) => void;
   shuffle: boolean;
   setShuffle: (s: boolean) => void;
+  stratified?: boolean;
+  setStratified?: (s: boolean) => void;
   testSplitPercent: number;
   setTestSplitPercent: (p: number) => void;
   isSplit: boolean;

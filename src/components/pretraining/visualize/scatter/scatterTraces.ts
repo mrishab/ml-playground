@@ -11,7 +11,11 @@ export function buildScatterTraces(
   problemType: string | undefined,
   isDark: boolean,
 ): Data[] {
-  if (problemType === "classification") {
+  const hasNonNumericY = y.some(
+    (v) => typeof v === "string" && v.trim() !== "" && isNaN(Number(v.trim())),
+  );
+
+  if (problemType === "classification" || hasNonNumericY) {
     const classes = Array.from(new Set(y.map(String))).sort();
     return classes.map((cls, idx) => {
       const clsX = x.filter((_, i) => String(y[i]) === cls);
@@ -29,7 +33,10 @@ export function buildScatterTraces(
     });
   }
 
-  const numY = y.map(Number);
+  const numY = y.map((v) => {
+    const num = Number(v);
+    return isNaN(num) ? 0 : num;
+  });
   const fit = calculateLinearRegressionFit(x, numY);
   const scatterTrace: Data = {
     x,

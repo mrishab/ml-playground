@@ -18,7 +18,7 @@ export function FeatureSelector(props: FeatureSelectorProps) {
         onClear={f.clearFeatures}
       />
       <FeatureSelectorAddDropdown
-        columns={f.numericColumns}
+        columns={f.columns}
         onAdd={f.handleAddFeature}
       />
       <SelectedFeaturesList

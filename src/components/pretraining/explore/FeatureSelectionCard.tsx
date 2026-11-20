@@ -21,6 +21,17 @@ interface FeatureSelectionCardProps {
 }
 
 export function FeatureSelectionCard(props: FeatureSelectionCardProps) {
+  // Exclude target variable (Y) from features (X) to prevent target leakage
+  const filteredColumns = props.columns.filter(
+    (col) => col !== props.targetColumn,
+  );
+  const filteredNumericColumns = props.numericColumns.filter(
+    (col) => col !== props.targetColumn,
+  );
+  const filteredInteractionColumns = props.availableInteractionColumns.filter(
+    (col) => col !== props.targetColumn,
+  );
+
   return (
     <Card>
       <CardHeader className="pb-3">
@@ -33,7 +44,12 @@ export function FeatureSelectionCard(props: FeatureSelectionCardProps) {
           columns={props.columns}
         />
         <div className="border-t pt-4">
-          <FeatureSelector {...props} />
+          <FeatureSelector
+            {...props}
+            columns={filteredColumns}
+            numericColumns={filteredNumericColumns}
+            availableInteractionColumns={filteredInteractionColumns}
+          />
         </div>
       </CardContent>
     </Card>

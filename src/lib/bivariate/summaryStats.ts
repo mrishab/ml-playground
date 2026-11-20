@@ -4,7 +4,12 @@ import type { ColumnSummaryStats } from "./types";
 export type { ColumnSummaryStats };
 
 export function calculateSummaryStats(values: number[]): ColumnSummaryStats {
-  const n = values.length;
+  const cleanValues = values
+    .map((v) =>
+      typeof v === "number" && !isNaN(v) && isFinite(v) ? v : Number(v),
+    )
+    .filter((v) => typeof v === "number" && !isNaN(v) && isFinite(v));
+  const n = cleanValues.length;
   if (n === 0) {
     return {
       count: 0,
@@ -19,7 +24,7 @@ export function calculateSummaryStats(values: number[]): ColumnSummaryStats {
     };
   }
 
-  const sorted = [...values].sort((a, b) => a - b);
+  const sorted = [...cleanValues].sort((a, b) => a - b);
   let sum = 0;
   for (let i = 0; i < n; i++) {
     sum += sorted[i];
@@ -39,8 +44,8 @@ export function calculateSummaryStats(values: number[]): ColumnSummaryStats {
 
   return {
     count: n,
-    mean,
-    std,
+    mean: Number(mean.toFixed(4)),
+    std: Number(std.toFixed(4)),
     min: sorted[0],
     q25,
     median,
