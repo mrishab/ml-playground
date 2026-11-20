@@ -26,6 +26,9 @@ export function useLinearRegressionPage() {
     setMetrics(null);
     setTelemetry(null);
 
+    // Yield to the event loop so the UI immediately renders the loading state
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
     try {
       const results = await trainLinearRegression(
         xTrain,
