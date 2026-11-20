@@ -5,7 +5,7 @@ import { useTrainingResultsStore } from "@/stores/trainingResults";
 import { formatLogsForReport, getConsoleLogs } from "./consoleLogger";
 
 const GITHUB_REPO_ISSUES_URL =
-  "https://github.com/mrishab/ML-Playground/issues/new";
+  "https://github.com/mrishab/ml-playground/issues/new";
 const MAX_URL_BODY_LENGTH = 3500;
 
 export function buildBugReport(): string {

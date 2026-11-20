@@ -20,7 +20,7 @@ export function downloadModelJSON(model: SavedModel): void {
 
 export function downloadAllModelsBundle(models: SavedModel[]): void {
   const bundle = {
-    app: "ML-Playground",
+    app: "ml-playground",
     exportedAt: new Date().toISOString(),
     count: models.length,
     models,
