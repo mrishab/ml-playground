@@ -51,14 +51,26 @@ export function extractModelArtifacts(
     const ens = metrics as {
       featureImportance?: { feature: string; score: number }[];
       labels?: string[];
+      weights?: { coefficients: number[]; intercept: number };
     };
-    if (ens.featureImportance) {
+    if (ens.featureImportance && ens.featureImportance.length > 0) {
       return {
         coefficients: ens.featureImportance.map((f) => ({
           feature: f.feature,
           weight: Number(f.score.toFixed(4)),
         })),
         classes: ens.labels,
+        intercept: ens.weights?.intercept,
+      };
+    }
+    if (ens.weights?.coefficients) {
+      return {
+        coefficients: features.map((feat, i) => ({
+          feature: feat,
+          weight: Number((ens.weights?.coefficients[i] ?? 0).toFixed(4)),
+        })),
+        classes: ens.labels,
+        intercept: ens.weights?.intercept,
       };
     }
   }
@@ -67,7 +79,53 @@ export function extractModelArtifacts(
       coefficients?: number[][] | number[];
       intercept?: number[] | number;
     };
+    ldaModel?: {
+      weights: number[][];
+      intercepts: number[];
+      priors: number[];
+    };
   };
+
+  if (algorithm === "logistic") {
+    const rawCoefs = Array.isArray(cls.weights?.coefficients)
+      ? (cls.weights.coefficients as number[]).flat()
+      : [];
+    const intercept =
+      typeof cls.weights?.intercept === "number" ? cls.weights.intercept : 0;
+    const coefficients = features.map((feat, i) => ({
+      feature: feat,
+      weight: Number((rawCoefs[i] ?? 0).toFixed(4)),
+    }));
+    return {
+      classes: cls.labels,
+      coefficients,
+      intercept,
+      k,
+    };
+  }
+
+  if (algorithm === "lda") {
+    const lda = cls.ldaModel;
+    if (lda && lda.weights && lda.weights.length >= 2) {
+      const wDiff = lda.weights[1].map(
+        (w1, i) => w1 - (lda.weights[0][i] ?? 0),
+      );
+      const intercept =
+        -(lda.intercepts[1] - lda.intercepts[0]) +
+        (lda.priors[1] - lda.priors[0]);
+      const coefficients = features.map((feat, i) => ({
+        feature: feat,
+        weight: Number((wDiff[i] ?? 0).toFixed(4)),
+      }));
+      return {
+        classes: cls.labels,
+        coefficients,
+        intercept: Number(intercept.toFixed(4)),
+        k,
+      };
+    }
+  }
+
   return {
     classes: cls.labels,
     k,

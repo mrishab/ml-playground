@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { SavedModel } from "@/types/savedModel";
@@ -10,7 +16,11 @@ interface RenameDialogProps {
   onConfirm: (id: string, newName: string) => void;
 }
 
-function RenameModelForm({ model, onClose, onConfirm }: {
+function RenameModelForm({
+  model,
+  onClose,
+  onConfirm,
+}: {
   model: SavedModel;
   onClose: () => void;
   onConfirm: (id: string, newName: string) => void;
@@ -28,20 +38,39 @@ function RenameModelForm({ model, onClose, onConfirm }: {
       <DialogHeader>
         <DialogTitle>Rename Model</DialogTitle>
       </DialogHeader>
-      <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter model name..." />
+      <Input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Enter model name..."
+      />
       <DialogFooter className="gap-2">
-        <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-        <Button type="submit" disabled={!name.trim()}>Save Name</Button>
+        <Button type="button" variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={!name.trim()}>
+          Save Name
+        </Button>
       </DialogFooter>
     </form>
   );
 }
 
-export function ModelRenameDialog({ model, onClose, onConfirm }: RenameDialogProps) {
+export function ModelRenameDialog({
+  model,
+  onClose,
+  onConfirm,
+}: RenameDialogProps) {
   return (
     <Dialog open={Boolean(model)} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md">
-        {model && <RenameModelForm key={model.id} model={model} onClose={onClose} onConfirm={onConfirm} />}
+        {model && (
+          <RenameModelForm
+            key={model.id}
+            model={model}
+            onClose={onClose}
+            onConfirm={onConfirm}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

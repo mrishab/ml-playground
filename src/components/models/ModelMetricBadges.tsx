@@ -1,50 +1,62 @@
 import { Badge } from "@/components/ui/badge";
 import type { SavedModel } from "@/types/savedModel";
 
-export function ModelMetricBadges({ model }: { model: SavedModel }) {
-  const reg = model.regressionMetrics;
-  const cls = model.classificationMetrics;
-  const km = model.kmeansMetrics;
-  const iso = model.isolationForestMetrics;
+function getModelBadges(model: SavedModel): { key: string; text: string }[] {
+  const b: { key: string; text: string }[] = [];
+  const {
+    regressionMetrics: reg,
+    classificationMetrics: cls,
+    kmeansMetrics: km,
+    isolationForestMetrics: iso,
+  } = model;
 
+  if (reg) {
+    b.push({
+      key: "r2",
+      text: `R²: ${Number.isFinite(reg.rSquared) ? reg.rSquared.toFixed(3) : "—"}`,
+    });
+    b.push({
+      key: "mse",
+      text: `MSE: ${Number.isFinite(reg.mse) ? reg.mse.toFixed(4) : "—"}`,
+    });
+  }
+  if (cls) {
+    const f1 = cls.weightedF1 ?? cls.macroF1;
+    b.push({
+      key: "acc",
+      text: `Acc: ${Number.isFinite(cls.accuracy) ? (cls.accuracy * 100).toFixed(1) + "%" : "—"}`,
+    });
+    b.push({
+      key: "f1",
+      text: `F1: ${Number.isFinite(f1) ? (Number(f1) * 100).toFixed(1) + "%" : "—"}`,
+    });
+  }
+  if (km) {
+    b.push({ key: "k", text: `k = ${km.k}` });
+    b.push({
+      key: "inertia",
+      text: `Inertia: ${Number.isFinite(km.inertia) ? km.inertia.toFixed(1) : "—"}`,
+    });
+  }
+  if (iso) {
+    b.push({ key: "anom", text: `Anomalies: ${iso.anomalyCount}` });
+    b.push({
+      key: "thresh",
+      text: `Thresh: ${Number.isFinite(iso.thresholdScore) ? iso.thresholdScore.toFixed(3) : "—"}`,
+    });
+  }
+  return b;
+}
+
+export function ModelMetricBadges({ model }: { model: SavedModel }) {
+  const badges = getModelBadges(model);
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      {reg && (
-        <>
-          <Badge variant="secondary" className="text-xs font-mono">
-            R²: {reg.rSquared !== undefined ? reg.rSquared.toFixed(3) : "—"}
-          </Badge>
-          <Badge variant="secondary" className="text-xs font-mono">
-            MSE: {reg.mse !== undefined ? reg.mse.toFixed(4) : "—"}
-          </Badge>
-        </>
-      )}
-      {cls && (
-        <>
-          <Badge variant="secondary" className="text-xs font-mono">
-            Acc: {(cls.accuracy * 100).toFixed(1)}%
-          </Badge>
-          <Badge variant="secondary" className="text-xs font-mono">
-            F1: {cls.macroF1 ? (cls.macroF1 * 100).toFixed(1) + "%" : "—"}
-          </Badge>
-        </>
-      )}
-      {km && (
-        <>
-          <Badge variant="secondary" className="text-xs font-mono">k = {km.k}</Badge>
-          <Badge variant="secondary" className="text-xs font-mono">Inertia: {km.inertia.toFixed(1)}</Badge>
-        </>
-      )}
-      {iso && (
-        <>
-          <Badge variant="secondary" className="text-xs font-mono">
-            Anomalies: {iso.anomalyCount}
-          </Badge>
-          <Badge variant="secondary" className="text-xs font-mono">
-            Thresh: {iso.thresholdScore.toFixed(3)}
-          </Badge>
-        </>
-      )}
+      {badges.map((b) => (
+        <Badge key={b.key} variant="secondary" className="text-xs font-mono">
+          {b.text}
+        </Badge>
+      ))}
     </div>
   );
 }

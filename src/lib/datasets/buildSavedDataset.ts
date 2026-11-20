@@ -1,4 +1,8 @@
-import type { DatasetSource, SavedDataset, ColumnDtypeMap } from "@/types/savedDataset";
+import type {
+  DatasetSource,
+  SavedDataset,
+  ColumnDtypeMap,
+} from "@/types/savedDataset";
 import type { CleanupHistoryEntry } from "@/types/dataCleanup";
 import { isMissingValue } from "@/lib/data-cleanup/missingCheck";
 import { countDuplicateRows } from "@/lib/data-cleanup/duplicateOps";
@@ -24,7 +28,10 @@ export function inferDtypes(
     for (let r = 0; r < Math.min(values.length, 50); r++) {
       const v = values[r]?.[c];
       if (!isMissingValue(v)) {
-        if (typeof v === "number" || (!isNaN(Number(v)) && typeof v !== "boolean")) {
+        if (
+          typeof v === "number" ||
+          (!isNaN(Number(v)) && typeof v !== "boolean")
+        ) {
           dtype = "number";
         } else if (typeof v === "boolean" || v === "true" || v === "false") {
           dtype = "boolean";
@@ -40,7 +47,15 @@ export function inferDtypes(
 }
 
 export function buildSavedDataset(params: BuildDatasetParams): SavedDataset {
-  const { name, columns, values, description, source = "cleaned", originalDatasetName, history = [] } = params;
+  const {
+    name,
+    columns,
+    values,
+    description,
+    source = "cleaned",
+    originalDatasetName,
+    history = [],
+  } = params;
   const dtypes = params.dtypes || inferDtypes(columns, values);
 
   let nullCount = 0;
@@ -50,7 +65,9 @@ export function buildSavedDataset(params: BuildDatasetParams): SavedDataset {
     }
   }
 
-  const numericCols = Object.values(dtypes).filter((d) => d === "number" || d === "float32" || d === "int32").length;
+  const numericCols = Object.values(dtypes).filter(
+    (d) => d === "number" || d === "float32" || d === "int32",
+  ).length;
   const duplicateCount = countDuplicateRows(values);
 
   const dataset: SavedDataset = {

@@ -30,7 +30,8 @@ export function buildStep5(p: Step5Params): PipelineStepInfo {
     subRoutes: ["/models"],
     status,
     isStale: false,
-    artifactDescription: p.savedModelsCount > 0 ? `${p.savedModelsCount} Saved` : null,
+    artifactDescription:
+      p.savedModelsCount > 0 ? `${p.savedModelsCount} Saved` : null,
     requirements: reqs,
   };
 }

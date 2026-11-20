@@ -25,7 +25,7 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     datasetName,
-    problemType: ml.problemType,
+    problemType: isKMeansMetric ? "clustering" : ml.problemType,
     algorithm: opts.algorithm,
     algorithmName: opts.algorithmName,
     hyperparameters: opts.hyperparameters,
@@ -34,7 +34,7 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
       shuffle: ml.shuffle,
       trainSamples: ml.xTrain?.shape[0] ?? 0,
       testSamples: ml.xTest?.shape[0] ?? 0,
-      targetColumn: ml.targetColumn,
+      targetColumn: isKMeansMetric || isIsolationMetric ? "" : ml.targetColumn,
       features: featureNames,
       selectedFeatures: ml.selectedFeatures,
     },
@@ -44,9 +44,7 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
     classificationMetrics: isClassificationMetric
       ? (opts.metrics as ClassificationMetrics)
       : undefined,
-    kmeansMetrics: isKMeansMetric
-      ? (opts.metrics as KMeansMetrics)
-      : undefined,
+    kmeansMetrics: isKMeansMetric ? (opts.metrics as KMeansMetrics) : undefined,
     isolationForestMetrics: isIsolationMetric
       ? (opts.metrics as IsolationForestMetrics)
       : undefined,

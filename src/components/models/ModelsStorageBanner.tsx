@@ -8,10 +8,17 @@ interface StorageBannerProps {
   models: SavedModel[];
 }
 
-export function ModelsStorageBanner({ formattedSize, models }: StorageBannerProps) {
+export function ModelsStorageBanner({
+  formattedSize,
+  models,
+}: StorageBannerProps) {
   const regCount = models.filter((m) => m.problemType === "regression").length;
-  const clsCount = models.filter((m) => m.problemType === "classification").length;
-  const clusterCount = models.filter((m) => m.problemType === "clustering").length;
+  const clsCount = models.filter(
+    (m) => m.problemType === "classification",
+  ).length;
+  const clusterCount = models.filter(
+    (m) => m.problemType === "clustering",
+  ).length;
 
   return (
     <Card className="border-border/80 bg-muted/20">
@@ -25,7 +32,9 @@ export function ModelsStorageBanner({ formattedSize, models }: StorageBannerProp
               <span className="text-lg font-bold tracking-tight text-foreground font-mono">
                 {formattedSize}
               </span>
-              <span className="text-xs text-muted-foreground">storage used</span>
+              <span className="text-xs text-muted-foreground">
+                storage used
+              </span>
             </div>
             <p className="text-xs text-muted-foreground">
               Stored locally on your device in browser localStorage
@@ -34,13 +43,22 @@ export function ModelsStorageBanner({ formattedSize, models }: StorageBannerProp
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary" className="flex items-center gap-1.5 font-normal">
+          <Badge
+            variant="secondary"
+            className="flex items-center gap-1.5 font-normal"
+          >
             <Database className="h-3 w-3" />
             {models.length} {models.length === 1 ? "Model" : "Models"}
           </Badge>
-          {regCount > 0 && <Badge variant="outline">{regCount} Regression</Badge>}
-          {clsCount > 0 && <Badge variant="outline">{clsCount} Classification</Badge>}
-          {clusterCount > 0 && <Badge variant="outline">{clusterCount} Clustering</Badge>}
+          {regCount > 0 && (
+            <Badge variant="outline">{regCount} Regression</Badge>
+          )}
+          {clsCount > 0 && (
+            <Badge variant="outline">{clsCount} Classification</Badge>
+          )}
+          {clusterCount > 0 && (
+            <Badge variant="outline">{clusterCount} Clustering</Badge>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -8,7 +8,10 @@ interface EmptyStateProps {
   onResetFilters: () => void;
 }
 
-export function ModelsEmptyState({ isFiltered, onResetFilters }: EmptyStateProps) {
+export function ModelsEmptyState({
+  isFiltered,
+  onResetFilters,
+}: EmptyStateProps) {
   return (
     <Card className="border-dashed border-border/80 bg-muted/10 py-12">
       <CardContent className="flex flex-col items-center justify-center text-center p-6">
@@ -25,7 +28,12 @@ export function ModelsEmptyState({ isFiltered, onResetFilters }: EmptyStateProps
         </p>
 
         {isFiltered ? (
-          <Button variant="outline" size="sm" onClick={onResetFilters} className="active:scale-[0.98]">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onResetFilters}
+            className="active:scale-[0.98]"
+          >
             <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
             Reset Filters
           </Button>

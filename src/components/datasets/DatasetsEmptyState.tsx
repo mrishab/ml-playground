@@ -8,7 +8,10 @@ interface EmptyStateProps {
   onResetFilters: () => void;
 }
 
-export function DatasetsEmptyState({ isFiltered, onResetFilters }: EmptyStateProps) {
+export function DatasetsEmptyState({
+  isFiltered,
+  onResetFilters,
+}: EmptyStateProps) {
   return (
     <Card className="border-dashed border-border/80 bg-muted/10 py-12">
       <CardContent className="flex flex-col items-center justify-center text-center p-6">
@@ -24,12 +27,21 @@ export function DatasetsEmptyState({ isFiltered, onResetFilters }: EmptyStatePro
             : "Clean and transform datasets in the Data Select stage, then save them here for offline access and reuse."}
         </p>
         {isFiltered ? (
-          <Button variant="outline" size="sm" onClick={onResetFilters} className="active:scale-[0.98] transition-[transform,background-color,border-color,color] duration-150 ease-out">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onResetFilters}
+            className="active:scale-[0.98] transition-[transform,background-color,border-color,color] duration-150 ease-out"
+          >
             <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
             Reset Filters
           </Button>
         ) : (
-          <Button asChild size="sm" className="active:scale-[0.98] transition-[transform,background-color,border-color,color] duration-150 ease-out">
+          <Button
+            asChild
+            size="sm"
+            className="active:scale-[0.98] transition-[transform,background-color,border-color,color] duration-150 ease-out"
+          >
             <Link to="/data/select">
               <Play className="mr-1.5 h-3.5 w-3.5" />
               Explore &amp; Clean Datasets

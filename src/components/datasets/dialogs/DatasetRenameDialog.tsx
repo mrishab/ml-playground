@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { SavedDataset } from "@/types/savedDataset";
@@ -10,7 +16,11 @@ interface RenameDialogProps {
   onConfirm: (id: string, newName: string) => void;
 }
 
-function RenameDatasetForm({ dataset, onClose, onConfirm }: {
+function RenameDatasetForm({
+  dataset,
+  onClose,
+  onConfirm,
+}: {
   dataset: SavedDataset;
   onClose: () => void;
   onConfirm: (id: string, newName: string) => void;
@@ -28,20 +38,39 @@ function RenameDatasetForm({ dataset, onClose, onConfirm }: {
       <DialogHeader>
         <DialogTitle>Rename Dataset</DialogTitle>
       </DialogHeader>
-      <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter dataset name..." />
+      <Input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Enter dataset name..."
+      />
       <DialogFooter className="gap-2">
-        <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
-        <Button type="submit" disabled={!name.trim()}>Save Name</Button>
+        <Button type="button" variant="outline" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button type="submit" disabled={!name.trim()}>
+          Save Name
+        </Button>
       </DialogFooter>
     </form>
   );
 }
 
-export function DatasetRenameDialog({ dataset, onClose, onConfirm }: RenameDialogProps) {
+export function DatasetRenameDialog({
+  dataset,
+  onClose,
+  onConfirm,
+}: RenameDialogProps) {
   return (
     <Dialog open={Boolean(dataset)} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md">
-        {dataset && <RenameDatasetForm key={dataset.id} dataset={dataset} onClose={onClose} onConfirm={onConfirm} />}
+        {dataset && (
+          <RenameDatasetForm
+            key={dataset.id}
+            dataset={dataset}
+            onClose={onClose}
+            onConfirm={onConfirm}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

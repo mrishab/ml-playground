@@ -2,7 +2,10 @@ import { useMemo, useCallback, useEffect } from "react";
 import { useSavedModelsStore } from "@/stores/savedModels";
 import { filterAndSortModels } from "./filterModels";
 import { useModelDialogs } from "./useModelDialogs";
-import { downloadModelJSON, downloadAllModelsBundle } from "@/lib/models/exportImport";
+import {
+  downloadModelJSON,
+  downloadAllModelsBundle,
+} from "@/lib/models/exportImport";
 import { syncActiveTrainingIfUnsaved } from "@/lib/models/syncActiveTraining";
 import type { SavedModel } from "@/types/savedModel";
 
@@ -10,25 +13,45 @@ export function useModelsPage() {
   const store = useSavedModelsStore();
   const dialogs = useModelDialogs();
 
-  useEffect(() => { syncActiveTrainingIfUnsaved(); }, []);
+  useEffect(() => {
+    syncActiveTrainingIfUnsaved();
+  }, []);
 
   const filteredModels = useMemo(
-    () => filterAndSortModels(store.models, store.searchQuery, store.filterType, store.sortBy),
+    () =>
+      filterAndSortModels(
+        store.models,
+        store.searchQuery,
+        store.filterType,
+        store.sortBy,
+      ),
     [store.models, store.searchQuery, store.filterType, store.sortBy],
   );
 
-  const handleDownload = useCallback((model: SavedModel) => downloadModelJSON(model), []);
-  const handleDownloadAll = useCallback(() => downloadAllModelsBundle(store.models), [store.models]);
+  const handleDownload = useCallback(
+    (model: SavedModel) => downloadModelJSON(model),
+    [],
+  );
+  const handleDownloadAll = useCallback(
+    () => downloadAllModelsBundle(store.models),
+    [store.models],
+  );
 
-  const handleDelete = useCallback((id: string) => {
-    store.deleteModel(id);
-    dialogs.setDeleteTarget(null);
-  }, [store, dialogs]);
+  const handleDelete = useCallback(
+    (id: string) => {
+      store.deleteModel(id);
+      dialogs.setDeleteTarget(null);
+    },
+    [store, dialogs],
+  );
 
-  const handleRename = useCallback((id: string, name: string) => {
-    store.renameModel(id, name);
-    dialogs.setRenameTarget(null);
-  }, [store, dialogs]);
+  const handleRename = useCallback(
+    (id: string, name: string) => {
+      store.renameModel(id, name);
+      dialogs.setRenameTarget(null);
+    },
+    [store, dialogs],
+  );
 
   const handleClearAll = useCallback(() => {
     store.clearAll();

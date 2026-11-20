@@ -1,6 +1,13 @@
 import { useState, useRef } from "react";
 import { Upload } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
 interface ImportDialogProps {
@@ -9,7 +16,11 @@ interface ImportDialogProps {
   onImport: (json: string) => number;
 }
 
-export function DatasetImportDialog({ open, onClose, onImport }: ImportDialogProps) {
+export function DatasetImportDialog({
+  open,
+  onClose,
+  onImport,
+}: ImportDialogProps) {
   const [error, setError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -37,7 +48,8 @@ export function DatasetImportDialog({ open, onClose, onImport }: ImportDialogPro
         <DialogHeader>
           <DialogTitle>Import Dataset</DialogTitle>
           <DialogDescription>
-            Select a previously exported dataset JSON bundle to restore it to local storage.
+            Select a previously exported dataset JSON bundle to restore it to
+            local storage.
           </DialogDescription>
         </DialogHeader>
         <button
@@ -46,12 +58,22 @@ export function DatasetImportDialog({ open, onClose, onImport }: ImportDialogPro
           onClick={() => fileRef.current?.click()}
         >
           <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-          <p className="text-xs font-medium text-foreground">Click to upload JSON file</p>
-          <input ref={fileRef} type="file" accept=".json" onChange={handleFileChange} className="hidden" />
+          <p className="text-xs font-medium text-foreground">
+            Click to upload JSON file
+          </p>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".json"
+            onChange={handleFileChange}
+            className="hidden"
+          />
         </button>
         {error && <p className="text-xs text-destructive">{error}</p>}
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

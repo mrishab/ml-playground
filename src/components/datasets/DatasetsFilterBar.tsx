@@ -1,7 +1,10 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { DatasetSortOption, DatasetSourceFilter } from "@/stores/savedDatasets";
+import type {
+  DatasetSortOption,
+  DatasetSourceFilter,
+} from "@/stores/savedDatasets";
 
 interface FilterBarProps {
   searchQuery: string;

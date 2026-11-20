@@ -4,18 +4,38 @@ import { ModelMetricsTab } from "./ModelMetricsTab";
 import { ModelAnalysisTab } from "./ModelAnalysisTab";
 import { ModelArtifactsTab } from "./ModelArtifactsTab";
 import { ModelTelemetryTab } from "./ModelTelemetryTab";
+import { ModelPredictTab } from "./ModelPredictTab";
 import type { SavedModel } from "@/types/savedModel";
 
 export function ModelDetailsTabs({ model }: { model: SavedModel }) {
   return (
-    <Tabs defaultValue="overview" className="w-full">
-      <TabsList className="grid grid-cols-5 w-full h-8 text-xs">
-        <TabsTrigger value="overview" className="text-xs py-1">Overview</TabsTrigger>
-        <TabsTrigger value="metrics" className="text-xs py-1">Metrics</TabsTrigger>
-        <TabsTrigger value="analysis" className="text-xs py-1">Analysis</TabsTrigger>
-        <TabsTrigger value="artifacts" className="text-xs py-1">Parameters</TabsTrigger>
-        <TabsTrigger value="telemetry" className="text-xs py-1">Loss Curve</TabsTrigger>
+    <Tabs defaultValue="predict" className="w-full">
+      <TabsList className="grid grid-cols-6 w-full h-8 text-xs">
+        <TabsTrigger
+          value="predict"
+          className="text-xs py-1 font-semibold text-primary"
+        >
+          Playground
+        </TabsTrigger>
+        <TabsTrigger value="overview" className="text-xs py-1">
+          Overview
+        </TabsTrigger>
+        <TabsTrigger value="metrics" className="text-xs py-1">
+          Metrics
+        </TabsTrigger>
+        <TabsTrigger value="analysis" className="text-xs py-1">
+          Analysis
+        </TabsTrigger>
+        <TabsTrigger value="artifacts" className="text-xs py-1">
+          Parameters
+        </TabsTrigger>
+        <TabsTrigger value="telemetry" className="text-xs py-1">
+          Loss Curve
+        </TabsTrigger>
       </TabsList>
+      <TabsContent value="predict">
+        <ModelPredictTab model={model} />
+      </TabsContent>
       <TabsContent value="overview">
         <ModelOverviewTab model={model} />
       </TabsContent>

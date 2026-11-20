@@ -12,7 +12,15 @@ interface DialogsProps {
 }
 
 export function DatasetsDialogs({ page }: DialogsProps) {
-  const { dialogs, renameDataset, deleteDataset, clearAll, importDatasets, datasets, handleLoadInPipeline } = page;
+  const {
+    dialogs,
+    renameDataset,
+    deleteDataset,
+    clearAll,
+    importDatasets,
+    datasets,
+    handleLoadInPipeline,
+  } = page;
 
   return (
     <>
@@ -20,22 +28,33 @@ export function DatasetsDialogs({ page }: DialogsProps) {
         dataset={dialogs.inspectDataset}
         onClose={() => dialogs.setInspectDataset(null)}
         onLoadInPipeline={handleLoadInPipeline}
-        onDownloadCSV={(d: SavedDataset) => downloadDataAsCSV(d.name, d.columns, d.data)}
+        onDownloadCSV={(d: SavedDataset) =>
+          downloadDataAsCSV(d.name, d.columns, d.data)
+        }
       />
       <DatasetRenameDialog
         dataset={dialogs.renameDataset}
         onClose={() => dialogs.setRenameDataset(null)}
-        onConfirm={(id, name) => { renameDataset(id, name); dialogs.setRenameDataset(null); }}
+        onConfirm={(id, name) => {
+          renameDataset(id, name);
+          dialogs.setRenameDataset(null);
+        }}
       />
       <DatasetDeleteConfirmDialog
         dataset={dialogs.deleteDataset}
         onClose={() => dialogs.setDeleteDataset(null)}
-        onConfirm={(id) => { deleteDataset(id); dialogs.setDeleteDataset(null); }}
+        onConfirm={(id) => {
+          deleteDataset(id);
+          dialogs.setDeleteDataset(null);
+        }}
       />
       <DatasetClearConfirmDialog
         open={dialogs.isClearOpen}
         onClose={() => dialogs.setIsClearOpen(false)}
-        onConfirm={() => { clearAll(); dialogs.setIsClearOpen(false); }}
+        onConfirm={() => {
+          clearAll();
+          dialogs.setIsClearOpen(false);
+        }}
         count={datasets.length}
       />
       <DatasetImportDialog

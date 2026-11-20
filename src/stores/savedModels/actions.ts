@@ -14,7 +14,16 @@ export const createSavedModelsActions: StateCreator<
   SavedModelsStore,
   [],
   [],
-  Omit<SavedModelsStore, "models" | "totalBytes" | "formattedSize" | "selectedModel" | "searchQuery" | "filterType" | "sortBy">
+  Omit<
+    SavedModelsStore,
+    | "models"
+    | "totalBytes"
+    | "formattedSize"
+    | "selectedModel"
+    | "searchQuery"
+    | "filterType"
+    | "sortBy"
+  >
 > = (set) => ({
   loadModels: () => {
     const models = getSavedModels();
@@ -40,7 +49,12 @@ export const createSavedModelsActions: StateCreator<
   },
   clearAll: () => {
     clearAllModelsFromStorage();
-    set({ models: [], totalBytes: 0, formattedSize: "0 B", selectedModel: null });
+    set({
+      models: [],
+      totalBytes: 0,
+      formattedSize: "0 B",
+      selectedModel: null,
+    });
   },
   importModels: (rawJson: string) => {
     const imported = parseImportJSON(rawJson);

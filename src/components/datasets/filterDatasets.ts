@@ -1,5 +1,8 @@
 import type { SavedDataset } from "@/types/savedDataset";
-import type { DatasetSortOption, DatasetSourceFilter } from "@/stores/savedDatasets";
+import type {
+  DatasetSortOption,
+  DatasetSourceFilter,
+} from "@/stores/savedDatasets";
 
 export function filterDatasets(
   datasets: SavedDataset[],

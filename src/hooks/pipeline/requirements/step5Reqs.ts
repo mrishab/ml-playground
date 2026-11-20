@@ -13,7 +13,8 @@ export function getStep5Requirements(p: Step5ReqParams): StepRequirement[] {
       id: "model-trained-or-saved",
       label: "Train or save a model",
       satisfied,
-      missingMessage: "Complete model training in Step 4 to save and manage models.",
+      missingMessage:
+        "Complete model training in Step 4 to save and manage models.",
       actionRoute: p.defaultTrainRoute,
       actionLabel: "Go to Training",
     },

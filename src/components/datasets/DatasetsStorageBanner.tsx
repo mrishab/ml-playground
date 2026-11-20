@@ -8,7 +8,10 @@ interface StorageBannerProps {
   datasets: SavedDataset[];
 }
 
-export function DatasetsStorageBanner({ formattedSize, datasets }: StorageBannerProps) {
+export function DatasetsStorageBanner({
+  formattedSize,
+  datasets,
+}: StorageBannerProps) {
   const cleanedCount = datasets.filter((d) => d.source === "cleaned").length;
   const uploadedCount = datasets.filter((d) => d.source === "uploaded").length;
   const totalRows = datasets.reduce((sum, d) => sum + d.rowCount, 0);
@@ -25,16 +28,22 @@ export function DatasetsStorageBanner({ formattedSize, datasets }: StorageBanner
               <span className="text-lg font-bold tracking-tight text-foreground font-mono">
                 {formattedSize}
               </span>
-              <span className="text-xs text-muted-foreground">dataset storage used</span>
+              <span className="text-xs text-muted-foreground">
+                dataset storage used
+              </span>
             </div>
             <p className="text-xs text-muted-foreground">
-              Stored locally on your device in browser localStorage ({totalRows.toLocaleString()} total rows)
+              Stored locally on your device in browser localStorage (
+              {totalRows.toLocaleString()} total rows)
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary" className="flex items-center gap-1.5 font-normal">
+          <Badge
+            variant="secondary"
+            className="flex items-center gap-1.5 font-normal"
+          >
             <Database className="h-3 w-3" />
             {datasets.length} {datasets.length === 1 ? "Dataset" : "Datasets"}
           </Badge>

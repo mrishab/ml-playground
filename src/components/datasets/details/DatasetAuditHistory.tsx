@@ -7,7 +7,9 @@ interface AuditHistoryProps {
 
 const DEFAULT_HISTORY: CleanupHistoryEntry[] = [];
 
-export function DatasetAuditHistory({ history = DEFAULT_HISTORY }: AuditHistoryProps) {
+export function DatasetAuditHistory({
+  history = DEFAULT_HISTORY,
+}: AuditHistoryProps) {
   if (history.length === 0) {
     return (
       <div className="py-8 text-center text-xs text-muted-foreground border border-dashed border-border rounded-md">
@@ -19,10 +21,15 @@ export function DatasetAuditHistory({ history = DEFAULT_HISTORY }: AuditHistoryP
   return (
     <div className="max-h-72 overflow-auto space-y-2 border border-border rounded-md p-3">
       {history.map((entry) => (
-        <div key={entry.id} className="flex items-center justify-between p-2 rounded border border-border bg-card/40 text-xs">
+        <div
+          key={entry.id}
+          className="flex items-center justify-between p-2 rounded border border-border bg-card/40 text-xs"
+        >
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
-            <span className="font-medium text-foreground">{entry.description}</span>
+            <span className="font-medium text-foreground">
+              {entry.description}
+            </span>
           </div>
           <span className="text-[11px] text-muted-foreground whitespace-nowrap">
             {entry.rowsBefore} &rarr; {entry.rowsAfter} rows

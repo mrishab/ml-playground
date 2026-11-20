@@ -1,7 +1,11 @@
 import type { SavedModel } from "@/types/savedModel";
 
 export type ModelSortOption = "newest" | "oldest" | "name" | "size";
-export type ModelTypeFilter = "all" | "regression" | "classification" | "clustering";
+export type ModelTypeFilter =
+  | "all"
+  | "regression"
+  | "classification"
+  | "clustering";
 
 export type SavedModelsState = {
   models: SavedModel[];

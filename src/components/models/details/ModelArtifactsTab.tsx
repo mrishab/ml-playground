@@ -4,7 +4,11 @@ import type { SavedModel } from "@/types/savedModel";
 export function ModelArtifactsTab({ model }: { model: SavedModel }) {
   const artifacts = model.modelArtifacts;
   if (!artifacts) {
-    return <p className="text-xs text-muted-foreground py-4">No model parameters available.</p>;
+    return (
+      <p className="text-xs text-muted-foreground py-4">
+        No model parameters available.
+      </p>
+    );
   }
 
   return (
@@ -27,9 +31,16 @@ export function ModelArtifactsTab({ model }: { model: SavedModel }) {
           </span>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {artifacts.coefficients.map((c) => (
-              <div key={c.feature} className="flex justify-between border rounded p-1.5 bg-background font-mono text-[11px]">
-                <span className="text-muted-foreground truncate">{c.feature}</span>
-                <span className="font-semibold text-foreground">{c.weight}</span>
+              <div
+                key={c.feature}
+                className="flex justify-between border rounded p-1.5 bg-background font-mono text-[11px]"
+              >
+                <span className="text-muted-foreground truncate">
+                  {c.feature}
+                </span>
+                <span className="font-semibold text-foreground">
+                  {c.weight}
+                </span>
               </div>
             ))}
           </div>
@@ -38,10 +49,16 @@ export function ModelArtifactsTab({ model }: { model: SavedModel }) {
 
       {artifacts.classes && (
         <div className="rounded-lg border border-border/70 p-2.5 bg-muted/10">
-          <span className="text-muted-foreground block text-[11px] mb-1.5">Class Labels</span>
+          <span className="text-muted-foreground block text-[11px] mb-1.5">
+            Class Labels
+          </span>
           <div className="flex flex-wrap gap-1.5">
             {artifacts.classes.map((cls) => (
-              <Badge key={cls} variant="secondary" className="font-mono text-xs">
+              <Badge
+                key={cls}
+                variant="secondary"
+                className="font-mono text-xs"
+              >
                 {cls}
               </Badge>
             ))}

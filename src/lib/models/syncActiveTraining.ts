@@ -70,11 +70,15 @@ export function syncActiveTrainingIfUnsaved(): void {
   const rfMetrics =
     ml.problemType === "regression"
       ? res.randomForest.regressionMetrics
-      : res.randomForest.classificationMetrics || res.randomForest.regressionMetrics;
+      : res.randomForest.classificationMetrics ||
+        res.randomForest.regressionMetrics;
   if (rfMetrics && !existing.some((m) => m.algorithm === "random-forest")) {
     saveTrainedModel({
       algorithm: "random-forest",
-      algorithmName: ml.problemType === "regression" ? "Random Forest (Regressor)" : "Random Forest (Classifier)",
+      algorithmName:
+        ml.problemType === "regression"
+          ? "Random Forest (Regressor)"
+          : "Random Forest (Classifier)",
       hyperparameters: {
         nEstimators: res.randomForest.nEstimators,
         maxDepth: res.randomForest.maxDepth,
@@ -90,7 +94,10 @@ export function syncActiveTrainingIfUnsaved(): void {
   if (xgbMetrics && !existing.some((m) => m.algorithm === "xgboost")) {
     saveTrainedModel({
       algorithm: "xgboost",
-      algorithmName: ml.problemType === "regression" ? "XGBoost (Regressor)" : "XGBoost (Classifier)",
+      algorithmName:
+        ml.problemType === "regression"
+          ? "XGBoost (Regressor)"
+          : "XGBoost (Classifier)",
       hyperparameters: {
         nEstimators: res.xgboost.nEstimators,
         maxDepth: res.xgboost.maxDepth,

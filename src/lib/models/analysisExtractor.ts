@@ -11,9 +11,10 @@ export function extractFeatureAnalysis(
 ): FeatureStatSummary[] {
   if (!xTrain) return [];
   const featureNames = xTrain.columns as string[];
-  const targetValues = yTrain && targetColumn
-    ? (yTrain.column(targetColumn).values as number[])
-    : null;
+  const targetValues =
+    yTrain && targetColumn
+      ? (yTrain.column(targetColumn).values as number[])
+      : null;
   const isTargetNumeric =
     targetValues && targetValues.every((v) => typeof v === "number");
 

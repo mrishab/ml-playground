@@ -6,8 +6,7 @@ import {
 } from "@/lib/datasets/storage";
 import { createSavedDatasetsActions } from "./actions";
 
-const initialDatasets =
-  typeof window !== "undefined" ? getSavedDatasets() : [];
+const initialDatasets = typeof window !== "undefined" ? getSavedDatasets() : [];
 const { totalBytes, formattedSize } =
   calculateDatasetStorageUsage(initialDatasets);
 

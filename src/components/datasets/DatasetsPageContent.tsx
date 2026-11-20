@@ -5,9 +5,17 @@ import { DatasetsFilterBar } from "./DatasetsFilterBar";
 import { DatasetsEmptyState } from "./DatasetsEmptyState";
 import { DatasetsListGrid } from "./DatasetsListGrid";
 import { DatasetsDialogs } from "./DatasetsDialogs";
-import { downloadDataAsCSV, downloadDatasetAsJSON, downloadAllDatasetsAsJSON } from "@/lib/datasets/exportImport";
+import {
+  downloadDataAsCSV,
+  downloadDatasetAsJSON,
+  downloadAllDatasetsAsJSON,
+} from "@/lib/datasets/exportImport";
 
-export function DatasetsPageContent({ p }: { p: ReturnType<typeof useDatasetsPage> }) {
+export function DatasetsPageContent({
+  p,
+}: {
+  p: ReturnType<typeof useDatasetsPage>;
+}) {
   const resetFilters = () => {
     p.setSearchQuery("");
     p.setFilterSource("all");
@@ -21,7 +29,10 @@ export function DatasetsPageContent({ p }: { p: ReturnType<typeof useDatasetsPag
         onDownloadAllClick={() => downloadAllDatasetsAsJSON(p.datasets)}
         onClearAllClick={() => p.dialogs.setIsClearOpen(true)}
       />
-      <DatasetsStorageBanner formattedSize={p.formattedSize} datasets={p.datasets} />
+      <DatasetsStorageBanner
+        formattedSize={p.formattedSize}
+        datasets={p.datasets}
+      />
       <DatasetsFilterBar
         searchQuery={p.searchQuery}
         onSearchChange={p.setSearchQuery}
@@ -31,7 +42,10 @@ export function DatasetsPageContent({ p }: { p: ReturnType<typeof useDatasetsPag
         onSortChange={p.setSortBy}
       />
       {p.filteredDatasets.length === 0 ? (
-        <DatasetsEmptyState isFiltered={p.datasets.length > 0} onResetFilters={resetFilters} />
+        <DatasetsEmptyState
+          isFiltered={p.datasets.length > 0}
+          onResetFilters={resetFilters}
+        />
       ) : (
         <DatasetsListGrid
           datasets={p.filteredDatasets}

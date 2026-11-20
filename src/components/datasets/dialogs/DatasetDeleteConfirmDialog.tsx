@@ -1,4 +1,11 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import type { SavedDataset } from "@/types/savedDataset";
 
@@ -8,7 +15,11 @@ interface DeleteDialogProps {
   onConfirm: (id: string) => void;
 }
 
-export function DatasetDeleteConfirmDialog({ dataset, onClose, onConfirm }: DeleteDialogProps) {
+export function DatasetDeleteConfirmDialog({
+  dataset,
+  onClose,
+  onConfirm,
+}: DeleteDialogProps) {
   if (!dataset) return null;
 
   return (
@@ -17,11 +28,15 @@ export function DatasetDeleteConfirmDialog({ dataset, onClose, onConfirm }: Dele
         <DialogHeader>
           <DialogTitle>Delete Dataset?</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete &ldquo;{dataset.name}&rdquo;? This will remove the dataset and its cached transformations from local storage.
+            Are you sure you want to delete &ldquo;{dataset.name}&rdquo;? This
+            will remove the dataset and its cached transformations from local
+            storage.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2">
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
           <Button
             variant="destructive"
             onClick={() => onConfirm(dataset.id)}

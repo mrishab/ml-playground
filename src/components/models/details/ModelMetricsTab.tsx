@@ -16,11 +16,27 @@ export function ModelMetricsTab({ model }: { model: SavedModel }) {
         </div>
       )}
       {cls && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <MetricBox label="Accuracy" val={`${(cls.accuracy * 100).toFixed(1)}%`} />
-          <MetricBox label="Macro F1" val={`${(cls.macroF1 * 100).toFixed(1)}%`} />
-          <MetricBox label="Precision" val={`${(cls.macroPrecision * 100).toFixed(1)}%`} />
-          <MetricBox label="Recall" val={`${(cls.macroRecall * 100).toFixed(1)}%`} />
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          <MetricBox
+            label="Accuracy"
+            val={`${(cls.accuracy * 100).toFixed(1)}%`}
+          />
+          <MetricBox
+            label="Weighted F1"
+            val={`${(((cls.weightedF1 ?? cls.macroF1) as number) * 100).toFixed(1)}%`}
+          />
+          <MetricBox
+            label="Macro F1"
+            val={`${(cls.macroF1 * 100).toFixed(1)}%`}
+          />
+          <MetricBox
+            label="Precision (wgt)"
+            val={`${(((cls.weightedPrecision ?? cls.macroPrecision) as number) * 100).toFixed(1)}%`}
+          />
+          <MetricBox
+            label="Recall (wgt)"
+            val={`${(((cls.weightedRecall ?? cls.macroRecall) as number) * 100).toFixed(1)}%`}
+          />
         </div>
       )}
       {km && (
@@ -31,8 +47,14 @@ export function ModelMetricsTab({ model }: { model: SavedModel }) {
       )}
       {iso && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <MetricBox label="Anomalies" val={`${iso.anomalyCount} / ${iso.totalSamples}`} />
-          <MetricBox label="Outlier Rate" val={`${(iso.anomalyRate * 100).toFixed(1)}%`} />
+          <MetricBox
+            label="Anomalies"
+            val={`${iso.anomalyCount} / ${iso.totalSamples}`}
+          />
+          <MetricBox
+            label="Outlier Rate"
+            val={`${(iso.anomalyRate * 100).toFixed(1)}%`}
+          />
           <MetricBox label="Threshold" val={iso.thresholdScore.toFixed(3)} />
           <MetricBox label="Mean Score" val={iso.meanScore.toFixed(3)} />
         </div>

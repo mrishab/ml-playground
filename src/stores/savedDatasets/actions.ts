@@ -17,7 +17,13 @@ export const createSavedDatasetsActions: StateCreator<
   [],
   Omit<
     SavedDatasetsStore,
-    "datasets" | "totalBytes" | "formattedSize" | "selectedDataset" | "searchQuery" | "filterSource" | "sortBy"
+    | "datasets"
+    | "totalBytes"
+    | "formattedSize"
+    | "selectedDataset"
+    | "searchQuery"
+    | "filterSource"
+    | "sortBy"
   >
 > = (set) => ({
   loadDatasets: () => {
@@ -44,7 +50,8 @@ export const createSavedDatasetsActions: StateCreator<
     set((s) => ({
       datasets,
       ...calculateDatasetStorageUsage(datasets),
-      selectedDataset: s.selectedDataset?.id === id ? updated : s.selectedDataset,
+      selectedDataset:
+        s.selectedDataset?.id === id ? updated : s.selectedDataset,
     }));
   },
   updateDescription: (id: string, description: string) => {
@@ -53,12 +60,18 @@ export const createSavedDatasetsActions: StateCreator<
     set((s) => ({
       datasets,
       ...calculateDatasetStorageUsage(datasets),
-      selectedDataset: s.selectedDataset?.id === id ? updated : s.selectedDataset,
+      selectedDataset:
+        s.selectedDataset?.id === id ? updated : s.selectedDataset,
     }));
   },
   clearAll: () => {
     clearAllDatasetsFromStorage();
-    set({ datasets: [], totalBytes: 0, formattedSize: "0 B", selectedDataset: null });
+    set({
+      datasets: [],
+      totalBytes: 0,
+      formattedSize: "0 B",
+      selectedDataset: null,
+    });
   },
   importDatasets: (rawJson: string) => {
     const imported = parseDatasetBundleFromJSON(rawJson);

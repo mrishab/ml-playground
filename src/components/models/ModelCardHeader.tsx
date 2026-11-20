@@ -39,7 +39,10 @@ export function ModelCardHeader({ model }: { model: SavedModel }) {
           <Icon className="h-4 w-4" />
         </div>
         <div className="min-w-0">
-          <h4 className="text-sm font-semibold text-foreground truncate" title={model.name}>
+          <h4
+            className="text-sm font-semibold text-foreground truncate"
+            title={model.name}
+          >
             {model.name}
           </h4>
           <p className="text-xs text-muted-foreground truncate">

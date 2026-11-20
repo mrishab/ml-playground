@@ -33,12 +33,17 @@ export function parseDatasetFromJSON(raw: string): SavedDataset | null {
   try {
     const data = JSON.parse(raw);
     if (!data || typeof data !== "object") return null;
-    if (!data.name || !Array.isArray(data.columns) || !Array.isArray(data.data)) {
+    if (
+      !data.name ||
+      !Array.isArray(data.columns) ||
+      !Array.isArray(data.data)
+    ) {
       return null;
     }
     return {
       ...data,
-      id: data.id || `ds_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+      id:
+        data.id || `ds_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
       updatedAt: Date.now(),
       sizeBytes: new Blob([raw]).size,
     };
@@ -52,7 +57,11 @@ export function parseDatasetBundleFromJSON(raw: string): SavedDataset[] {
     const data = JSON.parse(raw);
     if (Array.isArray(data)) {
       return data.filter(
-        (item) => item && item.name && Array.isArray(item.columns) && Array.isArray(item.data),
+        (item) =>
+          item &&
+          item.name &&
+          Array.isArray(item.columns) &&
+          Array.isArray(item.data),
       );
     }
     const single = parseDatasetFromJSON(raw);

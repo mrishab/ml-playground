@@ -6,7 +6,11 @@ import { ModelsEmptyState } from "./ModelsEmptyState";
 import { ModelsListGrid } from "./ModelsListGrid";
 import { ModelsDialogs } from "./ModelsDialogs";
 
-export function ModelsPageContent({ p }: { p: ReturnType<typeof useModelsPage> }) {
+export function ModelsPageContent({
+  p,
+}: {
+  p: ReturnType<typeof useModelsPage>;
+}) {
   const resetFilters = () => {
     p.setSearchQuery("");
     p.setFilterType("all");
@@ -30,7 +34,10 @@ export function ModelsPageContent({ p }: { p: ReturnType<typeof useModelsPage> }
         onSortChange={p.setSortBy}
       />
       {p.filteredModels.length === 0 ? (
-        <ModelsEmptyState isFiltered={p.models.length > 0} onResetFilters={resetFilters} />
+        <ModelsEmptyState
+          isFiltered={p.models.length > 0}
+          onResetFilters={resetFilters}
+        />
       ) : (
         <ModelsListGrid
           models={p.filteredModels}

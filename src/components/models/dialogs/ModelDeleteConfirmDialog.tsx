@@ -1,4 +1,11 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import type { SavedModel } from "@/types/savedModel";
 
@@ -8,7 +15,11 @@ interface DeleteDialogProps {
   onConfirm: (id: string) => void;
 }
 
-export function ModelDeleteConfirmDialog({ model, onClose, onConfirm }: DeleteDialogProps) {
+export function ModelDeleteConfirmDialog({
+  model,
+  onClose,
+  onConfirm,
+}: DeleteDialogProps) {
   if (!model) return null;
 
   return (
@@ -17,7 +28,8 @@ export function ModelDeleteConfirmDialog({ model, onClose, onConfirm }: DeleteDi
         <DialogHeader>
           <DialogTitle>Delete Model?</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete &ldquo;{model.name}&rdquo;? This will remove the model and its analysis from local storage.
+            Are you sure you want to delete &ldquo;{model.name}&rdquo;? This
+            will remove the model and its analysis from local storage.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2">

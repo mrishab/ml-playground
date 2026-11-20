@@ -35,17 +35,18 @@ export function parseImportJSON(rawText: string): SavedModel[] {
   const data = JSON.parse(rawText);
   let list: unknown[] = [];
   if (Array.isArray(data)) list = data;
-  else if (data && typeof data === "object" && Array.isArray((data as { models?: unknown[] }).models)) {
+  else if (
+    data &&
+    typeof data === "object" &&
+    Array.isArray((data as { models?: unknown[] }).models)
+  ) {
     list = (data as { models: unknown[] }).models;
   } else if (data && typeof data === "object" && "algorithm" in data) {
     list = [data];
   }
   return list.filter((item): item is SavedModel => {
     return Boolean(
-      item &&
-        typeof item === "object" &&
-        "algorithm" in item &&
-        "name" in item,
+      item && typeof item === "object" && "algorithm" in item && "name" in item,
     );
   });
 }
