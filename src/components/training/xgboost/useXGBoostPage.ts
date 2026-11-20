@@ -8,12 +8,16 @@ import { useXGBoostStore } from "./useXGBoostStore";
 export function useXGBoostPage() {
   const data = useTrainingData();
   const store = useXGBoostStore();
-  const [importances, setImportances] = useState<{ feature: string; score: number }[]>([]);
+  const [importances, setImportances] = useState<
+    { feature: string; score: number }[]
+  >([]);
 
   const runTraining = useCallback(async () => {
     const { canTrain, xTrain, xTest, yTrain, yTest, targetColumn } = data;
     if (!canTrain || !xTrain || !xTest || !yTrain || !yTest || !targetColumn) {
-      store.setError("Missing required data. Please select features and split data first.");
+      store.setError(
+        "Missing required data. Please select features and split data first.",
+      );
       return;
     }
     store.setTrainingState("training");
@@ -29,21 +33,36 @@ export function useXGBoostPage() {
       store.setTelemetry,
       isReg ? "R² Fit (%)" : "Accuracy (%)",
       "%",
+      store.nEstimators,
     );
 
     try {
       const res = await trainXGBoost(
-        xTrain, yTrain, xTest, yTest, targetColumn,
+        xTrain,
+        yTrain,
+        xTest,
+        yTest,
+        targetColumn,
         isReg ? "regression" : "classification",
-        { nEstimators: store.nEstimators, maxDepth: store.maxDepth, learningRate: 0.1 },
+        {
+          nEstimators: store.nEstimators,
+          maxDepth: store.maxDepth,
+          learningRate: 0.1,
+        },
         onStep,
       );
       setImportances(res.featureImportance);
-      handleEnsembleResult("xgboost", "XGBoost", {
-        nEstimators: store.nEstimators,
-        maxDepth: store.maxDepth,
-        learningRate: 0.1,
-      }, res, store);
+      handleEnsembleResult(
+        "xgboost",
+        "XGBoost",
+        {
+          nEstimators: store.nEstimators,
+          maxDepth: store.maxDepth,
+          learningRate: 0.1,
+        },
+        res,
+        store,
+      );
       store.setTrainingState("complete");
     } catch (err) {
       store.setError(err instanceof Error ? err.message : "Training failed");

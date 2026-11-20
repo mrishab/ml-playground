@@ -17,7 +17,9 @@ export function RandomForestPage() {
     <TrainingPageLayout
       {...p}
       title="Random Forest"
-      subtitle={isReg ? "Ensemble bootstrap regressor" : "Ensemble bootstrap classifier"}
+      subtitle={
+        isReg ? "Ensemble bootstrap regressor" : "Ensemble bootstrap classifier"
+      }
       icon={Trees}
       algorithmName="Random Forest"
       metrics={metrics}
@@ -37,7 +39,10 @@ export function RandomForestPage() {
         isReg ? (
           <MetricsSummary metrics={p.regressionMetrics!} />
         ) : (
-          <ClassificationSummary metrics={p.classificationMetrics!} direction="vertical" />
+          <ClassificationSummary
+            metrics={p.classificationMetrics!}
+            direction="vertical"
+          />
         )
       }
       detailsComponent={
@@ -48,7 +53,11 @@ export function RandomForestPage() {
         )
       }
       footerExtras={<FeatureImportanceCard importances={p.importances} />}
-      nextStepProps={{ message: "Training complete.", linkTo: "/models", linkText: "Saved Models" }}
+      nextStepProps={{
+        message: "Training complete.",
+        linkTo: "/models",
+        linkText: "Saved Models",
+      }}
       onRun={p.runTraining}
       onReset={p.reset}
     />

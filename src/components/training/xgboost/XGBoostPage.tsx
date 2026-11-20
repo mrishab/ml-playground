@@ -17,7 +17,11 @@ export function XGBoostPage() {
     <TrainingPageLayout
       {...p}
       title="XGBoost"
-      subtitle={isReg ? "Gradient boosted tree regressor" : "Gradient boosted tree classifier"}
+      subtitle={
+        isReg
+          ? "Gradient boosted tree regressor"
+          : "Gradient boosted tree classifier"
+      }
       icon={Zap}
       algorithmName="XGBoost"
       metrics={metrics}
@@ -38,7 +42,10 @@ export function XGBoostPage() {
         isReg ? (
           <MetricsSummary metrics={p.regressionMetrics!} />
         ) : (
-          <ClassificationSummary metrics={p.classificationMetrics!} direction="vertical" />
+          <ClassificationSummary
+            metrics={p.classificationMetrics!}
+            direction="vertical"
+          />
         )
       }
       detailsComponent={
@@ -49,7 +56,11 @@ export function XGBoostPage() {
         )
       }
       footerExtras={<FeatureImportanceCard importances={p.importances} />}
-      nextStepProps={{ message: "Training complete.", linkTo: "/models", linkText: "Saved Models" }}
+      nextStepProps={{
+        message: "Training complete.",
+        linkTo: "/models",
+        linkText: "Saved Models",
+      }}
       onRun={p.runTraining}
       onReset={p.reset}
     />

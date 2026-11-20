@@ -34,9 +34,26 @@ export function calculateClassificationMetrics(
   const weightedF1 =
     perClass.reduce((s, c) => s + c.f1Score * c.support, 0) / totalSamples;
 
-  const rocCurves: ClassROC[] = labels.map((label) =>
-    computeClassROC(actuals, predictions, label, classScores?.get(label)),
-  );
+  let rocCurves: ClassROC[];
+  if (labels.length === 2) {
+    // For binary classification, there is a single positive class ROC AUC
+    const positiveLabel =
+      labels.find((l) =>
+        ["1", "yes", "true", "positive"].includes(l.toLowerCase()),
+      ) ?? labels[1];
+    rocCurves = [
+      computeClassROC(
+        actuals,
+        predictions,
+        positiveLabel,
+        classScores?.get(positiveLabel),
+      ),
+    ];
+  } else {
+    rocCurves = labels.map((label) =>
+      computeClassROC(actuals, predictions, label, classScores?.get(label)),
+    );
+  }
 
   return {
     confusionMatrix,

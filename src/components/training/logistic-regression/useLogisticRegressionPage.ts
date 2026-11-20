@@ -16,6 +16,12 @@ export function useLogisticRegressionPage() {
       setError("Missing required data. Please configure and split data first.");
       return;
     }
+    if (data.problemType === "regression") {
+      setError(
+        "Logistic Regression is a classification algorithm and cannot be trained on continuous numeric targets. Please switch Problem Type to Classification or choose a regression model.",
+      );
+      return;
+    }
     setTrainingState("training");
     setError(null);
     setMetrics(null);
@@ -28,13 +34,24 @@ export function useLogisticRegressionPage() {
       "%",
     );
     try {
-      const results = await trainLogisticRegression(xTrain, yTrain, xTest, yTest, targetColumn, onStep);
+      const results = await trainLogisticRegression(
+        xTrain,
+        yTrain,
+        xTest,
+        yTest,
+        targetColumn,
+        onStep,
+      );
       setMetrics(results);
       setTrainingState("complete");
       saveTrainedModel({
         algorithm: "logistic",
         algorithmName: "Logistic Regression",
-        hyperparameters: { penalty: "L2", optimizer: "Adam", loss: "Softmax Cross-Entropy" },
+        hyperparameters: {
+          penalty: "L2",
+          optimizer: "Adam",
+          loss: "Softmax Cross-Entropy",
+        },
         metrics: results,
       });
     } catch (err) {

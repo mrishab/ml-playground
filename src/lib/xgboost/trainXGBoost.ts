@@ -2,13 +2,22 @@ import type { DataFrame } from "danfojs";
 import { XGBoost } from "./gradientBoosting";
 import { calculateClassificationMetrics } from "@/lib/classificationMetrics";
 import { calculateMetrics as calculateRegressionMetrics } from "@/components/training/linear-regression/calculateMetrics";
+import { encodeNumericMatrix } from "@/lib/categoricalEncoding";
 import type { ClassificationMetrics } from "@/types/classification";
 import type { RegressionMetrics } from "@/types/regression";
 import type { StepCallback } from "@/types/loss";
 
 export type XGBoostResult =
-  | { kind: "classification"; metrics: ClassificationMetrics; featureImportance: { feature: string; score: number }[] }
-  | { kind: "regression"; metrics: RegressionMetrics; featureImportance: { feature: string; score: number }[] };
+  | {
+      kind: "classification";
+      metrics: ClassificationMetrics;
+      featureImportance: { feature: string; score: number }[];
+    }
+  | {
+      kind: "regression";
+      metrics: RegressionMetrics;
+      featureImportance: { feature: string; score: number }[];
+    };
 
 export async function trainXGBoost(
   xTrain: DataFrame,
@@ -20,9 +29,12 @@ export async function trainXGBoost(
   params: { nEstimators: number; maxDepth: number; learningRate?: number },
   onStep?: StepCallback,
 ): Promise<XGBoostResult> {
-  const XTrainData = xTrain.values as number[][];
+  const rawTrain = xTrain.values as unknown[][];
+  const { encodedMatrix: XTrainData, mappings } = encodeNumericMatrix(rawTrain);
+  const rawTest = xTest.values as unknown[][];
+  const { encodedMatrix: XTestData } = encodeNumericMatrix(rawTest, mappings);
+
   const yTrainData = yTrain.column(targetColumn).values as (string | number)[];
-  const XTestData = xTest.values as number[][];
   const yTestData = yTest.column(targetColumn).values as (string | number)[];
   const featureNames = xTrain.columns as string[];
 
@@ -35,26 +47,43 @@ export async function trainXGBoost(
   });
 
   const totalSteps = params.nEstimators;
+  const regActuals = task === "regression" ? yTestData.map(Number) : [];
+  const clsActuals = task === "classification" ? yTestData.map(String) : [];
 
   xgb.fit(XTrainData, yTrainData, (round) => {
     if (onStep) {
-      const progress = round / totalSteps;
-      const stepLoss = Math.max(
-        0.02,
-        0.9 * Math.exp(-2.5 * progress) + (Math.random() * 0.03 - 0.015),
-      );
-      const stepSec = Math.min(
-        100,
-        Math.max(30, Math.round(55 + 40 * (1 - Math.exp(-2 * progress)))),
-      );
-      onStep(
-        {
-          step: round,
-          loss: Number(stepLoss.toFixed(4)),
-          secondary: stepSec,
-        },
-        round === totalSteps,
-      );
+      if (task === "regression") {
+        const curPreds = xgb.predict(XTestData) as number[];
+        const curMse =
+          curPreds.reduce((sum, p, i) => sum + (regActuals[i] - p) ** 2, 0) /
+          Math.max(1, regActuals.length);
+        const yMean =
+          regActuals.reduce((a, b) => a + b, 0) /
+          Math.max(1, regActuals.length);
+        const tss = regActuals.reduce((a, b) => a + (b - yMean) ** 2, 0);
+        const r2 =
+          tss > 0 ? Math.max(0, 1 - (curMse * regActuals.length) / tss) : 0;
+        onStep(
+          {
+            step: round,
+            loss: Number(curMse.toFixed(4)),
+            secondary: Number((r2 * 100).toFixed(1)),
+          },
+          round === totalSteps,
+        );
+      } else {
+        const curPreds = xgb.predict(XTestData).map(String);
+        const correct = curPreds.filter((p, i) => p === clsActuals[i]).length;
+        const acc = clsActuals.length > 0 ? correct / clsActuals.length : 0;
+        onStep(
+          {
+            step: round,
+            loss: Number(Math.max(0.01, 1 - acc).toFixed(4)),
+            secondary: Number((acc * 100).toFixed(1)),
+          },
+          round === totalSteps,
+        );
+      }
     }
   });
 
@@ -67,17 +96,6 @@ export async function trainXGBoost(
     const rawPreds = xgb.predict(XTestData) as number[];
     const actuals = yTestData.map(Number);
     const regMetrics = calculateRegressionMetrics(rawPreds, actuals);
-
-    if (onStep) {
-      onStep(
-        {
-          step: totalSteps,
-          loss: Number(regMetrics.mse.toFixed(4)),
-          secondary: Number(Math.max(0, regMetrics.rSquared * 100).toFixed(1)),
-        },
-        true,
-      );
-    }
 
     return {
       kind: "regression",
@@ -97,7 +115,9 @@ export async function trainXGBoost(
   const rawPreds = xgb.predict(XTestData).map(String);
   const classProbas = xgb.predictProba(XTestData);
 
-  const uniqueLabels = Array.from(new Set([...yTrainData.map(String), ...yTestStr])).sort();
+  const uniqueLabels = Array.from(
+    new Set([...yTrainData.map(String), ...yTestStr]),
+  ).sort();
   const classScores = new Map<string, number[]>();
   for (const label of uniqueLabels) {
     classScores.set(
@@ -111,17 +131,6 @@ export async function trainXGBoost(
     yTestStr,
     classScores,
   );
-
-  if (onStep) {
-    onStep(
-      {
-        step: totalSteps,
-        loss: Number(Math.max(0.01, 1 - clsMetrics.accuracy).toFixed(4)),
-        secondary: Number((clsMetrics.accuracy * 100).toFixed(1)),
-      },
-      true,
-    );
-  }
 
   return {
     kind: "classification",

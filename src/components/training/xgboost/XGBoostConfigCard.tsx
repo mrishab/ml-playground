@@ -18,7 +18,9 @@ export function XGBoostConfigCard({
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base">Gradient Boosting Parameters</CardTitle>
+        <CardTitle className="text-base">
+          Gradient Boosting Parameters
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-1.5">

@@ -4,6 +4,9 @@ export function useKNNStore() {
   const modelState = useTrainingResultsStore((s) => s.knn);
   const setTrainingState = useTrainingResultsStore((s) => s.setKNNState);
   const setMetrics = useTrainingResultsStore((s) => s.setKNNMetrics);
+  const setRegressionMetrics = useTrainingResultsStore(
+    (s) => s.setKNNRegressionMetrics,
+  );
   const setError = useTrainingResultsStore((s) => s.setKNNError);
   const setK = useTrainingResultsStore((s) => s.setKNNK);
   const setTelemetry = useTrainingResultsStore((s) => s.setKNNTelemetry);
@@ -13,6 +16,7 @@ export function useKNNStore() {
     ...modelState,
     setTrainingState,
     setMetrics,
+    setRegressionMetrics,
     setError,
     setK,
     setTelemetry,

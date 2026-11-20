@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { useTrainingData } from "@/components/training/shared/useTrainingData";
-import { createTelemetryUpdater } from "@/components/training/shared/createTelemetryUpdater";
 import { saveTrainedModel } from "@/lib/models/saveTrainedModel";
 import { trainLinearRegression } from "./trainLinearRegression";
 import { useLinearRegressionStore } from "./useLinearRegressionStore";
@@ -16,15 +15,17 @@ export function useLinearRegressionPage() {
       setError("Missing required data. Please configure and split data first.");
       return;
     }
+    if (data.problemType === "classification") {
+      setError(
+        "Linear Regression (OLS) is a regression algorithm and requires continuous numeric targets. Please switch Problem Type to Regression or choose a classification model.",
+      );
+      return;
+    }
     setTrainingState("training");
     setError(null);
     setMetrics(null);
-    const onStep = createTelemetryUpdater(
-      "regression",
-      "Mean Squared Error (MSE)",
-      "MSE",
-      setTelemetry,
-    );
+    setTelemetry(null);
+
     try {
       const results = await trainLinearRegression(
         xTrain,
@@ -32,7 +33,6 @@ export function useLinearRegressionPage() {
         xTest,
         yTest,
         targetColumn,
-        onStep,
       );
       setMetrics(results);
       setTrainingState("complete");

@@ -82,7 +82,11 @@ export function pathLength(
   const feat = node.featureIndex ?? 0;
   const th = node.splitValue ?? 0;
   if (x[feat] < th) {
-    return node.left ? pathLength(x, node.left, currentHeight + 1) : currentHeight;
+    return node.left
+      ? pathLength(x, node.left, currentHeight + 1)
+      : currentHeight;
   }
-  return node.right ? pathLength(x, node.right, currentHeight + 1) : currentHeight;
+  return node.right
+    ? pathLength(x, node.right, currentHeight + 1)
+    : currentHeight;
 }

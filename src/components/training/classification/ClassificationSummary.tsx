@@ -21,25 +21,32 @@ export function ClassificationSummary({
       )}
     >
       <MetricCard
-        label="Accuracy"
+        label="Test Accuracy"
         value={metrics.accuracy}
         subtitle="Overall correct rate"
         format="percent"
+        badge="Test Split"
       />
       <MetricCard
-        label="Precision"
+        label="Test Precision"
         value={metrics.weightedPrecision}
         subtitle="Weighted average"
+        format="percent"
+        badge="Test Split"
       />
       <MetricCard
-        label="Recall"
+        label="Test Recall"
         value={metrics.weightedRecall}
         subtitle="Weighted average"
+        format="percent"
+        badge="Test Split"
       />
       <MetricCard
-        label="F1-Score"
+        label="Test F1-Score"
         value={metrics.weightedF1}
         subtitle="Weighted average"
+        format="percent"
+        badge="Test Split"
       />
     </div>
   );

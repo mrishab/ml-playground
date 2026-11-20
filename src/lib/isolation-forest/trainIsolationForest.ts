@@ -1,5 +1,6 @@
 import type { DataFrame } from "danfojs";
 import { IsolationForest } from "./isolationForest";
+import { encodeNumericMatrix } from "@/lib/categoricalEncoding";
 import type {
   IsolationForestMetrics,
   IsolationForestParams,
@@ -12,7 +13,8 @@ export async function trainIsolationForest(
   params: IsolationForestParams,
   onStep?: StepCallback,
 ): Promise<IsolationForestMetrics> {
-  const XTrainData = xTrain.values as number[][];
+  const rawData = xTrain.values as unknown[][];
+  const { encodedMatrix: XTrainData } = encodeNumericMatrix(rawData);
   const featureNames = xTrain.columns as string[];
   const nSamples = XTrainData.length;
 
@@ -54,7 +56,8 @@ export async function trainIsolationForest(
   const points: AnomalySamplePoint[] = scores.map((score, i) => {
     const featMap: Record<string, number> = {};
     featureNames.forEach((feat, colIdx) => {
-      featMap[feat] = Number((XTrainData[i][colIdx] ?? 0).toFixed(3));
+      const val = Number(XTrainData[i]?.[colIdx]);
+      featMap[feat] = Number((isNaN(val) ? 0 : val).toFixed(3));
     });
     return {
       index: i + 1,
@@ -83,12 +86,16 @@ export async function trainIsolationForest(
   // 2D projection (use first 2 features if available)
   const f0 = 0;
   const f1 = featureNames.length > 1 ? 1 : 0;
-  const coordinates2D = XTrainData.map((row, i) => ({
-    x: Number(row[f0].toFixed(3)),
-    y: Number(row[f1].toFixed(3)),
-    isAnomaly: predictions[i] === -1,
-    score: Number(scores[i].toFixed(4)),
-  }));
+  const coordinates2D = XTrainData.map((row, i) => {
+    const v0 = Number(row[f0]);
+    const v1 = Number(row[f1]);
+    return {
+      x: Number((isNaN(v0) ? 0 : v0).toFixed(3)),
+      y: Number((isNaN(v1) ? 0 : v1).toFixed(3)),
+      isAnomaly: predictions[i] === -1,
+      score: Number(scores[i].toFixed(4)),
+    };
+  });
 
   const metrics: IsolationForestMetrics = {
     totalSamples: nSamples,

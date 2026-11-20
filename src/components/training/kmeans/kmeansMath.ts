@@ -1,10 +1,14 @@
 export function distanceSq(a: number[], b: number[]): number {
   let sum = 0;
   for (let i = 0; i < a.length; i++) {
-    const diff = (a[i] ?? 0) - (b[i] ?? 0);
+    const ai =
+      typeof a[i] === "number" && !isNaN(a[i]) ? a[i] : Number(a[i]) || 0;
+    const bi =
+      typeof b[i] === "number" && !isNaN(b[i]) ? b[i] : Number(b[i]) || 0;
+    const diff = ai - bi;
     sum += diff * diff;
   }
-  return sum;
+  return isNaN(sum) ? 0 : sum;
 }
 
 export function assignClusters(

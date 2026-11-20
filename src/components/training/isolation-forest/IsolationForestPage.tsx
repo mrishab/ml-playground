@@ -17,7 +17,10 @@ export function IsolationForestPage() {
       algorithmName="Isolation Forest"
       configOptions={[
         { label: "Trees", value: String(p.nEstimators) },
-        { label: "Contamination", value: `${Math.round(p.contamination * 100)}%` },
+        {
+          label: "Contamination",
+          value: `${Math.round(p.contamination * 100)}%`,
+        },
         { label: "Subsample", value: "256 samples" },
       ]}
       headerExtras={

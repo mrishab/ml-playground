@@ -23,6 +23,11 @@ export function fitLDA(X: number[][], y: string[]): LDAModel {
 
   const means = classes.map((c) => classMean(X, classIndices.get(c)!));
   const sigma = pooledCovariance(X, y, classes, means);
+  // Add small ridge regularization to ensure positive definiteness
+  const p = sigma.length;
+  for (let i = 0; i < p; i++) {
+    sigma[i][i] += 1e-4;
+  }
   const sigmaInv = invertSPD(sigma);
 
   const priors = classes.map((c) => Math.log(classIndices.get(c)!.length / n));

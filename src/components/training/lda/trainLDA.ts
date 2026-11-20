@@ -1,9 +1,8 @@
 import { fitLDA, predictLDA, predictProbaLDA } from "@/lib/lda";
 import { calculateClassificationMetrics } from "@/lib/classificationMetrics";
+import { encodeNumericMatrix } from "@/lib/categoricalEncoding";
 import type { DataFrame } from "danfojs";
 import type { ClassificationMetrics } from "@/types/classification";
-import type { StepCallback } from "@/types/loss";
-import { simulateLDASteps } from "./simulateLDALoss";
 
 export async function trainLDA(
   xTrain: DataFrame,
@@ -11,11 +10,13 @@ export async function trainLDA(
   xTest: DataFrame,
   yTest: DataFrame,
   targetColumn: string,
-  onStep?: StepCallback,
 ): Promise<ClassificationMetrics> {
-  const XTrainData = xTrain.values as number[][];
+  const rawTrain = xTrain.values as unknown[][];
+  const { encodedMatrix: XTrainData, mappings } = encodeNumericMatrix(rawTrain);
+  const rawTest = xTest.values as unknown[][];
+  const { encodedMatrix: XTestData } = encodeNumericMatrix(rawTest, mappings);
+
   const yTrainData = yTrain.column(targetColumn).values as (string | number)[];
-  const XTestData = xTest.values as number[][];
   const yTestData = yTest.column(targetColumn).values as (string | number)[];
 
   const yTrainStr = yTrainData.map(String);
@@ -30,7 +31,14 @@ export async function trainLDA(
     classScores,
   );
 
-  await simulateLDASteps(metrics.accuracy, 25, onStep);
+  // Attach LDA weights for model artifacts and prediction
+  (
+    metrics as ClassificationMetrics & { weights?: unknown; ldaModel?: unknown }
+  ).weights = {
+    coefficients: model.weights,
+    intercept: model.intercepts,
+  };
+  (metrics as ClassificationMetrics & { ldaModel?: unknown }).ldaModel = model;
 
   return metrics;
 }

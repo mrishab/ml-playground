@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useTrainingData } from "@/components/training/shared/useTrainingData";
 import { createKMeansTelemetry } from "./kmeansTelemetry";
 import { saveTrainedModel } from "@/lib/models/saveTrainedModel";
+import { encodeNumericMatrix } from "@/lib/categoricalEncoding";
 import { trainKMeans } from "./trainKMeans";
 import { useKMeansStore } from "./useKMeansStore";
 
@@ -15,9 +16,17 @@ export function useKMeansPage() {
       setError("Please select and split dataset features before clustering.");
       return;
     }
-    const rawData = data.xTrain.values as number[][];
-    if (rawData.length < k) {
-      setError(`Fewer samples (${rawData.length}) than clusters k (${k}).`);
+    const { encodedMatrix } = encodeNumericMatrix(
+      data.xTrain.values as unknown[][],
+    );
+    if (encodedMatrix.length < 2) {
+      setError("K-Means clustering requires at least 2 samples.");
+      return;
+    }
+    if (encodedMatrix.length < k) {
+      setError(
+        `Fewer samples (${encodedMatrix.length}) than clusters k (${k}).`,
+      );
       return;
     }
     setTrainingState("training");
@@ -25,7 +34,13 @@ export function useKMeansPage() {
     setMetrics(null);
     const onStep = createKMeansTelemetry(setTelemetry);
     try {
-      const results = await trainKMeans(rawData, data.featureNames, k, 25, onStep);
+      const results = await trainKMeans(
+        encodedMatrix,
+        data.featureNames,
+        k,
+        25,
+        onStep,
+      );
       setMetrics(results);
       setTrainingState("complete");
       saveTrainedModel({
@@ -39,7 +54,15 @@ export function useKMeansPage() {
       setError(err instanceof Error ? err.message : "Clustering failed");
       setTrainingState("error");
     }
-  }, [data.xTrain, data.featureNames, k, setTrainingState, setError, setMetrics, setTelemetry]);
+  }, [
+    data.xTrain,
+    data.featureNames,
+    k,
+    setTrainingState,
+    setError,
+    setMetrics,
+    setTelemetry,
+  ]);
 
   return { ...data, ...store, runTraining };
 }

@@ -24,7 +24,10 @@ export function IsolationForestDetailsTabs({ metrics }: Props) {
           <TopAnomaliesTable anomalies={metrics.topAnomalies} />
         </TabsContent>
         <TabsContent value="splits" className="pt-2">
-          <FeatureImportanceCard importances={metrics.featureImportance} />
+          <FeatureImportanceCard
+            importances={metrics.featureImportance}
+            title="Feature Split Counts (Anomaly Isolation Proxy)"
+          />
         </TabsContent>
       </Tabs>
     </div>

@@ -14,7 +14,9 @@ export function useIsolationForestPage() {
   const runTraining = useCallback(async () => {
     const { xTrain } = data;
     if (!xTrain || xTrain.shape[0] === 0) {
-      setError("Missing feature data. Please select features and split data first.");
+      setError(
+        "Missing feature data. Please select features and split data first.",
+      );
       return;
     }
     setTrainingState("training");
@@ -22,14 +24,23 @@ export function useIsolationForestPage() {
     setMetrics(null);
 
     const onStep = createTelemetryUpdater(
-      "anomaly", "Isolation Path Length Variance", "Var",
-      setTelemetry, "Estimated Anomalies", "pts",
+      "anomaly",
+      "Isolation Path Length Variance",
+      "Var",
+      setTelemetry,
+      "Estimated Anomalies",
+      "pts",
+      store.nEstimators,
     );
 
     try {
       const res = await trainIsolationForest(
         xTrain,
-        { nEstimators: store.nEstimators, maxSamples: 256, contamination: store.contamination },
+        {
+          nEstimators: store.nEstimators,
+          maxSamples: 256,
+          contamination: store.contamination,
+        },
         onStep,
       );
       setMetrics(res);
@@ -48,7 +59,15 @@ export function useIsolationForestPage() {
       setError(err instanceof Error ? err.message : "Training failed");
       setTrainingState("error");
     }
-  }, [data, store.nEstimators, store.contamination, setTrainingState, setError, setMetrics, setTelemetry]);
+  }, [
+    data,
+    store.nEstimators,
+    store.contamination,
+    setTrainingState,
+    setError,
+    setMetrics,
+    setTelemetry,
+  ]);
 
   return { ...data, ...store, canTrain, runTraining };
 }

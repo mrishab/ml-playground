@@ -1,6 +1,7 @@
 export function initRandomCentroids(data: number[][], k: number): number[][] {
   const n = data.length;
-  const clampedK = Math.max(2, Math.min(k, n));
+  if (n === 0) return [];
+  const clampedK = Math.max(1, Math.min(k, n));
   const chosen = new Set<number>();
 
   while (chosen.size < clampedK) {

@@ -32,6 +32,9 @@ export function handleEnsembleResult(
       ...params,
       task: isReg ? "Regression" : "Classification",
     },
-    metrics: res.metrics,
+    metrics: {
+      ...res.metrics,
+      featureImportance: res.featureImportance,
+    },
   });
 }

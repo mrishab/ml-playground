@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { useTrainingData } from "@/components/training/shared/useTrainingData";
-import { createTelemetryUpdater } from "@/components/training/shared/createTelemetryUpdater";
 import { saveTrainedModel } from "@/lib/models/saveTrainedModel";
 import { trainLDA } from "./trainLDA";
 import { useLDAStore } from "./useLDAStore";
@@ -16,20 +15,25 @@ export function useLDAPage() {
       setError("Missing required data. Please configure and split data first.");
       return;
     }
+    if (data.problemType === "regression") {
+      setError(
+        "Linear Discriminant Analysis (LDA) is a classification algorithm and requires categorical target classes. Please switch Problem Type to Classification or choose a regression model.",
+      );
+      return;
+    }
     setTrainingState("training");
     setError(null);
     setMetrics(null);
-    const onStep = createTelemetryUpdater(
-      "classification",
-      "Within/Between Scatter Ratio (Sw / Sb)",
-      "Scatter Ratio",
-      setTelemetry,
-      "Fisher Discriminant Variance (%)",
-      "%",
-      25,
-    );
+    setTelemetry(null);
+
     try {
-      const results = await trainLDA(xTrain, yTrain, xTest, yTest, targetColumn, onStep);
+      const results = await trainLDA(
+        xTrain,
+        yTrain,
+        xTest,
+        yTest,
+        targetColumn,
+      );
       setMetrics(results);
       setTrainingState("complete");
       saveTrainedModel({

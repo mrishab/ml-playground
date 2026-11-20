@@ -1,22 +1,26 @@
 import { Users } from "lucide-react";
 import { TrainingPageLayout } from "@/components/shared/TrainingPageLayout";
-import { ClassificationSummary } from "@/components/training/classification/ClassificationSummary";
-import { ClassificationDetailsTabs } from "@/components/training/classification/ClassificationDetailsTabs";
 import { KSelector } from "./KSelector";
 import { useKNNPage } from "./useKNNPage";
+import { KNNSummary, KNNDetails } from "./KNNResultViews";
 
 export function KNNPage() {
   const pageState = useKNNPage();
-  const { metrics, k, setK, effectiveMaxK, trainingState } = pageState;
+  const { k, setK, effectiveMaxK, trainingState, isReg } = pageState;
 
   return (
     <TrainingPageLayout
       {...pageState}
       title="K-Nearest Neighbors"
-      subtitle="Instance-based classifier"
+      subtitle={
+        isReg ? "Instance-based regression model" : "Instance-based classifier"
+      }
       icon={Users}
-      algorithmName="K-Nearest Neighbors"
+      algorithmName={
+        isReg ? "K-Nearest Neighbors (Regressor)" : "K-Nearest Neighbors"
+      }
       configOptions={[
+        { label: "Task", value: isReg ? "Regression" : "Classification" },
         { label: "K (Neighbors)", value: String(k) },
         { label: "Distance Metric", value: "Euclidean" },
       ]}
@@ -28,10 +32,8 @@ export function KNNPage() {
           disabled={trainingState === "training"}
         />
       }
-      summaryComponent={
-        <ClassificationSummary metrics={metrics!} direction="vertical" />
-      }
-      detailsComponent={<ClassificationDetailsTabs metrics={metrics!} />}
+      summaryComponent={<KNNSummary pageState={pageState} />}
+      detailsComponent={<KNNDetails pageState={pageState} />}
       nextStepProps={{
         message: "Model training complete.",
         linkTo: "/models",

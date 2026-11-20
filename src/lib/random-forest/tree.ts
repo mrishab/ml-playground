@@ -126,10 +126,7 @@ export class DecisionTree {
     };
   }
 
-  private calculateImpurity(
-    y: (string | number)[],
-    indices: number[],
-  ): number {
+  private calculateImpurity(y: (string | number)[], indices: number[]): number {
     if (indices.length === 0) return 0;
     if (this.options.task === "regression") {
       const vals = indices.map((i) => Number(y[i]) || 0);
@@ -150,16 +147,11 @@ export class DecisionTree {
     return 1 - sumSq;
   }
 
-  private createLeaf(
-    y: (string | number)[],
-    indices: number[],
-  ): TreeNode {
+  private createLeaf(y: (string | number)[], indices: number[]): TreeNode {
     if (this.options.task === "regression") {
       const vals = indices.map((i) => Number(y[i]) || 0);
       const mean =
-        vals.length > 0
-          ? vals.reduce((a, b) => a + b, 0) / vals.length
-          : 0;
+        vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
       return { isLeaf: true, sampleCount: indices.length, value: mean };
     }
     const probs: Record<string, number> = {};
@@ -178,7 +170,10 @@ export class DecisionTree {
     };
   }
 
-  predictSample(x: number[]): { value?: number; probabilities?: Record<string, number> } {
+  predictSample(x: number[]): {
+    value?: number;
+    probabilities?: Record<string, number>;
+  } {
     let curr = this.root;
     while (curr && !curr.isLeaf) {
       const feat = curr.featureIndex ?? 0;

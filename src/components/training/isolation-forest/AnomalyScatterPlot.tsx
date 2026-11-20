@@ -23,16 +23,22 @@ export function AnomalyScatterPlot({ metrics }: Props) {
         <CardTitle className="text-sm">2D Projection & Outlier Map</CardTitle>
         <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
           <span className="flex items-center gap-1">
-            <span className="h-2 w-2 rounded-full bg-chart-2 inline-block" /> Normal
+            <span className="h-2 w-2 rounded-full bg-chart-2 inline-block" />{" "}
+            Normal
           </span>
           <span className="flex items-center gap-1">
-            <span className="h-2 w-2 rounded-full bg-destructive inline-block" /> Anomaly
+            <span className="h-2 w-2 rounded-full bg-destructive inline-block" />{" "}
+            Anomaly
           </span>
         </div>
       </CardHeader>
       <CardContent>
         <div className="h-56 w-full relative bg-muted/20 rounded-md border border-border/50 p-2 overflow-hidden">
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
             {coords.map((pt, i) => {
               const cx = 5 + ((pt.x - minX) / rangeX) * 90;
               const cy = 95 - ((pt.y - minY) / rangeY) * 90;
@@ -42,7 +48,11 @@ export function AnomalyScatterPlot({ metrics }: Props) {
                   cx={cx}
                   cy={cy}
                   r={pt.isAnomaly ? 2.5 : 1.5}
-                  className={pt.isAnomaly ? "fill-destructive opacity-90" : "fill-chart-2 opacity-40"}
+                  className={
+                    pt.isAnomaly
+                      ? "fill-destructive opacity-90"
+                      : "fill-chart-2 opacity-40"
+                  }
                 />
               );
             })}

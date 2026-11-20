@@ -1,51 +1,52 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { formatNumber } from "@/lib/number";
 import { cn } from "@/lib/utils";
 import type { RegressionMetrics } from "@/types/regression";
+import { RegressionMetricCard, type MetricItem } from "./RegressionMetricCard";
 
 type MetricsSummaryProps = {
   metrics: RegressionMetrics;
   direction?: "horizontal" | "vertical";
 };
 
+const getItems = (m: RegressionMetrics): MetricItem[] => [
+  {
+    label: "Test MSE",
+    value: m.mse,
+    desc:
+      m.trainMse !== undefined
+        ? `Train: ${formatNumber(m.trainMse)}`
+        : "Mean Squared Error",
+    badge: "Test Split",
+  },
+  {
+    label: "Test RSE",
+    value: m.rse,
+    desc: "Residual Standard Error",
+    badge: "Test Split",
+  },
+  {
+    label: "Test R²",
+    value: m.rSquared,
+    desc:
+      m.trainRSquared !== undefined
+        ? `Train: ${formatNumber(m.trainRSquared)}`
+        : "Goodness of Fit",
+    badge: "Test Split",
+  },
+];
+
 export function MetricsSummary({
   metrics,
   direction = "horizontal",
 }: MetricsSummaryProps) {
-  const items = [
-    { label: "MSE", value: metrics.mse, desc: "Mean Squared Error" },
-    { label: "RSE", value: metrics.rse, desc: "Residual Standard Error" },
-    { label: "R²", value: metrics.rSquared, desc: "Goodness of Fit" },
-  ];
+  const items = getItems(metrics);
+  const layoutCls =
+    direction === "horizontal" ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1";
 
   return (
-    <div
-      className={cn(
-        "grid gap-4",
-        direction === "horizontal"
-          ? "grid-cols-1 sm:grid-cols-3"
-          : "grid-cols-1",
-      )}
-    >
+    <div className={cn("grid gap-4", layoutCls)}>
       {items.map((item) => (
-        <Card
-          key={item.label}
-          className="transition-[transform,box-shadow,border-color] duration-150 ease-out hover:shadow-md hover:-translate-y-0.5"
-        >
-          <CardContent className="pt-4 sm:pt-6 p-3 sm:p-6">
-            <div className="text-center">
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                {item.label}
-              </p>
-              <p className="text-2xl sm:text-3xl font-bold truncate mt-0.5">
-                {formatNumber(item.value)}
-              </p>
-              <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground">
-                {item.desc}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <RegressionMetricCard key={item.label} item={item} />
       ))}
     </div>
   );

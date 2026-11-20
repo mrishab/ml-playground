@@ -20,6 +20,21 @@ export async function extractProbaScores(
         ),
       );
       return map;
+    } else if (
+      arr.length > 0 &&
+      arr[0].length === 1 &&
+      uniqueLabels.length === 2
+    ) {
+      const map = new Map<string, number[]>();
+      map.set(
+        uniqueLabels[0],
+        arr.map((r) => 1 - r[0]),
+      );
+      map.set(
+        uniqueLabels[1],
+        arr.map((r) => r[0]),
+      );
+      return map;
     }
   } catch {
     // predictProba failed or not supported

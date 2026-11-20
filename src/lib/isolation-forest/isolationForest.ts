@@ -1,4 +1,9 @@
-import { buildITree, pathLength, c, type IsolationTreeNode } from "./isolationTree";
+import {
+  buildITree,
+  pathLength,
+  c,
+  type IsolationTreeNode,
+} from "./isolationTree";
 import type { IsolationForestParams } from "@/types/isolationForest";
 
 export class IsolationForest {
@@ -66,7 +71,11 @@ export class IsolationForest {
     });
   }
 
-  predict(X: number[][]): { scores: number[]; predictions: number[]; threshold: number } {
+  predict(X: number[][]): {
+    scores: number[];
+    predictions: number[];
+    threshold: number;
+  } {
     const scores = this.scoreSamples(X);
     const sorted = [...scores].sort((a, b) => b - a);
     const cutIdx = Math.max(

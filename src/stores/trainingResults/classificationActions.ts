@@ -1,5 +1,6 @@
 import type { StoreSet } from "./storeSetType";
 import type { ClassificationMetrics } from "@/types/classification";
+import type { RegressionMetrics } from "@/types/regression";
 import type { TrainingState } from "@/types/training";
 import type { LossTelemetry } from "@/types/loss";
 import { initialClassification, initialKNN } from "./initialStates";
@@ -9,12 +10,14 @@ export const createClassificationActions = (set: StoreSet) => ({
     set((s) => ({ knn: { ...s.knn, trainingState } })),
   setKNNMetrics: (metrics: ClassificationMetrics | null) =>
     set((s) => ({ knn: { ...s.knn, metrics } })),
+  setKNNRegressionMetrics: (regressionMetrics: RegressionMetrics | null) =>
+    set((s) => ({ knn: { ...s.knn, regressionMetrics } })),
   setKNNError: (error: string | null) =>
     set((s) => ({ knn: { ...s.knn, error } })),
   setKNNK: (k: number) => set((s) => ({ knn: { ...s.knn, k } })),
   setKNNTelemetry: (lossTelemetry: LossTelemetry | null) =>
     set((s) => ({ knn: { ...s.knn, lossTelemetry } })),
-  resetKNN: () => set({ knn: { ...initialKNN } }),
+  resetKNN: () => set({ knn: { ...initialKNN, regressionMetrics: null } }),
 
   setLDAState: (trainingState: TrainingState) =>
     set((s) => ({ lda: { ...s.lda, trainingState } })),

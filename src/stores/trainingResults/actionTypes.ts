@@ -14,6 +14,7 @@ export type TrainingResultsActions = {
 
   setKNNState: (state: TrainingState) => void;
   setKNNMetrics: (metrics: ClassificationMetrics | null) => void;
+  setKNNRegressionMetrics: (metrics: RegressionMetrics | null) => void;
   setKNNError: (error: string | null) => void;
   setKNNK: (k: number) => void;
   setKNNTelemetry: (telemetry: LossTelemetry | null) => void;

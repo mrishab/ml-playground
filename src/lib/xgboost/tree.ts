@@ -70,8 +70,10 @@ export class BoostTree {
       const step = Math.max(1, Math.floor(uniqueVals.length / 8));
       for (let v = 0; v < uniqueVals.length - 1; v += step) {
         const threshold = (uniqueVals[v] + uniqueVals[v + 1]) / 2;
-        let GL = 0, HL = 0;
-        let GR = 0, HR = 0;
+        let GL = 0,
+          HL = 0;
+        let GR = 0,
+          HR = 0;
         const left: number[] = [];
         const right: number[] = [];
 
@@ -91,7 +93,8 @@ export class BoostTree {
 
         const leftScore = (GL * GL) / (HL + this.options.lambda);
         const rightScore = (GR * GR) / (HR + this.options.lambda);
-        const gain = 0.5 * (leftScore + rightScore - rootScore) - this.options.gamma;
+        const gain =
+          0.5 * (leftScore + rightScore - rootScore) - this.options.gamma;
 
         if (gain > bestGain) {
           bestGain = gain;
@@ -107,8 +110,20 @@ export class BoostTree {
       return { isLeaf: true, weight: leafWeight, sampleCount: n };
     }
 
-    const leftChild = this.buildNode(X, gradients, hessians, bestLeft, depth + 1);
-    const rightChild = this.buildNode(X, gradients, hessians, bestRight, depth + 1);
+    const leftChild = this.buildNode(
+      X,
+      gradients,
+      hessians,
+      bestLeft,
+      depth + 1,
+    );
+    const rightChild = this.buildNode(
+      X,
+      gradients,
+      hessians,
+      bestRight,
+      depth + 1,
+    );
 
     return {
       isLeaf: false,

@@ -148,8 +148,7 @@ export class XGBoost {
       const raw = new Array(numClasses).fill(0);
       for (const { tree, classIndex } of this.trees) {
         if (classIndex !== undefined) {
-          raw[classIndex] +=
-            this.options.learningRate * tree.predictSample(x);
+          raw[classIndex] += this.options.learningRate * tree.predictSample(x);
         }
       }
       let bestIdx = 0;
@@ -170,8 +169,7 @@ export class XGBoost {
       const raw = new Array(numClasses).fill(0);
       for (const { tree, classIndex } of this.trees) {
         if (classIndex !== undefined) {
-          raw[classIndex] +=
-            this.options.learningRate * tree.predictSample(x);
+          raw[classIndex] += this.options.learningRate * tree.predictSample(x);
         }
       }
       const maxVal = Math.max(...raw);

@@ -37,7 +37,9 @@ export function IsolationForestConfigCard({
         </div>
         <div className="space-y-1.5">
           <div className="flex justify-between text-xs">
-            <Label>Expected Contamination ({Math.round(contamination * 100)}%)</Label>
+            <Label>
+              Expected Contamination ({Math.round(contamination * 100)}%)
+            </Label>
             <span className="text-muted-foreground">3% – 25%</span>
           </div>
           <Slider

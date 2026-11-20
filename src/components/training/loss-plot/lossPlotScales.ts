@@ -27,9 +27,15 @@ export interface ScaledPoint {
   secondary?: number;
 }
 
-export function buildScales(history: LossPoint[], totalSteps: number, dim: PlotDimensions) {
+export function buildScales(
+  history: LossPoint[],
+  totalSteps: number,
+  dim: PlotDimensions,
+) {
   const maxStep = Math.max(totalSteps, history[history.length - 1]?.step ?? 1);
-  const valLosses = history.map((h) => h.valLoss).filter((v): v is number => typeof v === "number");
+  const valLosses = history
+    .map((h) => h.valLoss)
+    .filter((v): v is number => typeof v === "number");
   const allLosses = history.map((h) => h.loss).concat(valLosses);
 
   const initialLoss = history[0]?.loss ?? 1;
@@ -42,8 +48,10 @@ export function buildScales(history: LossPoint[], totalSteps: number, dim: PlotD
   const plotW = dim.width - dim.padLeft - dim.padRight;
   const plotH = dim.height - dim.padTop - dim.padBottom;
 
-  const toX = (step: number) => dim.padLeft + ((step - 1) / (maxStep - 1 || 1)) * plotW;
-  const toY = (val: number) => dim.padTop + (1 - (val - minLoss) / (maxLoss - minLoss || 1)) * plotH;
+  const toX = (step: number) =>
+    dim.padLeft + ((step - 1) / (maxStep - 1 || 1)) * plotW;
+  const toY = (val: number) =>
+    dim.padTop + (1 - (val - minLoss) / (maxLoss - minLoss || 1)) * plotH;
 
   return { toX, toY, minLoss, maxLoss, plotW, plotH, maxStep };
 }

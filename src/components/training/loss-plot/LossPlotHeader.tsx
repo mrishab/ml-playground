@@ -7,6 +7,13 @@ export function LossPlotHeader({ telemetry }: { telemetry: LossTelemetry }) {
   const currentLoss =
     telemetry.history[telemetry.history.length - 1]?.loss ?? 0;
 
+  const isTreeBased =
+    metricName.includes("Ensemble") ||
+    metricName.includes("Residual") ||
+    metricName.includes("Boosting");
+  const stepUnit = isTreeBased ? "trees" : "steps";
+  const finalSteps = currentStep || totalSteps;
+
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 border-b pb-3">
       <div className="flex items-center gap-2">
@@ -21,13 +28,15 @@ export function LossPlotHeader({ telemetry }: { telemetry: LossTelemetry }) {
           {isComplete ? (
             <>
               <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-              <span>Converged ({totalSteps} steps)</span>
+              <span>
+                Converged ({finalSteps} {stepUnit})
+              </span>
             </>
           ) : (
             <>
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
               <span>
-                Step {currentStep} / {totalSteps}
+                {isTreeBased ? "Tree" : "Step"} {currentStep} / {totalSteps}
               </span>
             </>
           )}

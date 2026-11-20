@@ -24,6 +24,7 @@ export type ClassificationModelState = BaseModelState & {
 
 export type KNNState = ClassificationModelState & {
   k: number;
+  regressionMetrics?: RegressionMetrics | null;
 };
 
 export type EnsembleModelState = BaseModelState & {

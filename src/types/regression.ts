@@ -1,8 +1,12 @@
 export type RegressionMetrics = {
-  // Core metrics
+  // Core metrics (evaluated on Test set)
   mse: number;
   rse: number;
   rSquared: number;
+
+  // Train set metrics for comparison
+  trainMse?: number;
+  trainRSquared?: number;
 
   // Intermediate values for breakdown
   residuals: number[];

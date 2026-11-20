@@ -2,7 +2,9 @@ import { useTrainingResultsStore } from "@/stores/trainingResults";
 
 export function useRandomForestStore() {
   const modelState = useTrainingResultsStore((s) => s.randomForest);
-  const setTrainingState = useTrainingResultsStore((s) => s.setRandomForestState);
+  const setTrainingState = useTrainingResultsStore(
+    (s) => s.setRandomForestState,
+  );
   const setClassificationMetrics = useTrainingResultsStore(
     (s) => s.setRandomForestClassificationMetrics,
   );
@@ -10,7 +12,9 @@ export function useRandomForestStore() {
     (s) => s.setRandomForestRegressionMetrics,
   );
   const setError = useTrainingResultsStore((s) => s.setRandomForestError);
-  const setTelemetry = useTrainingResultsStore((s) => s.setRandomForestTelemetry);
+  const setTelemetry = useTrainingResultsStore(
+    (s) => s.setRandomForestTelemetry,
+  );
   const setParams = useTrainingResultsStore((s) => s.setRandomForestParams);
   const reset = useTrainingResultsStore((s) => s.resetRandomForest);
 
