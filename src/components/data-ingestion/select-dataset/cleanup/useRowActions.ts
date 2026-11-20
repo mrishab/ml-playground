@@ -17,22 +17,32 @@ export function useRowActions({ columns, values, onApply }: RowActionParams) {
     onApply(nextVals, columns, `Removed ${removed} duplicate row(s)`);
   }, [columns, values, onApply]);
 
-  const handleOutlierAction = useCallback((col: string, strat: OutlierStrategy) => {
-    const idx = columns.indexOf(col);
-    if (idx === -1) return;
-    const nextVals = handleOutliers(values, idx, strat);
-    onApply(nextVals, columns, `${strat === "clip" ? "Clipped" : "Dropped"} outliers in "${col}"`);
-  }, [columns, values, onApply]);
+  const handleOutlierAction = useCallback(
+    (col: string, strat: OutlierStrategy) => {
+      const idx = columns.indexOf(col);
+      if (idx === -1) return;
+      const nextVals = handleOutliers(values, idx, strat);
+      onApply(
+        nextVals,
+        columns,
+        `${strat === "clip" ? "Clipped" : "Dropped"} outliers in "${col}"`,
+      );
+    },
+    [columns, values, onApply],
+  );
 
-  const handleFilter = useCallback((filter: RowFilter, keep: boolean) => {
-    const nextVals = applyRowFilter(columns, values, filter, keep);
-    const affected = values.length - nextVals.length;
-    onApply(
-      nextVals,
-      columns,
-      `${keep ? "Filtered to" : "Dropped"} rows where ${filter.column} ${filter.operator} "${filter.value}" (-${affected} rows)`,
-    );
-  }, [columns, values, onApply]);
+  const handleFilter = useCallback(
+    (filter: RowFilter, keep: boolean) => {
+      const nextVals = applyRowFilter(columns, values, filter, keep);
+      const affected = values.length - nextVals.length;
+      onApply(
+        nextVals,
+        columns,
+        `${keep ? "Filtered to" : "Dropped"} rows where ${filter.column} ${filter.operator} "${filter.value}" (-${affected} rows)`,
+      );
+    },
+    [columns, values, onApply],
+  );
 
   return { handleRemoveDuplicates, handleOutlierAction, handleFilter };
 }

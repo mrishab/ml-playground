@@ -19,10 +19,7 @@ export function useCleanupDataExtract(df: DataFrame | null) {
     [columns, values],
   );
 
-  const duplicateCount = useMemo(
-    () => countDuplicateRows(values),
-    [values],
-  );
+  const duplicateCount = useMemo(() => countDuplicateRows(values), [values]);
 
   const numericColumns = useMemo(() => {
     return columns.filter((_col, idx) => {

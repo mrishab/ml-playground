@@ -6,7 +6,9 @@ export function useDuplicatesOutliersForm(
   onRemoveDuplicates: () => void,
   onHandleOutliers: (col: string, strat: OutlierStrategy) => void,
 ) {
-  const [selectedCol, setSelectedCol] = useState<string>(numericColumns[0] || "");
+  const [selectedCol, setSelectedCol] = useState<string>(
+    numericColumns[0] || "",
+  );
   const [strategy, setStrategy] = useState<OutlierStrategy>("clip");
 
   const handleOutlierSubmit = () => {

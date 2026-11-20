@@ -1,7 +1,10 @@
 import type { RowFilter } from "@/types/dataCleanup";
 import { isMissingValue } from "./missingCheck";
 
-export function evaluateFilterMatch(rowVal: unknown, filter: RowFilter): boolean {
+export function evaluateFilterMatch(
+  rowVal: unknown,
+  filter: RowFilter,
+): boolean {
   const { operator, value } = filter;
   if (operator === "is_null") {
     return isMissingValue(rowVal);

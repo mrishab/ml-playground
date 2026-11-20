@@ -13,10 +13,18 @@ interface DatasetViewerTabsProps {
   columns: DataTableColumnDef<DatasetRowData>[];
 }
 
-export function DatasetViewerTabs({ selectedDataset, rows, columns }: DatasetViewerTabsProps) {
+export function DatasetViewerTabs({
+  selectedDataset,
+  rows,
+  columns,
+}: DatasetViewerTabsProps) {
   return (
     <>
-      <DatasetViewerHeader selectedDataset={selectedDataset} rowCount={rows.length} colCount={columns.length} />
+      <DatasetViewerHeader
+        selectedDataset={selectedDataset}
+        rowCount={rows.length}
+        colCount={columns.length}
+      />
       <Tabs defaultValue="table" className="flex-1">
         <TabsList>
           <TabsTrigger value="table" className="gap-2">

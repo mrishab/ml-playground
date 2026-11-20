@@ -4,7 +4,11 @@ import type { ImputationStrategy, MissingSummary } from "@/types/dataCleanup";
 export function useImputeForm(
   missingSummary: MissingSummary,
   columns: string[],
-  onImpute: (col: string, strat: ImputationStrategy, constVal?: unknown) => void,
+  onImpute: (
+    col: string,
+    strat: ImputationStrategy,
+    constVal?: unknown,
+  ) => void,
 ) {
   const missingCols = useMemo(() => {
     return missingSummary.byColumn.filter((c) => c.missing > 0);
@@ -15,11 +19,16 @@ export function useImputeForm(
   const [strategy, setStrategy] = useState<ImputationStrategy>("mean");
   const [constantVal, setConstantVal] = useState<string>("");
 
-  const currentMissing = missingSummary.byColumn.find((c) => c.column === selectedCol)?.missing ?? 0;
+  const currentMissing =
+    missingSummary.byColumn.find((c) => c.column === selectedCol)?.missing ?? 0;
 
   const handleSubmit = () => {
     if (!selectedCol) return;
-    onImpute(selectedCol, strategy, strategy === "constant" ? constantVal : undefined);
+    onImpute(
+      selectedCol,
+      strategy,
+      strategy === "constant" ? constantVal : undefined,
+    );
   };
 
   return {

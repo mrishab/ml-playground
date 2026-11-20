@@ -1,6 +1,12 @@
 import { ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { OutlierStrategy } from "@/types/dataCleanup";
 
 interface OutliersSectionProps {
@@ -21,11 +27,24 @@ export function OutliersSection(p: OutliersSectionProps) {
       </h4>
       <div className="grid grid-cols-2 gap-2">
         <Select value={p.selectedCol} onValueChange={p.onSelectCol}>
-          <SelectTrigger className="h-8 text-xs"><SelectValue placeholder="Column" /></SelectTrigger>
-          <SelectContent>{p.numericColumns.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue placeholder="Column" />
+          </SelectTrigger>
+          <SelectContent>
+            {p.numericColumns.map((c) => (
+              <SelectItem key={c} value={c}>
+                {c}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
-        <Select value={p.strategy} onValueChange={(v) => p.onStrategyChange(v as OutlierStrategy)}>
-          <SelectTrigger className="h-8 text-xs"><SelectValue /></SelectTrigger>
+        <Select
+          value={p.strategy}
+          onValueChange={(v) => p.onStrategyChange(v as OutlierStrategy)}
+        >
+          <SelectTrigger className="h-8 text-xs">
+            <SelectValue />
+          </SelectTrigger>
           <SelectContent>
             <SelectItem value="clip">Clip Bounds</SelectItem>
             <SelectItem value="drop">Drop Rows</SelectItem>

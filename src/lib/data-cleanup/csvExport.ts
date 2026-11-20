@@ -1,9 +1,6 @@
 import Papa from "papaparse";
 
-export function serializeToCSV(
-  columns: string[],
-  values: unknown[][],
-): string {
+export function serializeToCSV(columns: string[], values: unknown[][]): string {
   return Papa.unparse({
     fields: columns,
     data: values,

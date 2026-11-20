@@ -19,11 +19,23 @@ export function useRowFilterForm(
   const matchCount = useMemo(() => {
     const colIdx = columns.indexOf(column);
     if (colIdx === -1) return 0;
-    return values.filter((row) => evaluateFilterMatch(row[colIdx], filterConfig)).length;
+    return values.filter((row) =>
+      evaluateFilterMatch(row[colIdx], filterConfig),
+    ).length;
   }, [columns, values, column, filterConfig]);
 
   const handleKeep = () => onFilter(filterConfig, true);
   const handleDrop = () => onFilter(filterConfig, false);
 
-  return { column, setColumn, operator, setOperator, value, setValue, matchCount, handleKeep, handleDrop };
+  return {
+    column,
+    setColumn,
+    operator,
+    setOperator,
+    value,
+    setValue,
+    matchCount,
+    handleKeep,
+    handleDrop,
+  };
 }

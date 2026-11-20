@@ -1,6 +1,9 @@
 import { DATASETS } from "@/components/data-ingestion/select-dataset/useDatasetSelect";
 import { fetchAndParseDataset } from "./fetchDataset";
+import { loadDatasetConfig } from "@/lib/datasetConfig";
+import { useMLConfigStore } from "@/stores/mlConfig";
 import type { DataFrame } from "danfojs";
+import type { ProblemType } from "@/types/dataset";
 
 interface LoadStandardOptions {
   datasetName: string;
@@ -27,6 +30,24 @@ export async function loadStandardDataset({
   try {
     const df = await fetchAndParseDataset(dataset.file);
     setDf(df);
+
+    // Auto-set problem type and default configuration from dataset
+    if (dataset.problemType) {
+      useMLConfigStore
+        .getState()
+        .setProblemType(dataset.problemType as ProblemType);
+    }
+
+    try {
+      const config = await loadDatasetConfig(dataset.file);
+      if (config) {
+        useMLConfigStore.getState().setProblemType(config.problemType);
+        useMLConfigStore.getState().setTargetColumn(config.targetColumn);
+        useMLConfigStore.getState().setFeatures(config.features);
+      }
+    } catch {
+      // Config mapping is optional enhancement
+    }
   } catch (err) {
     const message =
       err instanceof Error ? err.message : "Failed to load dataset";

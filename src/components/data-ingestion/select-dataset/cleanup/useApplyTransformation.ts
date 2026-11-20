@@ -16,7 +16,14 @@ export function useApplyTransformation(df: DataFrame | null) {
   const setDf = useDatasetStore((s) => s.setDf);
 
   const applyTransformation = useCallback(
-    ({ newValues, newColumns, description, undoStack, setUndoStack, setHistory }: TransformationParams) => {
+    ({
+      newValues,
+      newColumns,
+      description,
+      undoStack,
+      setUndoStack,
+      setHistory,
+    }: TransformationParams) => {
       if (!df) return;
       setUndoStack([...undoStack, df]);
       const nextDf = new DataFrame(newValues, { columns: newColumns });

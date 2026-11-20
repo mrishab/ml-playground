@@ -11,7 +11,10 @@ export function useDropNullForm(
   const [threshold, setThreshold] = useState<number>(50);
 
   const handleDropRowsSubmit = () => {
-    onDropRows(rowStrategy, rowStrategy === "selected" ? selectedCol : undefined);
+    onDropRows(
+      rowStrategy,
+      rowStrategy === "selected" ? selectedCol : undefined,
+    );
   };
 
   const handleDropColsSubmit = () => {

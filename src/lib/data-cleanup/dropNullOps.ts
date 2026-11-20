@@ -10,7 +10,11 @@ export function dropNullRows(
     if (strategy === "all") {
       return !row.every(isMissingValue);
     }
-    if (strategy === "selected" && targetColIndices && targetColIndices.length > 0) {
+    if (
+      strategy === "selected" &&
+      targetColIndices &&
+      targetColIndices.length > 0
+    ) {
       return !targetColIndices.some((idx) => isMissingValue(row[idx]));
     }
     // "any"

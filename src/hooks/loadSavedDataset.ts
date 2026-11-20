@@ -1,6 +1,7 @@
 import type { DataFrame } from "danfojs";
 import type { SavedDataset } from "@/types/savedDataset";
 import { createDataFrameFromSaved } from "@/lib/datasets/dataFrameFromSaved";
+import { useMLConfigStore } from "@/stores/mlConfig";
 
 interface LoadSavedParams {
   saved: SavedDataset;
@@ -19,7 +20,10 @@ export function loadSavedDataset({
 }: LoadSavedParams) {
   setError(null);
   setLoading(false);
+  onReset();
   const df = createDataFrameFromSaved(saved);
   setDf(df);
-  onReset();
+  if (saved.problemType) {
+    useMLConfigStore.getState().setProblemType(saved.problemType);
+  }
 }

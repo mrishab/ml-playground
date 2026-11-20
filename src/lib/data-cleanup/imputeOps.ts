@@ -17,7 +17,10 @@ export function computeColumnMean(values: unknown[][], colIdx: number): number {
   return count > 0 ? sum / count : 0;
 }
 
-export function computeColumnMedian(values: unknown[][], colIdx: number): number {
+export function computeColumnMedian(
+  values: unknown[][],
+  colIdx: number,
+): number {
   const nums: number[] = [];
   for (let r = 0; r < values.length; r++) {
     const val = values[r]?.[colIdx];
@@ -32,7 +35,10 @@ export function computeColumnMedian(values: unknown[][], colIdx: number): number
   return nums.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 }
 
-export function computeColumnMode(values: unknown[][], colIdx: number): unknown {
+export function computeColumnMode(
+  values: unknown[][],
+  colIdx: number,
+): unknown {
   const counts = new Map<string, { raw: unknown; count: number }>();
   for (let r = 0; r < values.length; r++) {
     const val = values[r]?.[colIdx];
@@ -62,7 +68,8 @@ export function imputeColumn(
 ): unknown[][] {
   let fillValue: unknown = constantVal ?? 0;
   if (strategy === "mean") fillValue = computeColumnMean(values, colIdx);
-  else if (strategy === "median") fillValue = computeColumnMedian(values, colIdx);
+  else if (strategy === "median")
+    fillValue = computeColumnMedian(values, colIdx);
   else if (strategy === "mode") fillValue = computeColumnMode(values, colIdx);
 
   const result: unknown[][] = [];

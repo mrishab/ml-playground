@@ -21,7 +21,9 @@ export function CleanupBannerStats({
         <span className="font-semibold text-foreground">
           {totalMissing} ({missingPercent.toFixed(1)}%)
         </span>
-        <span className="text-muted-foreground">across {columnsWithMissing} col(s)</span>
+        <span className="text-muted-foreground">
+          across {columnsWithMissing} col(s)
+        </span>
       </div>
       <div className="flex items-center gap-1.5 text-muted-foreground">
         <Copy className="h-3.5 w-3.5" />

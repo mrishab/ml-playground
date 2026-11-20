@@ -1,7 +1,14 @@
 import type { CleanupHistoryEntry } from "./dataCleanup";
+import type { ProblemType } from "@/stores/mlConfig";
 
 export type DatasetSource = "built-in" | "uploaded" | "cleaned" | "custom";
-export type ColumnDtype = "number" | "string" | "boolean" | "float32" | "int32" | string;
+export type ColumnDtype =
+  | "number"
+  | "string"
+  | "boolean"
+  | "float32"
+  | "int32"
+  | string;
 export type ColumnDtypeMap = Record<string, ColumnDtype>;
 
 export type SavedDataset = {
@@ -24,5 +31,6 @@ export type SavedDataset = {
     duplicateRows: number;
   };
   history?: CleanupHistoryEntry[];
+  problemType?: ProblemType;
   sizeBytes: number;
 };

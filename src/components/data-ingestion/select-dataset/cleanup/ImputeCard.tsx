@@ -1,6 +1,12 @@
 import { Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import type { ImputationStrategy, MissingSummary } from "@/types/dataCleanup";
 import { useImputeForm } from "./useImputeForm";
 import { ImputeFormFields } from "./ImputeFormFields";
@@ -8,10 +14,18 @@ import { ImputeFormFields } from "./ImputeFormFields";
 interface ImputeCardProps {
   columns: string[];
   missingSummary: MissingSummary;
-  onImpute: (col: string, strat: ImputationStrategy, constVal?: unknown) => void;
+  onImpute: (
+    col: string,
+    strat: ImputationStrategy,
+    constVal?: unknown,
+  ) => void;
 }
 
-export function ImputeCard({ columns, missingSummary, onImpute }: ImputeCardProps) {
+export function ImputeCard({
+  columns,
+  missingSummary,
+  onImpute,
+}: ImputeCardProps) {
   const form = useImputeForm(missingSummary, columns, onImpute);
 
   return (
@@ -21,7 +35,9 @@ export function ImputeCard({ columns, missingSummary, onImpute }: ImputeCardProp
           <Wand2 className="h-4 w-4 text-primary" />
           Impute Missing Values
         </CardTitle>
-        <CardDescription>Fill null cells with statistical measures or constants</CardDescription>
+        <CardDescription>
+          Fill null cells with statistical measures or constants
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <ImputeFormFields
@@ -40,7 +56,8 @@ export function ImputeCard({ columns, missingSummary, onImpute }: ImputeCardProp
           className="w-full sm:w-auto h-9 gap-2 transition-[transform,background-color,border-color,color] duration-150 ease-out active:scale-[0.98]"
         >
           <Wand2 className="h-4 w-4" />
-          Impute {form.currentMissing > 0 ? `(${form.currentMissing} nulls)` : ""}
+          Impute{" "}
+          {form.currentMissing > 0 ? `(${form.currentMissing} nulls)` : ""}
         </Button>
       </CardContent>
     </Card>

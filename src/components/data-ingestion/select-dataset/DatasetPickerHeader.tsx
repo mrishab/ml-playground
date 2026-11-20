@@ -9,7 +9,8 @@ export function DatasetPickerHeader() {
           Select, Upload, or Manage Datasets
         </p>
         <p className="text-xs text-muted-foreground mt-0.5">
-          Choose a benchmark dataset, upload custom CSVs, or manage saved versions:
+          Choose a benchmark dataset, upload custom CSVs, or manage saved
+          versions:
         </p>
       </div>
       <Link

@@ -28,16 +28,34 @@ export function useDatasetLoader() {
 
     const custom = customDatasets.find((d) => d.name === selectedDataset);
     if (custom) {
-      loadCustomDataset({ custom, setDf, setLoading, setError, onReset: resetAll });
+      loadCustomDataset({
+        custom,
+        setDf,
+        setLoading,
+        setError,
+        onReset: resetAll,
+      });
       return;
     }
 
     const saved = getSavedDatasets().find((d) => d.name === selectedDataset);
     if (saved) {
-      loadSavedDataset({ saved, setDf, setLoading, setError, onReset: resetAll });
+      loadSavedDataset({
+        saved,
+        setDf,
+        setLoading,
+        setError,
+        onReset: resetAll,
+      });
       return;
     }
 
-    loadStandardDataset({ datasetName: selectedDataset, setLoading, setError, setDf, onReset: resetAll });
+    loadStandardDataset({
+      datasetName: selectedDataset,
+      setLoading,
+      setError,
+      setDf,
+      onReset: resetAll,
+    });
   }, [selectedDataset, customDatasets]);
 }
