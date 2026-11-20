@@ -3,6 +3,7 @@ import type { RegressionMetrics } from "./regression";
 import type { ClassificationMetrics } from "./classification";
 import type { KMeansMetrics } from "./kmeans";
 import type { IsolationForestMetrics } from "./isolationForest";
+import type { PCAMetrics } from "./pca";
 import type { LossPoint } from "./loss";
 
 export type AlgorithmType =
@@ -13,7 +14,8 @@ export type AlgorithmType =
   | "clustering"
   | "random-forest"
   | "xgboost"
-  | "isolation-forest";
+  | "isolation-forest"
+  | "pca";
 
 export type HyperparameterValue = string | number | boolean;
 export type ModelHyperparameters = Record<string, HyperparameterValue>;
@@ -60,6 +62,7 @@ export type SavedModel = {
   classificationMetrics?: ClassificationMetrics;
   kmeansMetrics?: KMeansMetrics;
   isolationForestMetrics?: IsolationForestMetrics;
+  pcaMetrics?: PCAMetrics;
   featureAnalysis?: FeatureStatSummary[];
   modelArtifacts?: ModelArtifactDetails;
   lossHistory?: LossPoint[];
@@ -74,7 +77,8 @@ export type BuildModelOptions = {
     | RegressionMetrics
     | ClassificationMetrics
     | KMeansMetrics
-    | IsolationForestMetrics;
+    | IsolationForestMetrics
+    | PCAMetrics;
   k?: number;
   customName?: string;
 };

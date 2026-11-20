@@ -4,6 +4,7 @@ import type { TrainingState } from "@/types/training";
 import type { LossTelemetry } from "@/types/loss";
 import type { KMeansMetrics } from "@/types/kmeans";
 import type { IsolationForestMetrics } from "@/types/isolationForest";
+import type { PCAMetrics } from "@/types/pca";
 
 export type TrainingResultsActions = {
   setLinearRegressionState: (state: TrainingState) => void;
@@ -74,6 +75,13 @@ export type TrainingResultsActions = {
     nEstimators?: number;
   }) => void;
   resetIsolationForest: () => void;
+
+  setPCAState: (state: TrainingState) => void;
+  setPCAMetrics: (metrics: PCAMetrics | null) => void;
+  setPCAError: (error: string | null) => void;
+  setPCANComponents: (nComponents: number) => void;
+  setPCAStandardize: (standardize: boolean) => void;
+  resetPCA: () => void;
 
   resetAll: () => void;
 };

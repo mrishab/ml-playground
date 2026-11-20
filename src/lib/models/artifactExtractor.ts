@@ -3,6 +3,7 @@ import type { RegressionMetrics } from "@/types/regression";
 import type { ClassificationMetrics } from "@/types/classification";
 import type { KMeansMetrics } from "@/types/kmeans";
 import type { IsolationForestMetrics } from "@/types/isolationForest";
+import type { PCAMetrics } from "@/types/pca";
 
 export function extractModelArtifacts(
   algorithm: AlgorithmType,
@@ -12,9 +13,20 @@ export function extractModelArtifacts(
     | RegressionMetrics
     | ClassificationMetrics
     | KMeansMetrics
-    | IsolationForestMetrics,
+    | IsolationForestMetrics
+    | PCAMetrics,
   k?: number,
 ): ModelArtifactDetails {
+  if (algorithm === "pca") {
+    const pca = metrics as PCAMetrics;
+    return {
+      k: pca.nComponents,
+      coefficients: pca.components[0]?.loadings.map((l) => ({
+        feature: l.feature,
+        weight: Number(l.weight.toFixed(4)),
+      })),
+    };
+  }
   if (algorithm === "clustering") {
     const km = metrics as KMeansMetrics;
     return {

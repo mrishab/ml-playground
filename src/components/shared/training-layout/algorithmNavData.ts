@@ -7,6 +7,7 @@ import {
   Trees,
   Zap,
   ShieldAlert,
+  Sparkles,
 } from "lucide-react";
 
 export type AlgTask = "regression" | "classification" | "both" | "unsupervised";
@@ -50,6 +51,12 @@ export const ALGORITHMS: NavAlg[] = [
     path: "/train/isolation-forest",
     label: "Iso Forest",
     icon: ShieldAlert,
+    task: "unsupervised",
+  },
+  {
+    path: "/train/pca",
+    label: "PCA",
+    icon: Sparkles,
     task: "unsupervised",
   },
 ];

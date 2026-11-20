@@ -1,73 +1,26 @@
 import type { SavedModel } from "@/types/savedModel";
+import { RegressionMetricsGrid } from "./metrics/RegressionMetricsGrid";
+import { ClassificationMetricsGrid } from "./metrics/ClassificationMetricsGrid";
+import { KMeansMetricsGrid } from "./metrics/KMeansMetricsGrid";
+import { IsolationForestMetricsGrid } from "./metrics/IsolationForestMetricsGrid";
+import { PCAMetricsGrid } from "./metrics/PCAMetricsGrid";
 
 export function ModelMetricsTab({ model }: { model: SavedModel }) {
-  const reg = model.regressionMetrics;
-  const cls = model.classificationMetrics;
-  const km = model.kmeansMetrics;
-  const iso = model.isolationForestMetrics;
+  const {
+    regressionMetrics: reg,
+    classificationMetrics: cls,
+    kmeansMetrics: km,
+    isolationForestMetrics: iso,
+    pcaMetrics: pca,
+  } = model;
 
   return (
     <div className="flex flex-col gap-3 py-2 text-xs">
-      {reg && (
-        <div className="grid grid-cols-3 gap-2">
-          <MetricBox label="R² Score" val={reg.rSquared.toFixed(4)} />
-          <MetricBox label="MSE" val={reg.mse.toFixed(4)} />
-          <MetricBox label="RMSE" val={Math.sqrt(reg.mse).toFixed(4)} />
-        </div>
-      )}
-      {cls && (
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-          <MetricBox
-            label="Accuracy"
-            val={`${(cls.accuracy * 100).toFixed(1)}%`}
-          />
-          <MetricBox
-            label="Weighted F1"
-            val={`${(((cls.weightedF1 ?? cls.macroF1) as number) * 100).toFixed(1)}%`}
-          />
-          <MetricBox
-            label="Macro F1"
-            val={`${(cls.macroF1 * 100).toFixed(1)}%`}
-          />
-          <MetricBox
-            label="Precision (wgt)"
-            val={`${(((cls.weightedPrecision ?? cls.macroPrecision) as number) * 100).toFixed(1)}%`}
-          />
-          <MetricBox
-            label="Recall (wgt)"
-            val={`${(((cls.weightedRecall ?? cls.macroRecall) as number) * 100).toFixed(1)}%`}
-          />
-        </div>
-      )}
-      {km && (
-        <div className="grid grid-cols-2 gap-2">
-          <MetricBox label="Clusters (k)" val={String(km.k)} />
-          <MetricBox label="Inertia" val={km.inertia.toFixed(2)} />
-        </div>
-      )}
-      {iso && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <MetricBox
-            label="Anomalies"
-            val={`${iso.anomalyCount} / ${iso.totalSamples}`}
-          />
-          <MetricBox
-            label="Outlier Rate"
-            val={`${(iso.anomalyRate * 100).toFixed(1)}%`}
-          />
-          <MetricBox label="Threshold" val={iso.thresholdScore.toFixed(3)} />
-          <MetricBox label="Mean Score" val={iso.meanScore.toFixed(3)} />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function MetricBox({ label, val }: { label: string; val: string }) {
-  return (
-    <div className="rounded border border-border/70 p-2 bg-muted/20">
-      <span className="text-muted-foreground block text-[10px]">{label}</span>
-      <span className="font-mono text-sm font-semibold">{val}</span>
+      {reg && <RegressionMetricsGrid reg={reg} />}
+      {cls && <ClassificationMetricsGrid cls={cls} />}
+      {km && <KMeansMetricsGrid km={km} />}
+      {iso && <IsolationForestMetricsGrid iso={iso} />}
+      {pca && <PCAMetricsGrid pca={pca} />}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import type { SavedModel } from "@/types/savedModel";
+import { ArtifactCoefficientsList } from "./ArtifactCoefficientsList";
 
 export function ModelArtifactsTab({ model }: { model: SavedModel }) {
   const artifacts = model.modelArtifacts;
@@ -25,26 +26,7 @@ export function ModelArtifactsTab({ model }: { model: SavedModel }) {
       )}
 
       {artifacts.coefficients && artifacts.coefficients.length > 0 && (
-        <div className="rounded-lg border border-border/70 p-2.5 bg-muted/10">
-          <span className="text-muted-foreground block text-[11px] mb-2 font-semibold">
-            Feature Weights / Coefficients
-          </span>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-            {artifacts.coefficients.map((c) => (
-              <div
-                key={c.feature}
-                className="flex justify-between border rounded p-1.5 bg-background font-mono text-[11px]"
-              >
-                <span className="text-muted-foreground truncate">
-                  {c.feature}
-                </span>
-                <span className="font-semibold text-foreground">
-                  {c.weight}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ArtifactCoefficientsList coefficients={artifacts.coefficients} />
       )}
 
       {artifacts.classes && (

@@ -33,9 +33,7 @@ export function TrainingPageLayout(props: TrainingPageLayoutProps) {
     props.nextStepProps,
     props.onRun,
   );
-  const showLiveLoss = Boolean(
-    props.lossTelemetry && props.lossTelemetry.history.length > 0,
-  );
+  const showLiveLoss = Boolean(props.lossTelemetry?.history?.length);
 
   return (
     <PageLayout

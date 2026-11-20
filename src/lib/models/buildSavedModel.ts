@@ -3,6 +3,7 @@ import type { RegressionMetrics } from "@/types/regression";
 import type { ClassificationMetrics } from "@/types/classification";
 import type { KMeansMetrics } from "@/types/kmeans";
 import type { IsolationForestMetrics } from "@/types/isolationForest";
+import type { PCAMetrics } from "@/types/pca";
 import { useDatasetStore } from "@/stores/dataset";
 import { useMLConfigStore } from "@/stores/mlConfig";
 import { extractFeatureAnalysis } from "./analysisExtractor";
@@ -18,6 +19,7 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
   const isClassificationMetric = "accuracy" in opts.metrics;
   const isKMeansMetric = opts.algorithm === "clustering";
   const isIsolationMetric = opts.algorithm === "isolation-forest";
+  const isPcaMetric = opts.algorithm === "pca";
 
   const partial: Omit<SavedModel, "sizeBytes"> = {
     id: `mod_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -34,7 +36,10 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
       shuffle: ml.shuffle,
       trainSamples: ml.xTrain?.shape[0] ?? 0,
       testSamples: ml.xTest?.shape[0] ?? 0,
-      targetColumn: isKMeansMetric || isIsolationMetric ? "" : ml.targetColumn,
+      targetColumn:
+        isKMeansMetric || isIsolationMetric || isPcaMetric
+          ? ""
+          : ml.targetColumn,
       features: featureNames,
       selectedFeatures: ml.selectedFeatures,
     },
@@ -48,6 +53,7 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
     isolationForestMetrics: isIsolationMetric
       ? (opts.metrics as IsolationForestMetrics)
       : undefined,
+    pcaMetrics: isPcaMetric ? (opts.metrics as PCAMetrics) : undefined,
     featureAnalysis: extractFeatureAnalysis(
       ml.xTrain,
       ml.yTrain,

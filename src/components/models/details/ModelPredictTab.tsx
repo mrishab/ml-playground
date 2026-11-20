@@ -25,8 +25,7 @@ export function ModelPredictTab({ model }: { model: SavedModel }) {
             Interactive Inference Playground
           </h4>
           <p className="text-muted-foreground text-[11px]">
-            Input custom feature values below to test live predictions on new
-            data points.
+            Input custom feature values below to test live predictions.
           </p>
         </div>
         <div className="flex items-center gap-1.5">
@@ -37,7 +36,7 @@ export function ModelPredictTab({ model }: { model: SavedModel }) {
             className="h-7 text-xs px-2"
           >
             <RotateCcw className="h-3 w-3 mr-1" />
-            Reset to Means
+            Reset
           </Button>
           <Button
             size="sm"
@@ -45,7 +44,7 @@ export function ModelPredictTab({ model }: { model: SavedModel }) {
             className="h-7 text-xs px-3 bg-primary"
           >
             <Play className="h-3 w-3 mr-1 fill-current" />
-            Run Prediction
+            Predict
           </Button>
         </div>
       </div>

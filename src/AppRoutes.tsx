@@ -12,6 +12,7 @@ import { KMeansPage } from "@/components/training/kmeans/KMeansPage";
 import { RandomForestPage } from "@/components/training/random-forest/RandomForestPage";
 import { XGBoostPage } from "@/components/training/xgboost/XGBoostPage";
 import { IsolationForestPage } from "@/components/training/isolation-forest/IsolationForestPage";
+import { PCAPage } from "@/components/training/pca/PCAPage";
 import { ModelsPage } from "@/components/models/ModelsPage";
 import { DatasetsPage } from "@/components/datasets/DatasetsPage";
 import { REDIRECTS } from "./routeRedirects";
@@ -37,6 +38,7 @@ export function AppRoutes() {
           path="train/isolation-forest"
           element={<IsolationForestPage />}
         />
+        <Route path="train/pca" element={<PCAPage />} />
         <Route path="models" element={<ModelsPage />} />
         {REDIRECTS.map(({ path, to }) => (
           <Route

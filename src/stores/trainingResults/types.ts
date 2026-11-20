@@ -4,6 +4,7 @@ import type { TrainingState } from "@/types/training";
 import type { LossTelemetry } from "@/types/loss";
 import type { KMeansState } from "@/types/kmeans";
 import type { IsolationForestMetrics } from "@/types/isolationForest";
+import type { PCAMetrics } from "@/types/pca";
 import type { TrainingResultsActions } from "./actionTypes";
 
 export type { TrainingResultsActions };
@@ -40,6 +41,12 @@ export type IsolationForestState = BaseModelState & {
   nEstimators: number;
 };
 
+export type PCAState = BaseModelState & {
+  metrics: PCAMetrics | null;
+  nComponents: number;
+  standardize: boolean;
+};
+
 export type TrainingResultsState = {
   linearRegression: LinearRegressionState;
   knn: KNNState;
@@ -49,6 +56,7 @@ export type TrainingResultsState = {
   randomForest: EnsembleModelState;
   xgboost: EnsembleModelState;
   isolationForest: IsolationForestState;
+  pca: PCAState;
 };
 
 export type TrainingResultsStore = TrainingResultsState &

@@ -94,7 +94,40 @@ export function runModelInference(
     };
   }
 
-  // 4. Classification (KNN, LDA, Logistic, Ensembles)
+  // 4. Principal Component Analysis (PCA Projection)
+  if (model.algorithm === "pca" || model.pcaMetrics) {
+    const pca = model.pcaMetrics;
+    const comps = pca?.components ?? [];
+    const means = pca?.means ?? [];
+    const stds = pca?.stds ?? [];
+    const stdVec = features.map((f, i) => {
+      const val = inputs[f] ?? 0;
+      const m = means[i] ?? 0;
+      const s = stds[i] && stds[i] > 1e-7 ? stds[i] : 1;
+      return (val - m) / s;
+    });
+
+    const pc1 =
+      comps[0]?.loadings.reduce(
+        (sum, l, i) => sum + l.weight * (stdVec[i] ?? 0),
+        0,
+      ) ?? 0;
+    const pc2 =
+      comps[1]?.loadings.reduce(
+        (sum, l, i) => sum + l.weight * (stdVec[i] ?? 0),
+        0,
+      ) ?? 0;
+
+    return {
+      predictedValue: `PC1: ${pc1.toFixed(3)}, PC2: ${pc2.toFixed(3)}`,
+      label: "Projected Coordinates",
+      confidence: `${((pca?.totalVarianceExplained ?? 0) * 100).toFixed(1)}% variance explained`,
+      details: `Projected across ${comps.length} principal components`,
+      type: "clustering",
+    };
+  }
+
+  // 5. Classification (KNN, LDA, Logistic, Ensembles)
   const classes = model.classificationMetrics?.labels ??
     model.modelArtifacts?.classes ?? ["Class 0", "Class 1"];
 

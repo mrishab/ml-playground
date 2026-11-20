@@ -17,7 +17,8 @@ export function ModelConfigRows({
     algorithm.toLowerCase().includes("k-means") ||
     algorithm.toLowerCase().includes("lloyd") ||
     algorithm.toLowerCase().includes("isolation") ||
-    algorithm.toLowerCase().includes("clustering");
+    algorithm.toLowerCase().includes("clustering") ||
+    algorithm.toLowerCase().includes("pca");
 
   return (
     <>

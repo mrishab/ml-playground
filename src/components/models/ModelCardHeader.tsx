@@ -1,31 +1,12 @@
-import {
-  TrendingUp,
-  Users,
-  Layers,
-  Binary,
-  CircleDot,
-  Trees,
-  Zap,
-  ShieldAlert,
-} from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatFileSize } from "@/lib/csv-upload/formatFileSize";
-import type { SavedModel, AlgorithmType } from "@/types/savedModel";
-
-const ALGO_ICONS: Record<AlgorithmType, typeof TrendingUp> = {
-  linear: TrendingUp,
-  knn: Users,
-  lda: Layers,
-  logistic: Binary,
-  clustering: CircleDot,
-  "random-forest": Trees,
-  xgboost: Zap,
-  "isolation-forest": ShieldAlert,
-};
+import type { SavedModel } from "@/types/savedModel";
+import { ALGO_ICONS } from "./modelIcons";
 
 export function ModelCardHeader({ model }: { model: SavedModel }) {
   const Icon = ALGO_ICONS[model.algorithm] || TrendingUp;
-  const dateStr = new Date(model.createdAt).toLocaleDateString(undefined, {
+  const dateStr = new Date(model.createdAt).toLocaleString(undefined, {
     month: "short",
     day: "numeric",
     hour: "2-digit",

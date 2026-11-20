@@ -6,6 +6,7 @@ import { createClassificationActions } from "./classificationActions";
 import { createKMeansActions } from "./kmeansActions";
 import { createEnsembleActions } from "./ensembleActions";
 import { createIsolationForestActions } from "./isolationForestActions";
+import { createPCAActions } from "./pcaActions";
 
 export const createTrainingResultsActions: StateCreator<
   TrainingResultsStore,
@@ -18,5 +19,6 @@ export const createTrainingResultsActions: StateCreator<
   ...createKMeansActions(set),
   ...createEnsembleActions(set),
   ...createIsolationForestActions(set),
+  ...createPCAActions(set),
   resetAll: () => set({ ...initialTrainingResultsState }),
 });

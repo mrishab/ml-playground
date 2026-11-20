@@ -55,6 +55,19 @@ export function isModelValid(model: SavedModel): boolean {
       return false;
     }
   }
+  if (model.pcaMetrics) {
+    const { totalVarianceExplained, nComponents } = model.pcaMetrics;
+    if (
+      totalVarianceExplained === null ||
+      totalVarianceExplained === undefined ||
+      !isFinite(totalVarianceExplained) ||
+      isNaN(totalVarianceExplained) ||
+      !nComponents ||
+      nComponents < 1
+    ) {
+      return false;
+    }
+  }
   return true;
 }
 

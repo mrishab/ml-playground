@@ -5,6 +5,7 @@ import type {
   KNNState,
   EnsembleModelState,
   IsolationForestState,
+  PCAState,
   TrainingResultsState,
 } from "./types";
 import type { KMeansState } from "@/types/kmeans";
@@ -62,6 +63,13 @@ export const initialIsolationForest: IsolationForestState = {
   nEstimators: 50,
 };
 
+export const initialPCA: PCAState = {
+  ...initialBase,
+  metrics: null,
+  nComponents: 2,
+  standardize: true,
+};
+
 export const initialTrainingResultsState: TrainingResultsState = {
   linearRegression: initialLinearRegression,
   knn: initialKNN,
@@ -71,4 +79,5 @@ export const initialTrainingResultsState: TrainingResultsState = {
   randomForest: initialRandomForest,
   xgboost: initialXGBoost,
   isolationForest: initialIsolationForest,
+  pca: initialPCA,
 };

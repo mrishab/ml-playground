@@ -8,6 +8,8 @@ export const REDIRECTS = [
   { path: "comparison/classification", to: "/train/knn" },
   { path: "comparison/regression", to: "/train/linear" },
   { path: "comparison/clustering", to: "/train/clustering" },
+  { path: "comparison/pca", to: "/train/pca" },
+  { path: "pca", to: "/train/pca" },
   { path: "models/manage", to: "/models" },
   { path: "manage-models", to: "/models" },
   { path: "datasets", to: "/data/manage" },

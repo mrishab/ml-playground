@@ -7,6 +7,7 @@ export function ModelOverviewTab({ model }: { model: SavedModel }) {
   const showTarget =
     model.algorithm !== "clustering" &&
     model.algorithm !== "isolation-forest" &&
+    model.algorithm !== "pca" &&
     Boolean(model.splitConfig.targetColumn);
 
   return (
