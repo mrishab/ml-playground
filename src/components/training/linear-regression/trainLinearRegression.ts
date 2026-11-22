@@ -33,11 +33,24 @@ export async function trainLinearRegression(
   const trainRSquared =
     trainTss > 0 ? 1 - (finalTrainMSE * yTrainData.length) / trainTss : 0;
 
+  const p = XTrainData[0]?.length ?? 1;
+  const trainN = yTrainData.length;
+  const trainRss = finalTrainMSE * trainN;
+
   const predictions = predictOLS(XTestData, coefs, intercept);
-  const metrics = calculateMetrics(predictions, yTestData, {
-    coefficients: coefs,
-    intercept,
-  });
+  const metrics = calculateMetrics(
+    predictions,
+    yTestData,
+    {
+      coefficients: coefs,
+      intercept,
+    },
+    {
+      trainRss,
+      trainN,
+      p,
+    },
+  );
 
   return {
     ...metrics,

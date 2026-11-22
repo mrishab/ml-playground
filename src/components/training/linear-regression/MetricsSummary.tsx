@@ -19,9 +19,12 @@ const getItems = (m: RegressionMetrics): MetricItem[] => [
     badge: "Test Split",
   },
   {
-    label: "Test RSE",
-    value: m.rse,
-    desc: "Residual Standard Error",
+    label: "Test RMSE",
+    value: m.rmse ?? Math.sqrt(m.mse),
+    desc:
+      m.trainRse !== undefined
+        ? `Train RSE: ${formatNumber(m.trainRse)}`
+        : "Root Mean Squared Error",
     badge: "Test Split",
   },
   {

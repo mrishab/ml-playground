@@ -1,42 +1,39 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatNumber } from "@/lib/number";
 import type { RegressionMetrics } from "@/types/regression";
-import { RSEStepRow } from "./RSEStepRow";
+import { computeRSEStats } from "./rse/computeRSEStats";
+import { RSETrainSection } from "./rse/RSETrainSection";
+import { RSETestSection } from "./rse/RSETestSection";
 
 type RSEBreakdownProps = {
   metrics: RegressionMetrics;
 };
 
 export function RSEBreakdown({ metrics }: RSEBreakdownProps) {
-  const dof = metrics.n - 2;
-  const rssOverDof = metrics.rss / dof;
+  const stats = computeRSEStats(metrics);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-base">
-          Residual Standard Error (RSE) Breakdown
+          Residual Standard Error (RSE) & RMSE Breakdown
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="rounded-lg bg-muted/60 p-3 text-center">
-          <p className="font-mono text-sm">RSE = √(RSS / (n - 2))</p>
+        <div className="rounded-lg bg-muted/60 p-3 text-center space-y-1">
+          <p className="font-mono text-sm">
+            Train RSE = √(RSS<sub>train</sub> / (n<sub>train</sub> - p - 1))
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Test RMSE = √(RSS<sub>test</sub> / n<sub>test</sub>) = √MSE
+          </p>
         </div>
 
-        <div className="space-y-2">
-          <RSEStepRow
-            label="Residual Sum of Squares (RSS)"
-            value={formatNumber(metrics.rss)}
-          />
-          <RSEStepRow label="Degrees of Freedom (n - 2)" value={dof} />
-          <RSEStepRow
-            label={`RSS / (n - 2) = ${formatNumber(metrics.rss)} / ${dof}`}
-            value={formatNumber(rssOverDof)}
-          />
-          <RSEStepRow
-            label={`RSE = √(${formatNumber(rssOverDof)})`}
-            value={formatNumber(metrics.rse)}
-            isHighlight
+        <div className="space-y-3">
+          <RSETrainSection {...stats} />
+          <RSETestSection
+            testRss={stats.testRss}
+            testN={stats.testN}
+            testRmse={stats.testRmse}
           />
         </div>
       </CardContent>
