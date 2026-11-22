@@ -24,7 +24,7 @@ export function DatasetItemUtilityButtons({
         title="Download CSV"
         className="h-7 px-2 text-xs active:scale-[0.98]"
       >
-        <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-500" />
+        <FileSpreadsheet className="h-3.5 w-3.5 text-success" />
       </Button>
       <Button
         variant="ghost"

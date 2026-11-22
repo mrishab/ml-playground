@@ -43,7 +43,7 @@ export function DatasetRowsPreview({ columns, data }: RowsPreviewProps) {
                       className="p-2 whitespace-nowrap font-mono text-[11px]"
                     >
                       {isNull ? (
-                        <span className="text-amber-500 italic">null</span>
+                        <span className="text-warning italic">null</span>
                       ) : (
                         String(val)
                       )}

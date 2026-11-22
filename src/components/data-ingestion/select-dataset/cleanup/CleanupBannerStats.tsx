@@ -16,7 +16,7 @@ export function CleanupBannerStats({
   return (
     <div className="flex flex-wrap items-center gap-4 text-xs">
       <div className="flex items-center gap-1.5 font-medium">
-        <AlertCircle className="h-4 w-4 text-amber-500" />
+        <AlertCircle className="h-4 w-4 text-warning" />
         <span>Missing Values:</span>
         <span className="font-semibold text-foreground">
           {totalMissing} ({missingPercent.toFixed(1)}%)

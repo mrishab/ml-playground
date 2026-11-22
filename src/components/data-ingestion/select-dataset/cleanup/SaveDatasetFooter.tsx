@@ -26,7 +26,7 @@ export function SaveDatasetFooter({
       >
         {isSaved ? (
           <>
-            <Check className="h-4 w-4 text-emerald-500" /> Saved!
+            <Check className="h-4 w-4 text-success" /> Saved!
           </>
         ) : (
           "Save Dataset"

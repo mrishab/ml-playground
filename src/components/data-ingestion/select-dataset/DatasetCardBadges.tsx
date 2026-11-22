@@ -5,6 +5,7 @@ interface DatasetCardBadgesProps {
   problemType?: string;
   rowCount?: number;
   columnCount?: number;
+  targetColumn?: string;
 }
 
 export function DatasetCardBadges({
@@ -12,13 +13,14 @@ export function DatasetCardBadges({
   problemType,
   rowCount,
   columnCount,
+  targetColumn,
 }: DatasetCardBadgesProps) {
   return (
     <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
       {isCustom && (
         <Badge
           variant="secondary"
-          className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[10px] px-1.5 py-0 uppercase tracking-wider"
+          className="bg-success/10 text-success text-[10px] px-1.5 py-0 uppercase tracking-wider"
         >
           Uploaded
         </Badge>
@@ -29,6 +31,14 @@ export function DatasetCardBadges({
           className="px-1.5 py-0 text-[10px] uppercase tracking-wider"
         >
           {problemType}
+        </Badge>
+      )}
+      {targetColumn && (
+        <Badge
+          variant="outline"
+          className="px-1.5 py-0 text-[10px] text-primary/80 font-mono"
+        >
+          Y: {targetColumn}
         </Badge>
       )}
       {rowCount !== undefined && (

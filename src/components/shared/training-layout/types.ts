@@ -13,6 +13,7 @@ export type TrainingPageLayoutProps = {
   subtitle: string;
   icon: LucideIcon;
   isSplit: boolean;
+  isUnsupervised?: boolean;
   error?: string | null;
   featureNames: string[];
   targetColumn: string;

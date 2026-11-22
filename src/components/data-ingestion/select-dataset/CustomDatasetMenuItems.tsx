@@ -32,13 +32,13 @@ export function CustomDatasetMenuItems({
           className="flex items-center justify-between text-xs sm:text-sm"
         >
           <div className="flex items-center gap-2 truncate">
-            <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+            <FileSpreadsheet className="h-3.5 w-3.5 text-success shrink-0" />
             <span className="truncate">{dataset.name}</span>
           </div>
           <div className="flex items-center gap-1.5 shrink-0 ml-2">
             <Badge
               variant="secondary"
-              className="text-[9px] px-1 py-0 uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+              className="text-[9px] px-1 py-0 uppercase bg-success/10 text-success"
             >
               Custom
             </Badge>

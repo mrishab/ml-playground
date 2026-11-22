@@ -23,7 +23,7 @@ export function OutliersSection(p: OutliersSectionProps) {
   return (
     <div className="space-y-3 p-3 rounded-lg border border-border bg-card/40">
       <h4 className="text-xs font-semibold flex items-center gap-1.5 text-foreground">
-        <ShieldAlert className="h-3.5 w-3.5 text-amber-500" />
+        <ShieldAlert className="h-3.5 w-3.5 text-warning" />
         Outlier Treatment (IQR 1.5x)
       </h4>
       <div className="grid grid-cols-2 gap-2">

@@ -1,14 +1,19 @@
 import { BarChart3 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { PageLayout } from "@/components/shared/PageLayout";
 import { PrerequisiteGate } from "@/components/pipeline/PrerequisiteGate";
+import { StaleWarningBanner } from "@/components/pipeline/StaleWarningBanner";
 import { usePipelineSteps } from "@/hooks/usePipelineSteps";
+import { usePipelineStore } from "@/stores/pipeline";
 import { FeatureTabs } from "./FeatureTabs";
 import { useVisualizePage } from "./useVisualizePage";
 import { useVisualizeTabs } from "./useVisualizeTabs";
 
 export function VisualizePage() {
   const v = useVisualizePage();
-  const { steps, defaultTrainRoute } = usePipelineSteps();
+  const navigate = useNavigate();
+  const { steps, defaultTrainRoute, isDownstreamStale } = usePipelineSteps();
+  const revertExploreChanges = usePipelineStore((s) => s.revertExploreChanges);
   const tabs = useVisualizeTabs(v);
   const step3 = steps[2];
 
@@ -36,6 +41,18 @@ export function VisualizePage() {
         linkTo: defaultTrainRoute,
       }}
     >
+      {isDownstreamStale && (
+        <div className="mb-4">
+          <StaleWarningBanner
+            title="Split Settings Changed"
+            message="Data split settings were modified after this analysis was prepared. Plots reflect the previous split."
+            onRevert={revertExploreChanges}
+            revertLabel="Revert Split"
+            onRecompute={() => navigate("/pretrain/explore")}
+            recomputeLabel="Re-split Data"
+          />
+        </div>
+      )}
       <FeatureTabs tabs={tabs} />
     </PageLayout>
   );

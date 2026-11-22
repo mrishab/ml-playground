@@ -23,7 +23,7 @@ export function useImputeForm(
     missingSummary.byColumn.find((c) => c.column === selectedCol)?.missing ?? 0;
 
   const handleSubmit = () => {
-    if (!selectedCol) return;
+    if (!selectedCol || currentMissing === 0) return;
     onImpute(
       selectedCol,
       strategy,

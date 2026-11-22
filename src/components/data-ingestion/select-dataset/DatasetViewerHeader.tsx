@@ -35,7 +35,7 @@ export function DatasetViewerHeader({
         {isCustom && (
           <Badge
             variant="secondary"
-            className="text-[10px] px-1.5 py-0 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium"
+            className="text-[10px] px-1.5 py-0 bg-success/10 text-success font-medium"
           >
             Custom
           </Badge>

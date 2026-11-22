@@ -13,6 +13,8 @@ export function DatasetCard({
   isCustom = false,
   rowCount,
   columnCount,
+  targetColumn,
+  description,
   onDelete,
 }: DatasetCardProps) {
   return (
@@ -25,9 +27,7 @@ export function DatasetCard({
       <CardContent className="flex items-center gap-3 p-4">
         <div
           className={`rounded-full p-2 shrink-0 ${
-            isCustom
-              ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-              : "bg-muted text-primary"
+            isCustom ? "bg-success/10 text-success" : "bg-muted text-primary"
           }`}
         >
           <FileSpreadsheet className="h-6 w-6" />
@@ -37,11 +37,17 @@ export function DatasetCard({
             <p className="font-medium leading-none truncate">{name}</p>
             {isCustom && <DatasetDeleteButton onDelete={onDelete} />}
           </div>
+          {description && (
+            <p className="text-[11px] text-muted-foreground line-clamp-1 mt-1">
+              {description}
+            </p>
+          )}
           <DatasetCardBadges
             isCustom={isCustom}
             problemType={problemType}
             rowCount={rowCount}
             columnCount={columnCount}
+            targetColumn={targetColumn}
           />
         </div>
       </CardContent>

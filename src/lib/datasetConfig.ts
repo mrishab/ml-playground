@@ -12,6 +12,7 @@ let configCache: Map<string, DatasetConfigEntry> | null = null;
 
 export async function loadDatasetConfig(
   datasetFile: string,
+  includeEngineeredTerms = true,
 ): Promise<MappedConfig | null> {
   try {
     if (!configCache) {
@@ -27,7 +28,7 @@ export async function loadDatasetConfig(
       return null;
     }
 
-    return mapConfigToState(datasetConfig.ml_config);
+    return mapConfigToState(datasetConfig.ml_config, includeEngineeredTerms);
   } catch (err) {
     console.error("[datasetConfig] Failed to load config:", err);
     return null;

@@ -20,7 +20,10 @@ export function mapProblemType(type: string): ProblemType {
   }
 }
 
-export function mapConfigToState(config: MLConfigJson): MappedConfig {
+export function mapConfigToState(
+  config: MLConfigJson,
+  includeEngineeredTerms = true,
+): MappedConfig {
   const features: SelectedFeature[] = [];
 
   for (const term of config.features.regular_terms) {
@@ -31,22 +34,24 @@ export function mapConfigToState(config: MLConfigJson): MappedConfig {
     });
   }
 
-  for (const poly of config.features.polynomial_terms) {
-    features.push({
-      id: generateFeatureId(),
-      column: poly.term,
-      transformation: "polynomial",
-      polynomialDegree: poly.degree,
-    });
-  }
+  if (includeEngineeredTerms) {
+    for (const poly of config.features.polynomial_terms) {
+      features.push({
+        id: generateFeatureId(),
+        column: poly.term,
+        transformation: "polynomial",
+        polynomialDegree: poly.degree,
+      });
+    }
 
-  for (const interaction of config.features.interaction_terms) {
-    features.push({
-      id: generateFeatureId(),
-      column: interaction.term_1,
-      transformation: "interaction",
-      interactionWith: interaction.term_2,
-    });
+    for (const interaction of config.features.interaction_terms) {
+      features.push({
+        id: generateFeatureId(),
+        column: interaction.term_1,
+        transformation: "interaction",
+        interactionWith: interaction.term_2,
+      });
+    }
   }
 
   return {

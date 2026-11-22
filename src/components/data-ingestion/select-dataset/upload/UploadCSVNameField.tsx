@@ -28,7 +28,7 @@ export function UploadCSVNameField({
         className="h-9"
       />
       {nameCollision && (
-        <p className="text-[11px] text-amber-600 dark:text-amber-400">
+        <p className="text-[11px] text-warning">
           A dataset with this name already exists and will be updated.
         </p>
       )}

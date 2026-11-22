@@ -42,6 +42,10 @@ export function DatasetPickerGrid({
             key={ds.name}
             name={ds.name}
             problemType={ds.problemType}
+            rowCount={ds.rowCount}
+            columnCount={ds.columnCount}
+            targetColumn={ds.targetColumn}
+            description={ds.description}
             selected={ds.name === pendingDataset}
             onSelect={() => onSelect(ds.name)}
           />

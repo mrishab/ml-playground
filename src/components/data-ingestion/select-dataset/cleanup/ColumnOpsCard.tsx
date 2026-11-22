@@ -24,7 +24,7 @@ export function ColumnOpsCard(props: ColumnOpsCardProps) {
           Column Operations
         </CardTitle>
         <CardDescription>
-          Rename, drop, encode, type-convert, or substitute column values
+          Rename, drop, type-convert, or substitute column values
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">

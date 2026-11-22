@@ -6,6 +6,8 @@ export type DatasetOption = {
   rowCount?: number;
   columnCount?: number;
   fileSize?: number;
+  targetColumn?: string;
+  description?: string;
 };
 
 export type DatasetCardProps = {
@@ -16,6 +18,8 @@ export type DatasetCardProps = {
   isCustom?: boolean;
   rowCount?: number;
   columnCount?: number;
+  targetColumn?: string;
+  description?: string;
   onDelete?: () => void;
 };
 

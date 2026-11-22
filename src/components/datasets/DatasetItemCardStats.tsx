@@ -22,7 +22,7 @@ export function DatasetItemCardStats({ dataset }: { dataset: SavedDataset }) {
       <div>
         <span className="text-muted-foreground block text-[10px]">Missing</span>
         <span
-          className={`font-semibold font-mono ${nullCount > 0 ? "text-amber-500" : "text-emerald-500"}`}
+          className={`font-semibold font-mono ${nullCount > 0 ? "text-warning" : "text-success"}`}
         >
           {nullCount}
         </span>
@@ -32,7 +32,7 @@ export function DatasetItemCardStats({ dataset }: { dataset: SavedDataset }) {
           Duplicates
         </span>
         <span
-          className={`font-semibold font-mono ${duplicateCount > 0 ? "text-amber-500" : "text-muted-foreground"}`}
+          className={`font-semibold font-mono ${duplicateCount > 0 ? "text-warning" : "text-muted-foreground"}`}
         >
           {duplicateCount}
         </span>

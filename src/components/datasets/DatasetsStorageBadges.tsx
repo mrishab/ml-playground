@@ -27,7 +27,7 @@ export function DatasetsStorageBadges({
       )}
       {uploadedCount > 0 && (
         <Badge variant="outline" className="flex items-center gap-1">
-          <UploadCloud className="h-3 w-3 text-emerald-500" />
+          <UploadCloud className="h-3 w-3 text-success" />
           {uploadedCount} Uploaded
         </Badge>
       )}

@@ -39,7 +39,7 @@ export async function loadStandardDataset({
     }
 
     try {
-      const config = await loadDatasetConfig(dataset.file);
+      const config = await loadDatasetConfig(dataset.file, false);
       if (config) {
         useMLConfigStore.getState().setProblemType(config.problemType);
         useMLConfigStore.getState().setTargetColumn(config.targetColumn);

@@ -16,27 +16,38 @@ export function AlgorithmNav() {
             (problemType === "classification" && task === "regression") ||
             (problemType === "regression" && task === "classification");
 
+          const tooltip = isIncompatible
+            ? task === "regression"
+              ? "Requires regression target. Current task is classification."
+              : "Requires categorical target. Current task is regression."
+            : undefined;
+
+          if (isIncompatible) {
+            return (
+              <span
+                key={path}
+                title={tooltip}
+                aria-disabled="true"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium text-muted-foreground/35 cursor-not-allowed select-none border border-transparent"
+              >
+                <Icon className="h-3.5 w-3.5 opacity-30" />
+                <span>{label}</span>
+              </span>
+            );
+          }
+
           return (
             <Link
               key={path}
               to={path}
-              title={
-                isIncompatible
-                  ? `Incompatible with ${problemType} task`
-                  : undefined
-              }
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-150 ease-out",
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-[background-color,color,box-shadow] duration-150 ease-out",
                 isActive
                   ? "bg-background text-foreground shadow-xs font-semibold"
-                  : isIncompatible
-                    ? "text-muted-foreground/40 hover:text-muted-foreground hover:bg-background/30 line-through decoration-muted-foreground/40"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/50",
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/50",
               )}
             >
-              <Icon
-                className={cn("h-3.5 w-3.5", isIncompatible && "opacity-40")}
-              />
+              <Icon className="h-3.5 w-3.5" />
               <span>{label}</span>
             </Link>
           );

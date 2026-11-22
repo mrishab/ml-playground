@@ -26,7 +26,7 @@ export function DatasetAuditHistory({
           className="flex items-center justify-between p-2 rounded border border-border bg-card/40 text-xs"
         >
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+            <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0" />
             <span className="font-medium text-foreground">
               {entry.description}
             </span>
