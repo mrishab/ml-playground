@@ -7,6 +7,7 @@ export function useModelDialogs() {
   const [deleteTarget, setDeleteTarget] = useState<SavedModel | null>(null);
   const [isClearOpen, setIsClearOpen] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
 
   return {
     selectedModel,
@@ -19,5 +20,7 @@ export function useModelDialogs() {
     setIsClearOpen,
     isImportOpen,
     setIsImportOpen,
+    isCompareOpen,
+    setIsCompareOpen,
   };
 }

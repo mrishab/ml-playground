@@ -3,11 +3,13 @@ import { ModelRenameDialog } from "./dialogs/ModelRenameDialog";
 import { ModelDeleteConfirmDialog } from "./dialogs/ModelDeleteConfirmDialog";
 import { ModelClearConfirmDialog } from "./dialogs/ModelClearConfirmDialog";
 import { ModelImportDialog } from "./dialogs/ModelImportDialog";
+import { ModelComparisonDialog } from "./dialogs/ModelComparisonDialog";
 import type { SavedModel } from "@/types/savedModel";
 import type { useModelDialogs } from "./useModelDialogs";
 
 interface DialogsProps {
   dialogs: ReturnType<typeof useModelDialogs>;
+  models: SavedModel[];
   onDownload: (model: SavedModel) => void;
   onRename: (id: string, name: string) => void;
   onDelete: (id: string) => void;
@@ -45,6 +47,11 @@ export function ModelsDialogs(p: DialogsProps) {
         open={d.isImportOpen}
         onClose={() => d.setIsImportOpen(false)}
         onImport={p.onImport}
+      />
+      <ModelComparisonDialog
+        open={d.isCompareOpen}
+        onClose={() => d.setIsCompareOpen(false)}
+        models={p.models}
       />
     </>
   );

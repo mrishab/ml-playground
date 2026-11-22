@@ -14,6 +14,7 @@ export function ModelsPageContent({
     <div className="flex flex-1 flex-col gap-5 p-3.5 sm:p-5 md:p-6 pb-8 max-w-7xl mx-auto w-full">
       <ModelsPageHeader
         modelCount={p.models.length}
+        onCompareClick={() => p.dialogs.setIsCompareOpen(true)}
         onImportClick={() => p.dialogs.setIsImportOpen(true)}
         onDownloadAllClick={p.handleDownloadAll}
         onClearAllClick={() => p.dialogs.setIsClearOpen(true)}
@@ -30,6 +31,7 @@ export function ModelsPageContent({
       <ModelsMainView p={p} />
       <ModelsDialogs
         dialogs={p.dialogs}
+        models={p.models}
         onDownload={p.handleDownload}
         onRename={p.handleRename}
         onDelete={p.handleDelete}

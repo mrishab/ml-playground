@@ -5,7 +5,8 @@ export type ModelTypeFilter =
   | "all"
   | "regression"
   | "classification"
-  | "clustering";
+  | "clustering"
+  | "unsupervised";
 
 export type SavedModelsState = {
   models: SavedModel[];

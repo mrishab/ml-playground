@@ -10,6 +10,13 @@ export function ModelsStorageBadges({ models }: { models: SavedModel[] }) {
   const clusterCount = models.filter(
     (m) => m.problemType === "clustering",
   ).length;
+  const unsupCount = models.filter(
+    (m) =>
+      m.problemType === "unsupervised" ||
+      m.problemType === "dimensionality_reduction" ||
+      m.algorithm === "isolation-forest" ||
+      m.algorithm === "pca",
+  ).length;
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -26,6 +33,9 @@ export function ModelsStorageBadges({ models }: { models: SavedModel[] }) {
       )}
       {clusterCount > 0 && (
         <Badge variant="outline">{clusterCount} Clustering</Badge>
+      )}
+      {unsupCount > 0 && (
+        <Badge variant="outline">{unsupCount} Unsupervised</Badge>
       )}
     </div>
   );
