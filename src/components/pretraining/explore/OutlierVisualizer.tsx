@@ -18,6 +18,7 @@ export function OutlierVisualizer(props: OutlierVisualizerProps) {
   const { data, layout, config } = useBoxPlotOptions(
     props.numericColumnData,
     scalingMode,
+    props.iqrMultiplier,
   );
 
   return (

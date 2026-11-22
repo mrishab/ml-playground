@@ -9,6 +9,7 @@ interface SelectedFeaturesListProps {
   onTransformChange: (id: string, t: TransformationType) => void;
   onDegreeChange: (id: string, deg: number) => void;
   onInteractionChange: (id: string, col: string) => void;
+  onEncodingChange?: (id: string, encoding: "one-hot" | "ordinal") => void;
 }
 
 export function SelectedFeaturesList({
@@ -18,6 +19,7 @@ export function SelectedFeaturesList({
   onTransformChange,
   onDegreeChange,
   onInteractionChange,
+  onEncodingChange,
 }: SelectedFeaturesListProps) {
   if (selectedFeatures.length === 0) {
     return (
@@ -39,6 +41,7 @@ export function SelectedFeaturesList({
             onTransformChange={onTransformChange}
             onDegreeChange={onDegreeChange}
             onInteractionChange={onInteractionChange}
+            onEncodingChange={onEncodingChange}
           />
         ))}
       </div>

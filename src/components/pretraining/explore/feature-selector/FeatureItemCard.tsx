@@ -1,17 +1,9 @@
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { TransformationType, SelectedFeature } from "@/stores/mlConfig";
 import { FeatureTransformOptions } from "./FeatureTransformOptions";
-
-interface FeatureItemCardProps {
-  feature: SelectedFeature;
-  availableInteractionColumns: string[];
-  onRemove: (id: string) => void;
-  onTransformChange: (id: string, t: TransformationType) => void;
-  onDegreeChange: (id: string, deg: number) => void;
-  onInteractionChange: (id: string, col: string) => void;
-}
+import { FeatureEncodingBadge } from "./FeatureEncodingBadge";
+import type { FeatureItemCardProps } from "./types";
 
 export function FeatureItemCard({
   feature,
@@ -20,6 +12,7 @@ export function FeatureItemCard({
   onTransformChange,
   onDegreeChange,
   onInteractionChange,
+  onEncodingChange,
 }: FeatureItemCardProps) {
   return (
     <div className="flex flex-col gap-2 rounded-lg border bg-muted/30 p-3 transition-[background-color,border-color,box-shadow] duration-150 ease-out hover:border-primary/40 hover:bg-muted/50">
@@ -33,6 +26,11 @@ export function FeatureItemCard({
                 : `× ${feature.interactionWith ?? "?"}`}
             </Badge>
           )}
+          <FeatureEncodingBadge
+            id={feature.id}
+            encoding={feature.encoding}
+            onChange={onEncodingChange}
+          />
         </div>
         <Button
           variant="ghost"

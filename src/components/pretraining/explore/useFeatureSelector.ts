@@ -11,11 +11,19 @@ export function useFeatureSelector(props: UseFeatureSelectorProps) {
     addFeature,
     removeFeature,
     updateFeatureTransformation,
+    updateFeatureEncoding,
     clearFeatures,
   } = props;
 
   const handleAddFeature = (column: string) => {
     if (column) addFeature(column);
+  };
+
+  const handleEncodingChange = (
+    id: string,
+    encoding: "one-hot" | "ordinal",
+  ) => {
+    updateFeatureEncoding?.(id, encoding);
   };
 
   const handleTransformationChange = (
@@ -46,6 +54,7 @@ export function useFeatureSelector(props: UseFeatureSelectorProps) {
     handleTransformationChange,
     handlePolynomialDegreeChange,
     handleInteractionColumnChange,
+    handleEncodingChange,
     clearFeatures,
   };
 }

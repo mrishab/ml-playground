@@ -1,10 +1,12 @@
 export type TransformationType = "none" | "polynomial" | "interaction";
+export type CategoricalEncodingMode = "one-hot" | "ordinal";
 
 export type ProblemType =
   | "regression"
   | "classification"
   | "clustering"
-  | "dimensionality_reduction";
+  | "dimensionality_reduction"
+  | "unsupervised";
 
 export type SelectedFeature = {
   id: string;
@@ -12,4 +14,5 @@ export type SelectedFeature = {
   transformation: TransformationType;
   polynomialDegree?: number;
   interactionWith?: string;
+  encoding?: CategoricalEncodingMode;
 };

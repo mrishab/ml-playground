@@ -8,6 +8,7 @@ import { BOX_CONFIG, buildBoxPlotLayout } from "./boxPlotLayout";
 export function useBoxPlotOptions(
   numericColumnData: NumericColumnData[],
   scalingMode: OutlierScalingMode = "standardized",
+  iqrMultiplier = 1.5,
 ) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -15,9 +16,9 @@ export function useBoxPlotOptions(
   const data: Data[] = useMemo(
     () =>
       numericColumnData.map((col) =>
-        buildBoxPlotTrace(col, scalingMode, isDark),
+        buildBoxPlotTrace(col, scalingMode, isDark, iqrMultiplier),
       ),
-    [numericColumnData, scalingMode, isDark],
+    [numericColumnData, scalingMode, isDark, iqrMultiplier],
   );
 
   const yTitle =
