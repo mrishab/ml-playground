@@ -14,7 +14,7 @@ export function ActionGateDrawer({
   onClose,
 }: ActionGateDrawerProps) {
   return (
-    <div className="border-b bg-muted/40 p-4 animate-in slide-in-from-bottom-2 fade-in-0 duration-200 ease-out">
+    <div className="border-b bg-muted/40 p-4 animate-in slide-in-from-bottom-2 fade-in-0 duration-200 ease-out max-h-[60vh] overflow-y-auto">
       <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between pb-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">

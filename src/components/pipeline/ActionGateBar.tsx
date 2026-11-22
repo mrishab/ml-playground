@@ -11,7 +11,7 @@ export function ActionGateBar(props: ActionGateProps) {
   const state = useActionGateState(props);
 
   return (
-    <div className="sticky bottom-0 z-40 mt-auto border-t bg-background/95 backdrop-blur-sm transition-[background-color,border-color,box-shadow] duration-200 ease-out pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]">
+    <div className="fixed bottom-0 left-0 right-0 z-40 border-t bg-background/95 backdrop-blur-sm transition-[background-color,border-color,box-shadow] duration-200 ease-out pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]">
       {state.showChecklistDetails && (
         <ActionGateDrawer
           title={state.currentStep.title}

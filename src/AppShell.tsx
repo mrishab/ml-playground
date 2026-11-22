@@ -25,7 +25,7 @@ export function AppShell() {
     <div className="flex h-[100dvh] min-h-[100dvh] w-full flex-col overflow-hidden bg-background">
       <SiteHeader />
       <PipelineStepper />
-      <main className="flex-1 overflow-y-auto bg-background flex flex-col overscroll-contain pb-32 sm:pb-36">
+      <main className="flex-1 overflow-y-auto bg-background flex flex-col overscroll-contain pb-20 sm:pb-24">
         <Outlet />
       </main>
       <PrerequisitesModal />
