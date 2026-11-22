@@ -5,21 +5,31 @@ import type {
   ProblemType,
   SelectedFeature,
   SplitData,
+  CategoricalEncodingMode,
 } from "./mlConfig/types";
 import { initialMLConfigState } from "./mlConfig/initialState";
 import {
   createFeature,
   updateFeature,
+  updateFeatureEncoding,
   resetFeatureCounter,
 } from "./mlConfig/featureActions";
 
-export type { TransformationType, ProblemType, SelectedFeature, SplitData };
+export type {
+  TransformationType,
+  ProblemType,
+  SelectedFeature,
+  SplitData,
+  CategoricalEncodingMode,
+};
 
 export const useMLConfigStore = create<MLConfigStore>()((set) => ({
   ...initialMLConfigState,
   setProblemType: (problemType) => set({ problemType }),
   setShuffle: (shuffle) => set({ shuffle }),
   setStratified: (stratified) => set({ stratified }),
+  setStandardizeFeatures: (standardizeFeatures) => set({ standardizeFeatures }),
+  setRandomSeed: (randomSeed) => set({ randomSeed }),
   setTestSplitPercent: (percent) => set({ testSplitPercent: percent }),
   setTargetColumn: (targetColumn) =>
     set((s) => ({
@@ -66,6 +76,10 @@ export const useMLConfigStore = create<MLConfigStore>()((set) => ({
         ),
       };
     }),
+  updateFeatureEncoding: (id, encoding) =>
+    set((s) => ({
+      selectedFeatures: updateFeatureEncoding(s.selectedFeatures, id, encoding),
+    })),
   clearFeatures: () => set({ selectedFeatures: [] }),
   setFeatures: (features) =>
     set((s) => ({

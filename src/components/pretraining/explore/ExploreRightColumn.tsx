@@ -19,6 +19,8 @@ export function ExploreRightColumn({ explore }: ExploreRightColumnProps) {
           iqrMultiplier={explore.iqrMultiplier}
           setIqrMultiplier={explore.setIqrMultiplier}
           dropOutliers={explore.dropOutliers}
+          canUndoOutliers={explore.canUndoOutliers}
+          undoDropOutliers={explore.undoDropOutliers}
         />
       )}
       <FeaturePreviewCard

@@ -22,6 +22,7 @@ export function ExploreLeftColumn({ explore }: ExploreLeftColumnProps) {
         addFeature={explore.addFeature}
         removeFeature={explore.removeFeature}
         updateFeatureTransformation={explore.updateFeatureTransformation}
+        updateFeatureEncoding={explore.updateFeatureEncoding}
         clearFeatures={explore.clearFeatures}
       />
       <DataSplitSettingsCard
@@ -31,6 +32,10 @@ export function ExploreLeftColumn({ explore }: ExploreLeftColumnProps) {
         setShuffle={explore.setShuffle}
         stratified={explore.stratified}
         setStratified={explore.setStratified}
+        standardizeFeatures={explore.standardizeFeatures}
+        setStandardizeFeatures={explore.setStandardizeFeatures}
+        randomSeed={explore.randomSeed}
+        setRandomSeed={explore.setRandomSeed}
         testSplitPercent={explore.testSplitPercent}
         setTestSplitPercent={explore.setTestSplitPercent}
         isSplit={explore.isSplit}

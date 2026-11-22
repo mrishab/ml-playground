@@ -21,7 +21,10 @@ export function OutlierHeader({
       <div>
         <CardTitle className="text-base">Outliers (IQR Boxplot)</CardTitle>
         <p className="text-xs text-muted-foreground mt-0.5">
-          {DESC[scalingMode]}
+          {DESC[scalingMode]} ·{" "}
+          <span className="text-amber-600 dark:text-amber-400 font-medium">
+            Pre-split filter
+          </span>
         </p>
       </div>
       <OutlierScaleSelector

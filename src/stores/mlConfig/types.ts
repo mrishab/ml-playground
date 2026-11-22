@@ -2,6 +2,7 @@ import type { DataFrame } from "danfojs";
 
 export type * from "./featureTypes";
 import type {
+  CategoricalEncodingMode,
   ProblemType,
   SelectedFeature,
   TransformationType,
@@ -11,6 +12,8 @@ export type MLConfigState = {
   problemType: ProblemType;
   shuffle: boolean;
   stratified: boolean;
+  standardizeFeatures: boolean;
+  randomSeed?: number;
   testSplitPercent: number;
   targetColumn: string;
   selectedFeatures: SelectedFeature[];
@@ -32,6 +35,8 @@ export type MLConfigActions = {
   setProblemType: (problemType: ProblemType) => void;
   setShuffle: (shuffle: boolean) => void;
   setStratified: (stratified: boolean) => void;
+  setStandardizeFeatures: (standardize: boolean) => void;
+  setRandomSeed: (seed: number | undefined) => void;
   setTestSplitPercent: (percent: number) => void;
   setTargetColumn: (column: string) => void;
   addFeature: (column: string) => void;
@@ -40,6 +45,10 @@ export type MLConfigActions = {
     id: string,
     transformation: TransformationType,
     options?: { polynomialDegree?: number; interactionWith?: string },
+  ) => void;
+  updateFeatureEncoding: (
+    id: string,
+    encoding: CategoricalEncodingMode,
   ) => void;
   clearFeatures: () => void;
   setFeatures: (features: SelectedFeature[]) => void;

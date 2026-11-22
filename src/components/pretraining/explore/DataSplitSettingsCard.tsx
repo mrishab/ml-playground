@@ -29,6 +29,10 @@ export function DataSplitSettingsCard(props: DataSplitSettingsCardProps) {
           problemType={props.problemType}
           stratified={props.stratified}
           setStratified={props.setStratified}
+          standardizeFeatures={props.standardizeFeatures}
+          setStandardizeFeatures={props.setStandardizeFeatures}
+          randomSeed={props.randomSeed}
+          setRandomSeed={props.setRandomSeed}
         />
         <TestSplitSlider
           value={props.testSplitPercent}

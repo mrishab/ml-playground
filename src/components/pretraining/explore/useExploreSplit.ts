@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { usePipelineStore } from "@/stores/pipeline";
 import { executeDataSplit } from "./splitLogic";
+import { computeSplitStats } from "./computeSplitStats";
 import type { ExploreSplitHookParams } from "./exploreSplitTypes";
 
 export function useExploreSplit(p: ExploreSplitHookParams) {
@@ -24,6 +25,7 @@ export function useExploreSplit(p: ExploreSplitHookParams) {
       selectedFeatures: p.selectedFeatures,
       targetColumn: p.targetColumn,
       problemType: p.problemType,
+      randomSeed: p.randomSeed,
     });
     p.setSplitData(splitResult);
     usePipelineStore.getState().recordSplit({
@@ -36,15 +38,10 @@ export function useExploreSplit(p: ExploreSplitHookParams) {
     });
   }, [p, canSplit]);
 
-  const splitStats = useMemo(() => {
-    if (!p.isSplit || !p.xTrain || !p.xTest) return null;
-    return {
-      trainRows: p.xTrain.shape[0],
-      testRows: p.xTest.shape[0],
-      featureCount: p.xTrain.shape[1],
-      featureNames: p.xTrain.columns as string[],
-    };
-  }, [p.isSplit, p.xTrain, p.xTest]);
+  const splitStats = useMemo(
+    () => computeSplitStats(p),
+    [p.isSplit, p.xTrain, p.xTest, p.problemType, p.targetColumn],
+  );
 
   return { canSplit, performSplit, splitStats };
 }

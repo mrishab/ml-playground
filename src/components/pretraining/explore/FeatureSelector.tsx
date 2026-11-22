@@ -28,6 +28,7 @@ export function FeatureSelector(props: FeatureSelectorProps) {
         onTransformChange={f.handleTransformationChange}
         onDegreeChange={f.handlePolynomialDegreeChange}
         onInteractionChange={f.handleInteractionColumnChange}
+        onEncodingChange={f.handleEncodingChange}
       />
     </div>
   );

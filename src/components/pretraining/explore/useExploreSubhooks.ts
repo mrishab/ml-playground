@@ -31,6 +31,7 @@ export function useExploreSubhooks({
     df,
     shuffle: ml.shuffle,
     stratified: ml.stratified,
+    randomSeed: ml.randomSeed,
     testSplitPercent: ml.testSplitPercent,
     selectedFeatures: ml.selectedFeatures,
     targetColumn: ml.targetColumn,

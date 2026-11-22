@@ -3,6 +3,8 @@ export type SplitStats = {
   testRows: number;
   featureCount: number;
   featureNames: string[];
+  trainClassCounts?: Record<string, number>;
+  testClassCounts?: Record<string, number>;
 };
 
 export function useSplitResults(stats: SplitStats | null) {

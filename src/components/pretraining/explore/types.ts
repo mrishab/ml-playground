@@ -7,6 +7,10 @@ export interface DataSplitSettingsCardProps {
   setShuffle: (s: boolean) => void;
   stratified?: boolean;
   setStratified?: (s: boolean) => void;
+  standardizeFeatures?: boolean;
+  setStandardizeFeatures?: (s: boolean) => void;
+  randomSeed?: number;
+  setRandomSeed?: (s: number | undefined) => void;
   testSplitPercent: number;
   setTestSplitPercent: (p: number) => void;
   isSplit: boolean;

@@ -17,6 +17,7 @@ interface FeatureSelectionCardProps {
     t: TransformationType,
     opt?: { polynomialDegree?: number; interactionWith?: string },
   ) => void;
+  updateFeatureEncoding?: (id: string, encoding: "one-hot" | "ordinal") => void;
   clearFeatures: () => void;
 }
 

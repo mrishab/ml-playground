@@ -9,6 +9,7 @@ export interface ExploreSplitHookParams {
   df: DataFrame | null;
   shuffle: boolean;
   stratified?: boolean;
+  randomSeed?: number;
   testSplitPercent: number;
   selectedFeatures: SelectedFeature[];
   targetColumn: string;

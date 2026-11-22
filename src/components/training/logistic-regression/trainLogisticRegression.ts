@@ -4,6 +4,8 @@ import type { DataFrame } from "danfojs";
 import type { ClassificationMetrics } from "@/types/classification";
 import type { StepCallback } from "@/types/loss";
 import { encodeNumericMatrix } from "@/lib/categoricalEncoding";
+import { standardizeMatrices } from "@/lib/featureTransforms";
+import { useMLConfigStore } from "@/stores/mlConfig";
 import { extractProbaScores } from "./extractProbaScores";
 import { simulateLogisticSteps } from "./simulateLogisticLoss";
 import { encodeTrainLabels, mapPredictions } from "./logisticEncoding";
@@ -29,34 +31,18 @@ export async function trainLogisticRegression(
   const { uniqueLabels, yTrainEncoded } = encodeTrainLabels(yTrainData);
   const yTestStr = yTestData.map(String);
 
-  // Standardize features (Z-score scaling) using training distribution bounds
+  // Standardize features (Z-score scaling) using training distribution bounds if enabled
+  const shouldStandardize =
+    useMLConfigStore.getState().standardizeFeatures ?? true;
   const nCols = XTrainData[0]?.length ?? 0;
-  const means: number[] = new Array(nCols).fill(0);
-  const stds: number[] = new Array(nCols).fill(0);
-
-  for (let c = 0; c < nCols; c++) {
-    let sum = 0;
-    for (let r = 0; r < XTrainData.length; r++) {
-      sum += XTrainData[r][c];
-    }
-    const mean = sum / Math.max(1, XTrainData.length);
-    means[c] = mean;
-
-    let varSum = 0;
-    for (let r = 0; r < XTrainData.length; r++) {
-      const diff = XTrainData[r][c] - mean;
-      varSum += diff * diff;
-    }
-    const std = Math.sqrt(varSum / Math.max(1, XTrainData.length));
-    stds[c] = std > 1e-7 ? std : 1;
-  }
-
-  const scaledTrain = XTrainData.map((row) =>
-    row.map((val, c) => (val - means[c]) / stds[c]),
-  );
-  const scaledTest = XTestData.map((row) =>
-    row.map((val, c) => (val - means[c]) / stds[c]),
-  );
+  const { scaledTrain, scaledTest, means, stds } = shouldStandardize
+    ? standardizeMatrices(XTrainData, XTestData)
+    : {
+        scaledTrain: XTrainData,
+        scaledTest: XTestData,
+        means: new Array(nCols).fill(0),
+        stds: new Array(nCols).fill(1),
+      };
 
   const model = new sk.LogisticRegression({ penalty: "l2" });
   await model.fit(scaledTrain, yTrainEncoded);
