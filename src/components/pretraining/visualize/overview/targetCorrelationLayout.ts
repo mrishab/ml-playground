@@ -10,8 +10,8 @@ export function buildTargetCorrelationLayout(
     xaxis: {
       title: { text: `Pearson r vs ${targetColumn}` },
       range: [-1.05, 1.05],
-      gridcolor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
-      zerolinecolor: isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.2)",
+      gridcolor: "var(--color-border)",
+      zerolinecolor: "var(--color-border)",
     },
     yaxis: { automargin: true },
     margin: { t: 20, r: 20, b: 50, l: 80 },

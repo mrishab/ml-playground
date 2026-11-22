@@ -34,7 +34,7 @@ export function useDensityHeatmap({
           title: { text: "Density", side: "right" },
           thickness: 10,
           len: 0.8,
-          tickfont: { color: isDark ? "#d4d4d4" : "#334155", size: 10 },
+          tickfont: { color: "var(--color-muted-foreground)", size: 10 },
         },
         hovertemplate: `${xLabel}: %{x:.2f}<br>${yLabel}: %{y:.2f}<br>Count: %{z}<extra></extra>`,
       },

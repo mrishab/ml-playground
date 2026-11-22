@@ -18,13 +18,7 @@ export function useTargetCorrelationPlot(
     const y = reversed.map((r) => r.feature);
     const x = reversed.map((r) => r.r);
     const colors = reversed.map((r) =>
-      r.r >= 0
-        ? isDark
-          ? "#4fc1ff"
-          : "#0284c7"
-        : isDark
-          ? "#f87171"
-          : "#e11d48",
+      r.r >= 0 ? "var(--color-primary)" : "var(--color-destructive)",
     );
 
     return [

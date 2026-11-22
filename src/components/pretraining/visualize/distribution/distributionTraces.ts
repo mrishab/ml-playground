@@ -1,7 +1,13 @@
 import type { Data } from "plotly.js";
 import { getQuantile } from "@/lib/stats";
 
-const PALETTE = ["#4fc1ff", "#4ade80", "#facc15", "#f87171", "#c084fc"];
+const PALETTE = [
+  "var(--color-chart-1)",
+  "var(--color-chart-2)",
+  "var(--color-chart-3)",
+  "var(--color-chart-4)",
+  "var(--color-chart-5)",
+];
 
 export function buildDistributionTraces(
   x: number[],

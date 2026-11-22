@@ -1,14 +1,15 @@
 import type { Layout, Config } from "plotly.js";
 
 export function getBasePlotLayout(isDark: boolean): Partial<Layout> {
+  void isDark;
   return {
     paper_bgcolor: "transparent",
     plot_bgcolor: "transparent",
-    font: { family: "inherit", color: isDark ? "#d4d4d4" : "#334155" },
+    font: { family: "inherit", color: "var(--color-muted-foreground)" },
     hoverlabel: {
-      bgcolor: isDark ? "#252526" : "#ffffff",
-      font: { family: "inherit", color: isDark ? "#d4d4d4" : "#0f172a" },
-      bordercolor: isDark ? "#383838" : "#e2e8f0",
+      bgcolor: "var(--color-card)",
+      font: { family: "inherit", color: "var(--color-foreground)" },
+      bordercolor: "var(--color-border)",
     },
   };
 }

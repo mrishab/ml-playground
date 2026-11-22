@@ -28,7 +28,7 @@ export function PCAScreeSvg({ comps }: { comps: PCAComponent[] }) {
               y={90 - h}
               width={barW}
               height={h}
-              className="fill-primary/70 hover:fill-primary transition-colors"
+              className="fill-primary/70 hover:fill-primary transition-colors duration-150 ease-out"
               rx="1"
             />
             <text
@@ -44,7 +44,7 @@ export function PCAScreeSvg({ comps }: { comps: PCAComponent[] }) {
       })}
       <polyline
         fill="none"
-        stroke="#10b981"
+        stroke="var(--color-success)"
         strokeWidth="1.5"
         points={comps
           .map(

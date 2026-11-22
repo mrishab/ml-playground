@@ -3,14 +3,14 @@ import type { Data } from "plotly.js";
 import type { KMeansMetrics } from "@/types/kmeans";
 
 const CLUSTER_COLORS = [
-  "#0284c7",
-  "#10b981",
-  "#f59e0b",
-  "#f43f5e",
-  "#8b5cf6",
-  "#06b6d4",
-  "#ec4899",
-  "#84cc16",
+  "var(--color-primary)",
+  "var(--color-success)",
+  "var(--color-warning)",
+  "var(--color-destructive)",
+  "var(--color-chart-4)",
+  "var(--color-chart-3)",
+  "var(--color-chart-5)",
+  "var(--color-chart-2)",
 ];
 
 export function useClusterPlotTraces(
@@ -46,8 +46,8 @@ export function useClusterPlotTraces(
       marker: {
         size: 14,
         symbol: "cross",
-        color: "#ffffff",
-        line: { color: "#000000", width: 2 },
+        color: "var(--color-background)",
+        line: { color: "var(--color-foreground)", width: 2 },
       },
     });
 

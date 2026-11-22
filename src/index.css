@@ -25,6 +25,11 @@
   --color-success: hsl(var(--success));
   --color-warning: hsl(var(--warning));
   --color-danger: hsl(var(--danger));
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
   --radius: 0.75rem;
 }
 
@@ -33,9 +38,12 @@
     color-scheme: light dark;
   }
 
-  :root,
   .light {
     color-scheme: light;
+  }
+
+  :root,
+  .light {
     --background: 0 0% 100%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;

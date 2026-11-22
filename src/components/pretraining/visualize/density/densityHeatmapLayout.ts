@@ -10,11 +10,11 @@ export function getDensityHeatmapLayout(
     ...getBasePlotLayout(isDark),
     xaxis: {
       title: { text: xLabel },
-      gridcolor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
+      gridcolor: "var(--color-border)",
     },
     yaxis: {
       title: { text: yLabel },
-      gridcolor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
+      gridcolor: "var(--color-border)",
     },
     margin: { t: 30, r: 20, b: 48, l: 48 },
   };

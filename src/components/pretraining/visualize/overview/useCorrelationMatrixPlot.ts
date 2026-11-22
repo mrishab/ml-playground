@@ -27,7 +27,7 @@ export function useCorrelationMatrixPlot({ columns, matrix }: Params) {
           title: { text: "Pearson r", side: "right" },
           thickness: 10,
           len: 0.85,
-          tickfont: { color: isDark ? "#d4d4d4" : "#334155", size: 10 },
+          tickfont: { color: "var(--color-muted-foreground)", size: 10 },
         },
         hovertemplate: "%{x} & %{y}<br>r: %{z:.3f}<extra></extra>",
       },

@@ -37,13 +37,13 @@ export function useDistributionPlot({
               ? yLabel
               : `${xLabel} (Quartile Bins)`,
         },
-        gridcolor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
+        gridcolor: "var(--color-border)",
       },
       yaxis: {
         title: {
           text: problemType === "classification" ? xLabel : yLabel,
         },
-        gridcolor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
+        gridcolor: "var(--color-border)",
       },
       margin: { t: 30, r: 20, b: 60, l: 48 },
     }),

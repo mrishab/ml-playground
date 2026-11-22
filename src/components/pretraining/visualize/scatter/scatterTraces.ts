@@ -1,7 +1,13 @@
 import type { Data } from "plotly.js";
 import { calculateLinearRegressionFit } from "@/lib/bivariate/regressionFit";
 
-const CLASS_COLORS = ["#38bdf8", "#f43f5e", "#10b981", "#a855f7", "#f59e0b"];
+const CLASS_COLORS = [
+  "var(--color-chart-1)",
+  "var(--color-chart-2)",
+  "var(--color-chart-3)",
+  "var(--color-chart-4)",
+  "var(--color-chart-5)",
+];
 
 export function buildScatterTraces(
   x: number[],
@@ -11,6 +17,7 @@ export function buildScatterTraces(
   problemType: string | undefined,
   isDark: boolean,
 ): Data[] {
+  void isDark;
   const hasNonNumericY = y.some(
     (v) => typeof v === "string" && v.trim() !== "" && isNaN(Number(v.trim())),
   );
@@ -44,7 +51,7 @@ export function buildScatterTraces(
     type: "scatter",
     mode: "markers",
     name: "Data Points",
-    marker: { color: isDark ? "#4fc1ff" : "#0284c7", size: 6, opacity: 0.75 },
+    marker: { color: "var(--color-primary)", size: 6, opacity: 0.75 },
     hovertemplate: `${xLabel}: %{x:.3f}<br>${yLabel}: %{y:.3f}<extra></extra>`,
   };
 
@@ -54,7 +61,7 @@ export function buildScatterTraces(
     type: "scatter",
     mode: "lines",
     name: `Fit: ${fit.equation} (R²=${(fit.r2 * 100).toFixed(1)}%)`,
-    line: { color: "#f59e0b", width: 2.5 },
+    line: { color: "var(--color-warning)", width: 2.5 },
     hoverinfo: "name",
   };
 
