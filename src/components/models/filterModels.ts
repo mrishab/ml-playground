@@ -9,7 +9,22 @@ export function filterAndSortModels(
 ): SavedModel[] {
   const query = searchQuery.trim().toLowerCase();
   const filtered = models.filter((m) => {
-    if (filterType !== "all" && m.problemType !== filterType) return false;
+    if (filterType !== "all") {
+      const isUnsup =
+        m.problemType === "clustering" ||
+        m.problemType === "dimensionality_reduction" ||
+        m.problemType === "unsupervised" ||
+        m.algorithm === "clustering" ||
+        m.algorithm === "isolation-forest" ||
+        m.algorithm === "pca";
+
+      if (filterType === "unsupervised") {
+        if (!isUnsup) return false;
+      } else {
+        if (isUnsup) return false;
+        if (m.problemType !== filterType) return false;
+      }
+    }
     if (!query) return true;
     const nameMatch = m.name.toLowerCase().includes(query);
     const datasetMatch = m.datasetName.toLowerCase().includes(query);

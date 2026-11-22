@@ -11,7 +11,9 @@ export function usePCAPage() {
     store;
 
   const runTraining = useCallback(async () => {
-    if (!data.xTrain || !data.featureNames || data.featureNames.length < 1) {
+    const sourceX = data.unsupervisedX ?? data.xTrain;
+    const features = data.unsupervisedFeatureNames ?? data.featureNames;
+    if (!sourceX || !features || features.length < 1) {
       setError("PCA requires at least 1 feature. Please configure features.");
       return;
     }
@@ -20,7 +22,7 @@ export function usePCAPage() {
     setMetrics(null);
 
     try {
-      const rawMatrix = data.xTrain.values as unknown[][];
+      const rawMatrix = sourceX.values as unknown[][];
       const targetValues =
         data.yTrain && data.targetColumn
           ? (data.yTrain.column(data.targetColumn).values as (
@@ -31,7 +33,7 @@ export function usePCAPage() {
 
       const results = trainPCA({
         rawMatrix,
-        featureNames: data.featureNames,
+        featureNames: features,
         targetValues,
         nComponents,
         standardize,

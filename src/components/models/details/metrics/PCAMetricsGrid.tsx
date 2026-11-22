@@ -15,7 +15,11 @@ export function PCAMetricsGrid({ pca }: { pca: PCAMetrics }) {
       <MetricBox label="PC2 Variance" val={`${pc2}%`} />
       <MetricBox
         label="Kaiser Components"
-        val={String(pca.kaiserComponentsCount)}
+        val={
+          pca.kaiserComponentsCount !== null
+            ? String(pca.kaiserComponentsCount)
+            : "N/A (Raw Cov)"
+        }
       />
     </div>
   );

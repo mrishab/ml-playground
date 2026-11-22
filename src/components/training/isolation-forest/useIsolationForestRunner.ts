@@ -10,10 +10,10 @@ export function useIsolationForestRunner(
   store: ReturnType<typeof useIsolationForestStore>,
 ) {
   return useCallback(async () => {
-    const { xTrain } = data;
-    if (!xTrain || xTrain.shape[0] === 0) {
+    const sourceX = data.unsupervisedX ?? data.xTrain;
+    if (!sourceX || sourceX.shape[0] === 0) {
       store.setError(
-        "Missing feature data. Please select features and split first.",
+        "Missing feature data. Please select a dataset or features.",
       );
       return;
     }
@@ -38,7 +38,7 @@ export function useIsolationForestRunner(
     };
 
     try {
-      const res = await trainIsolationForest(xTrain, p, onStep);
+      const res = await trainIsolationForest(sourceX, p, onStep);
       store.setMetrics(res);
       saveTrainedModel({
         algorithm: "isolation-forest",

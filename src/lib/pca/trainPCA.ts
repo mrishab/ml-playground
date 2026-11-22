@@ -47,10 +47,11 @@ export function trainPCA({
   const clampedK = Math.max(1, Math.min(nComponents, p));
   const totalVarianceExplained = cumulativeVarianceRatio[clampedK - 1] ?? 1;
 
-  // Kaiser criterion: eigenvalues > 1 (average variance in standardized space)
-  const kaiserComponentsCount = sortedEigenvalues.filter(
-    (v) => v >= 1.0,
-  ).length;
+  // Kaiser criterion: eigenvalues > 1 (average variance in standardized space).
+  // On unstandardized data (raw covariance), eigenvalues depend on feature units, making > 1 invalid.
+  const kaiserComponentsCount = standardize
+    ? sortedEigenvalues.filter((v) => v >= 1.0).length
+    : null;
 
   // Loadings map
   const loadingsRecord: Record<string, number[]> = {};

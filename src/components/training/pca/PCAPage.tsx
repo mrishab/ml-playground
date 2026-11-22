@@ -13,6 +13,8 @@ export function PCAPage() {
   return (
     <TrainingPageLayout
       {...pageState}
+      canTrain={pageState.canTrainUnsupervised}
+      isUnsupervised={true}
       title="Principal Component Analysis"
       subtitle="Unsupervised dimensionality reduction and orthogonal variance decomposition"
       icon={Sparkles}
@@ -28,7 +30,11 @@ export function PCAPage() {
           onNComponentsChange={setNComponents}
           standardize={standardize}
           onStandardizeChange={setStandardize}
-          maxComponents={pageState.featureNames?.length ?? 5}
+          maxComponents={
+            pageState.unsupervisedFeatureNames?.length ??
+            pageState.featureNames?.length ??
+            5
+          }
           disabled={pageState.trainingState === "training"}
         />
       }

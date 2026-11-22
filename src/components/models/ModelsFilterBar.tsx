@@ -17,6 +17,7 @@ const FILTER_OPTIONS: { label: string; value: ModelTypeFilter }[] = [
   { label: "Regression", value: "regression" },
   { label: "Classification", value: "classification" },
   { label: "Clustering", value: "clustering" },
+  { label: "Unsupervised", value: "unsupervised" },
 ];
 
 export function ModelsFilterBar(p: FilterBarProps) {

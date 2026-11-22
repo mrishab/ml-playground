@@ -27,7 +27,13 @@ export function buildSavedModel(opts: BuildModelOptions): SavedModel {
     createdAt: Date.now(),
     updatedAt: Date.now(),
     datasetName,
-    problemType: isKMeansMetric ? "clustering" : ml.problemType,
+    problemType: isKMeansMetric
+      ? "clustering"
+      : isIsolationMetric
+        ? "unsupervised"
+        : isPcaMetric
+          ? "dimensionality_reduction"
+          : ml.problemType,
     algorithm: opts.algorithm,
     algorithmName: opts.algorithmName,
     hyperparameters: opts.hyperparameters,

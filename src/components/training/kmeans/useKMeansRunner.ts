@@ -14,9 +14,11 @@ export function useKMeansRunner(
   const { k, setTrainingState, setError, setMetrics, setTelemetry } = store;
 
   return useCallback(async () => {
-    const rawValues = data.xTrain ? (data.xTrain.values as unknown[][]) : [];
+    const sourceX = data.unsupervisedX ?? data.xTrain;
+    const features = data.unsupervisedFeatureNames ?? data.featureNames;
+    const rawValues = sourceX ? (sourceX.values as unknown[][]) : [];
     const { encodedMatrix } = encodeNumericMatrix(rawValues);
-    const err = validateKMeansData(data.xTrain, encodedMatrix.length, k);
+    const err = validateKMeansData(sourceX, encodedMatrix.length, k);
     if (err) {
       setError(err);
       return;
@@ -26,13 +28,7 @@ export function useKMeansRunner(
     setMetrics(null);
     const onStep = createKMeansTelemetry(setTelemetry);
     try {
-      const results = await trainKMeans(
-        encodedMatrix,
-        data.featureNames,
-        k,
-        25,
-        onStep,
-      );
+      const results = await trainKMeans(encodedMatrix, features, k, 25, onStep);
       setMetrics(results);
       setTrainingState("complete");
       saveTrainedModel({
@@ -48,7 +44,9 @@ export function useKMeansRunner(
     }
   }, [
     data.xTrain,
+    data.unsupervisedX,
     data.featureNames,
+    data.unsupervisedFeatureNames,
     k,
     setTrainingState,
     setError,

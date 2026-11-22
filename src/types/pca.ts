@@ -25,5 +25,5 @@ export interface PCAMetrics {
   means: number[];
   stds: number[];
   nComponents: number;
-  kaiserComponentsCount: number;
+  kaiserComponentsCount: number | null;
 }

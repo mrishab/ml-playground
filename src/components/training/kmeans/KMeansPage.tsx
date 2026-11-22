@@ -7,12 +7,14 @@ import { ClusterDetailsTabs } from "./ClusterDetailsTabs";
 
 export function KMeansPage() {
   const pageState = useKMeansPage();
-  const { metrics, k, setK, trainingState, xTrain } = pageState;
-  const rawData = (xTrain?.values as number[][]) ?? [];
+  const { metrics, k, setK, trainingState, unsupervisedX, xTrain } = pageState;
+  const rawData = ((unsupervisedX ?? xTrain)?.values as number[][]) ?? [];
 
   return (
     <TrainingPageLayout
       {...pageState}
+      canTrain={pageState.canTrainUnsupervised}
+      isUnsupervised={true}
       title="K-Means Clustering"
       subtitle="Unsupervised centroid-based clustering with live Inertia loss"
       icon={CircleDot}

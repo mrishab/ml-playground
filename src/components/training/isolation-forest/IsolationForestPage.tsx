@@ -11,6 +11,8 @@ export function IsolationForestPage() {
   return (
     <TrainingPageLayout
       {...p}
+      canTrain={p.canTrainUnsupervised}
+      isUnsupervised={true}
       title="Isolation Forest"
       subtitle="Unsupervised anomaly & outlier isolation"
       icon={ShieldAlert}
