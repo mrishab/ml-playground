@@ -12,12 +12,12 @@ export function useLinearRegressionPage() {
   const runTraining = useCallback(async () => {
     const { canTrain, xTrain, xTest, yTrain, yTest, targetColumn } = data;
     if (!canTrain || !xTrain || !xTest || !yTrain || !yTest || !targetColumn) {
-      setError("Missing required data. Please configure and split data first.");
+      setError("Missing training data. Configure and split dataset first.");
       return;
     }
     if (data.problemType === "classification") {
       setError(
-        "Linear Regression (OLS) is a regression algorithm and requires continuous numeric targets. Please switch Problem Type to Regression or choose a classification model.",
+        "OLS requires continuous numeric targets. Switch to Regression.",
       );
       return;
     }

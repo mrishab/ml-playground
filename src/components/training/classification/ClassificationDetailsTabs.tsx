@@ -5,6 +5,8 @@ import { PrecisionRecallBreakdown } from "./PrecisionRecallBreakdown";
 import { F1ScoreBreakdown } from "./F1ScoreBreakdown";
 import { ROCCurve } from "./ROCCurve";
 import { ClassificationPredictionsTable } from "./ClassificationPredictionsTable";
+import { useClassificationActiveModel } from "./tabs/useClassificationActiveModel";
+import { ClassificationModelTabContent } from "./tabs/ClassificationModelTabContent";
 import type { ClassificationMetrics } from "@/types/classification";
 
 export function ClassificationDetailsTabs({
@@ -12,10 +14,14 @@ export function ClassificationDetailsTabs({
 }: {
   metrics: ClassificationMetrics;
 }) {
+  const model = useClassificationActiveModel();
+
   return (
     <Tabs defaultValue="predictions" className="w-full">
-      <TabsList>
+      <TabsList className="flex flex-wrap h-auto gap-1">
         <TabsTrigger value="predictions">Predictions</TabsTrigger>
+        <TabsTrigger value="parameters">Parameters</TabsTrigger>
+        <TabsTrigger value="playground">Playground</TabsTrigger>
         <TabsTrigger value="confusion">Confusion Matrix</TabsTrigger>
         <TabsTrigger value="accuracy">Accuracy</TabsTrigger>
         <TabsTrigger value="precision-recall">Precision & Recall</TabsTrigger>
@@ -25,6 +31,7 @@ export function ClassificationDetailsTabs({
       <TabsContent value="predictions">
         <ClassificationPredictionsTable metrics={metrics} />
       </TabsContent>
+      <ClassificationModelTabContent model={model} />
       <TabsContent value="confusion">
         <ConfusionMatrix metrics={metrics} />
       </TabsContent>

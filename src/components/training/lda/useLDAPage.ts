@@ -12,13 +12,11 @@ export function useLDAPage() {
   const runTraining = useCallback(async () => {
     const { canTrain, xTrain, xTest, yTrain, yTest, targetColumn } = data;
     if (!canTrain || !xTrain || !xTest || !yTrain || !yTest || !targetColumn) {
-      setError("Missing required data. Please configure and split data first.");
+      setError("Missing training data. Configure and split dataset first.");
       return;
     }
     if (data.problemType === "regression") {
-      setError(
-        "Linear Discriminant Analysis (LDA) is a classification algorithm and requires categorical target classes. Please switch Problem Type to Classification or choose a regression model.",
-      );
+      setError("LDA requires categorical targets. Switch to Classification.");
       return;
     }
     setTrainingState("training");

@@ -14,12 +14,12 @@ export function useLogisticRegressionRunner(
   return useCallback(async () => {
     const { canTrain, xTrain, xTest, yTrain, yTest, targetColumn } = data;
     if (!canTrain || !xTrain || !xTest || !yTrain || !yTest || !targetColumn) {
-      setError("Missing required data. Please configure and split data first.");
+      setError("Missing training data. Configure and split dataset first.");
       return;
     }
     if (data.problemType === "regression") {
       setError(
-        "Logistic Regression is a classification algorithm and cannot be trained on continuous numeric targets. Please switch Problem Type to Classification or choose a regression model.",
+        "Logistic Regression requires categorical targets. Switch to Classification.",
       );
       return;
     }
