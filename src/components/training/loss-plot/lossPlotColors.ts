@@ -9,27 +9,27 @@ export type Palette = {
 
 export const COLOR_PALETTES = {
   regression: {
-    primary: "#0284c7",
-    fill: "rgba(2, 132, 199, 0.12)",
-    secondary: "#38bdf8",
-    val: "#f97316",
+    primary: "var(--color-primary)",
+    fill: "var(--color-primary)",
+    secondary: "var(--color-chart-3)",
+    val: "var(--color-warning)",
   },
   classification: {
-    primary: "#10b981",
-    fill: "rgba(16, 185, 129, 0.12)",
-    secondary: "#06b6d4",
-    val: "#ec4899",
+    primary: "var(--color-success)",
+    fill: "var(--color-success)",
+    secondary: "var(--color-chart-3)",
+    val: "var(--color-chart-5)",
   },
   clustering: {
-    primary: "#f43f5e",
-    fill: "rgba(244, 63, 94, 0.12)",
-    secondary: "#14b8a6",
-    val: "#8b5cf6",
+    primary: "var(--color-danger)",
+    fill: "var(--color-danger)",
+    secondary: "var(--color-chart-2)",
+    val: "var(--color-chart-4)",
   },
   anomaly: {
-    primary: "#8b5cf6",
-    fill: "rgba(139, 92, 246, 0.12)",
-    secondary: "#a855f7",
-    val: "#f59e0b",
+    primary: "var(--color-chart-4)",
+    fill: "var(--color-chart-4)",
+    secondary: "var(--color-chart-4)",
+    val: "var(--color-warning)",
   },
 } as const satisfies Record<AlgorithmKind, Palette>;

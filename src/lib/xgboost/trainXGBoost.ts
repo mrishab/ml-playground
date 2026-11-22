@@ -48,38 +48,52 @@ export async function trainXGBoost(
 
   const totalSteps = params.nEstimators;
   const regActuals = task === "regression" ? yTestData.map(Number) : [];
+  const regTrainActuals = task === "regression" ? yTrainData.map(Number) : [];
   const clsActuals = task === "classification" ? yTestData.map(String) : [];
+  const clsTrainActuals =
+    task === "classification" ? yTrainData.map(String) : [];
 
   xgb.fit(XTrainData, yTrainData, (round) => {
     if (onStep) {
       if (task === "regression") {
+        const trainPreds = xgb.predict(XTrainData) as number[];
+        const trainMse =
+          trainPreds.reduce(
+            (sum, p, i) => sum + (regTrainActuals[i] - p) ** 2,
+            0,
+          ) / Math.max(1, regTrainActuals.length);
+
         const curPreds = xgb.predict(XTestData) as number[];
         const curMse =
           curPreds.reduce((sum, p, i) => sum + (regActuals[i] - p) ** 2, 0) /
           Math.max(1, regActuals.length);
-        const yMean =
-          regActuals.reduce((a, b) => a + b, 0) /
-          Math.max(1, regActuals.length);
-        const tss = regActuals.reduce((a, b) => a + (b - yMean) ** 2, 0);
-        const r2 =
-          tss > 0 ? Math.max(0, 1 - (curMse * regActuals.length) / tss) : 0;
+
         onStep(
           {
             step: round,
-            loss: Number(curMse.toFixed(4)),
-            secondary: Number((r2 * 100).toFixed(1)),
+            loss: Number(trainMse.toFixed(4)),
+            valLoss: Number(curMse.toFixed(4)),
           },
           round === totalSteps,
         );
       } else {
+        const trainPreds = xgb.predict(XTrainData).map(String);
+        const trainCorrect = trainPreds.filter(
+          (p, i) => p === clsTrainActuals[i],
+        ).length;
+        const trainAcc =
+          clsTrainActuals.length > 0
+            ? trainCorrect / clsTrainActuals.length
+            : 0;
+
         const curPreds = xgb.predict(XTestData).map(String);
         const correct = curPreds.filter((p, i) => p === clsActuals[i]).length;
         const acc = clsActuals.length > 0 ? correct / clsActuals.length : 0;
         onStep(
           {
             step: round,
-            loss: Number(Math.max(0.01, 1 - acc).toFixed(4)),
-            secondary: Number((acc * 100).toFixed(1)),
+            loss: Number(Math.max(0.01, 1 - trainAcc).toFixed(4)),
+            valLoss: Number(Math.max(0.01, 1 - acc).toFixed(4)),
           },
           round === totalSteps,
         );
@@ -97,10 +111,28 @@ export async function trainXGBoost(
     const actuals = yTestData.map(Number);
     const regMetrics = calculateRegressionMetrics(rawPreds, actuals);
 
+    const trainPreds = xgb.predict(XTrainData) as number[];
+    const finalTrainMse =
+      trainPreds.reduce((sum, p, i) => sum + (regTrainActuals[i] - p) ** 2, 0) /
+      Math.max(1, regTrainActuals.length);
+    const yTrainMean =
+      regTrainActuals.reduce((a, b) => a + b, 0) /
+      Math.max(1, regTrainActuals.length);
+    const trainTss = regTrainActuals.reduce(
+      (a, b) => a + (b - yTrainMean) ** 2,
+      0,
+    );
+    const finalTrainRSquared =
+      trainTss > 0
+        ? Math.max(0, 1 - (finalTrainMse * regTrainActuals.length) / trainTss)
+        : 0;
+
     return {
       kind: "regression",
       metrics: {
         ...regMetrics,
+        trainMse: Number(finalTrainMse.toFixed(4)),
+        trainRSquared: Number(finalTrainRSquared.toFixed(4)),
         weights: {
           coefficients: featureImportance.map((f) => f.score),
           intercept: xgb.baseScore,

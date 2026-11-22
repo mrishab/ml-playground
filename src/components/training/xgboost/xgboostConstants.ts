@@ -20,11 +20,11 @@ export function createXGBoostStepUpdater(
 ) {
   return createTelemetryUpdater(
     isReg ? "regression" : "classification",
-    isReg ? "Residual MSE" : "Boosting Log-Loss",
-    isReg ? "MSE" : "Log-Loss",
+    isReg ? "Train vs Test MSE" : "Train vs Test Error Rate",
+    isReg ? "MSE" : "Error Rate",
     setTelemetry,
-    isReg ? "R² Fit (%)" : "Accuracy (%)",
-    "%",
+    undefined,
+    undefined,
     nEstimators,
   );
 }

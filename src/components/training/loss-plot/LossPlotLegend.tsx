@@ -28,7 +28,7 @@ export function LossPlotLegend({
             className="h-0.5 w-5 border-t-2 border-dashed"
             style={{ borderColor: palette.val }}
           />
-          <span>{shortMetric} (Validation)</span>
+          <span>{shortMetric} (Test)</span>
         </div>
       )}
       {secondaryName && (

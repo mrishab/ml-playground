@@ -31,8 +31,8 @@ export function FeatureImportanceCard({
               </div>
               <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-primary rounded-full transition-all duration-300"
-                  style={{ width: `${pct}%` }}
+                  className="h-full w-full bg-primary rounded-full origin-left transition-transform duration-300 ease-out"
+                  style={{ transform: `scaleX(${pct / 100})` }}
                 />
               </div>
             </div>

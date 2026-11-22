@@ -19,11 +19,11 @@ export function createRFStepUpdater(
 ) {
   return createTelemetryUpdater(
     isReg ? "regression" : "classification",
-    isReg ? "Out-of-Bag / Test MSE" : "Ensemble Misclassification Loss",
+    isReg ? "Train vs Test MSE" : "Train vs Test Error Rate",
     isReg ? "MSE" : "Error Rate",
     setTelemetry,
-    isReg ? "R² Fit (%)" : "Accuracy (%)",
-    "%",
+    undefined,
+    undefined,
     nEstimators,
   );
 }
